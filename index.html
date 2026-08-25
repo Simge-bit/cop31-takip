@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Türkiye'deki COP31 ve iklim değişikliğiyle ilgili resmi, akademik, STK ve uluslararası tüm etkinliklerin takip panosu.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+<title>COP31 Türkiye Takip</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #eef3f1;
+    --surface: #ffffff;
+    --surface-2: #e3ece9;
+    --ink: #0f211d;
+    --ink-soft: #47615a;
+    --ink-faint: #7c948c;
+    --line: #d3e0db;
+    --accent: #0e8c82;
+    --accent-ink: #06504a;
+    --accent-soft: #d7f0ec;
+    --gold: #a5670f;
+    --gold-soft: #f7e3c4;
+    --indigo: #4453c7;
+    --indigo-soft: #e3e6fb;
+    --plum: #a23e82;
+    --plum-soft: #f6e1ef;
+    --shadow: 0 1px 2px rgba(15,33,29,0.06), 0 10px 28px -14px rgba(15,33,29,0.22);
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #081412;
+      --surface: #0f211d;
+      --surface-2: #142822;
+      --ink: #e9f2ef;
+      --ink-soft: #9fb8b1;
+      --ink-faint: #6c8880;
+      --line: #1e332d;
+      --accent: #3fd9c7;
+      --accent-ink: #b7f3ea;
+      --accent-soft: #123430;
+      --gold: #e8a23f;
+      --gold-soft: #3a2a10;
+      --indigo: #8c97f0;
+      --indigo-soft: #232a55;
+      --plum: #e38ac4;
+      --plum-soft: #3a1f33;
+      --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 10px 28px -14px rgba(0,0,0,0.55);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #081412;
+    --surface: #0f211d;
+    --surface-2: #142822;
+    --ink: #e9f2ef;
+    --ink-soft: #9fb8b1;
+    --ink-faint: #6c8880;
+    --line: #1e332d;
+    --accent: #3fd9c7;
+    --accent-ink: #b7f3ea;
+    --accent-soft: #123430;
+    --gold: #e8a23f;
+    --gold-soft: #3a2a10;
+    --indigo: #8c97f0;
+    --indigo-soft: #232a55;
+    --plum: #e38ac4;
+    --plum-soft: #3a1f33;
+    --shadow: 0 1px 2px rgba(0,0,0,0.35), 0 10px 28px -14px rgba(0,0,0,0.55);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent-soft); color: var(--accent-ink); }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+  a { color: var(--accent-ink); text-decoration-color: var(--accent); text-underline-offset: 2px; }
+  a:focus-visible, button:focus-visible, .chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 1.5rem 4.5rem; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    margin: 0 0 2.5rem;
+    padding: 3rem 1.5rem 2.25rem;
+    background: linear-gradient(180deg, var(--surface-2), var(--bg) 78%);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-motif {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--accent);
+    opacity: 0.16;
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; max-width: 960px; margin: 0 auto; }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.74rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    padding: 0.3em 0.75em 0.3em 0.6em;
+    border-radius: 999px;
+    margin-bottom: 1.1rem;
+  }
+  .eyebrow .pulse {
+    width: 0.5em; height: 0.5em; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 var(--accent);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+    70% { box-shadow: 0 0 0 6px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  .hero-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+  }
+  .masthead-title {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.1rem, 5vw, 3.1rem);
+    line-height: 1.05;
+    text-wrap: balance;
+    margin: 0 0 0.55rem;
+    letter-spacing: -0.015em;
+  }
+  .masthead-title em { font-style: italic; color: var(--accent-ink); }
+  .masthead-sub { margin: 0; color: var(--ink-soft); font-size: 1rem; max-width: 34em; line-height: 1.55; }
+
+  .countdown { text-align: right; flex-shrink: 0; }
+  .countdown-num {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(2.8rem, 7vw, 4rem);
+    line-height: 1;
+    color: var(--accent-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .countdown-label { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--ink-faint); margin-top: 0.35rem; }
+  .countdown-track { width: 11rem; height: 4px; border-radius: 999px; background: var(--line); margin-top: 0.65rem; overflow: hidden; margin-left: auto; }
+  .countdown-fill { height: 100%; background: var(--accent); border-radius: inherit; }
+
+  /* ---------- Timeline ---------- */
+  .timeline { margin-top: 2.5rem; }
+  .timeline-rail {
+    position: relative;
+    height: 3px;
+    background: var(--line);
+    border-radius: 999px;
+    margin: 2.1rem 0.4rem 0;
+  }
+  .timeline-rail::after {
+    content: "";
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: var(--elapsed, 0%);
+    background: var(--accent);
+    border-radius: inherit;
+  }
+  .timeline-node {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .timeline-node .dot {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: var(--surface); border: 2px solid var(--accent);
+  }
+  .timeline-node.is-past .dot { background: var(--accent); }
+  .timeline-node .tip {
+    position: absolute;
+    top: 1.15rem; left: 50%; transform: translateX(-50%);
+    width: max-content; max-width: 8.5rem;
+    text-align: center;
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+  .timeline-node .tip .t-date { display: block; font-family: 'IBM Plex Mono', monospace; color: var(--ink-faint); font-size: 0.68rem; margin-bottom: 0.15rem; }
+  .timeline-node .tip .t-label { color: var(--ink-soft); font-weight: 600; }
+
+  /* ---------- Key facts ---------- */
+  .keyfacts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2.25rem;
+  }
+  .keyfact { background: var(--surface); padding: 1rem 1.1rem; }
+  .keyfact-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ink-faint); margin-bottom: 0.35rem; }
+  .keyfact-value { font-size: 0.98rem; font-weight: 600; }
+  .keyfact-value.mono { font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
+
+  /* ---------- Filters ---------- */
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.75rem; }
+  .chip {
+    font-family: inherit; font-size: 0.84rem; font-weight: 600;
+    padding: 0.42rem 0.9rem; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--surface); color: var(--ink-soft);
+    cursor: pointer; transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .chip .dot { display: inline-block; width: 0.5em; height: 0.5em; border-radius: 50%; margin-right: 0.4em; vertical-align: middle; }
+
+  .section-label {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.09em;
+    color: var(--ink-faint); font-weight: 700; margin: 2rem 0 0.9rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+  .events { display: flex; flex-direction: column; gap: 0.65rem; }
+
+  .event {
+    display: grid;
+    grid-template-columns: 4px 84px 1fr auto;
+    gap: 0; align-items: stretch;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .event:hover { border-color: var(--cat-color, var(--accent)); transform: translateY(-1px); }
+  .event.is-past { opacity: 0.6; }
+  .event.is-live { box-shadow: 0 0 0 1px var(--gold), var(--shadow); }
+
+  .event-stripe { background: var(--cat-color, var(--accent)); }
+
+  .event-date {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    line-height: 1.3;
+    padding: 0.95rem 0.7rem;
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .event-date .day { font-size: 1.3rem; font-weight: 700; color: var(--ink); display: block; font-family: 'Fraunces', serif; }
+
+  .event-body { padding: 0.95rem 1.1rem; min-width: 0; }
+  .event-body h3 { margin: 0 0 0.3rem; font-size: 1.02rem; font-weight: 700; line-height: 1.3; }
+  .event-meta { font-size: 0.85rem; color: var(--ink-soft); margin: 0 0 0.4rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .event-src { font-size: 0.8rem; margin: 0; }
+  .event-src a { color: var(--ink-faint); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 0.35em;
+    font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    padding: 0.22em 0.6em; border-radius: 999px; white-space: nowrap;
+    background: var(--cat-soft); color: var(--cat-color);
+  }
+
+  .status {
+    padding: 0.95rem 1.1rem 0.95rem 0;
+    display: flex; align-items: center; justify-content: flex-end;
+    text-align: right; font-size: 0.76rem; font-weight: 700; white-space: nowrap;
+  }
+  .status.upcoming { color: var(--gold); }
+  .status.live { color: var(--gold); }
+  .status.past { color: var(--ink-faint); font-weight: 600; }
+  .status.ongoing { color: var(--accent-ink); }
+
+  .empty { text-align: center; color: var(--ink-faint); padding: 2.5rem 1rem; font-size: 0.92rem; border: 1px dashed var(--line); border-radius: 10px; }
+
+  .callout {
+    margin-top: 2.5rem; padding: 1.15rem 1.3rem; border-radius: 10px;
+    background: var(--surface-2); border: 1px solid var(--line);
+    font-size: 0.88rem; color: var(--ink-soft); line-height: 1.6;
+  }
+  .callout strong { color: var(--ink); }
+
+  footer {
+    margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem;
+    font-size: 0.78rem; color: var(--ink-faint);
+  }
+  footer .mono { font-family: 'IBM Plex Mono', monospace; color: var(--ink-soft); }
+  footer .live-badge { display: inline-flex; align-items: center; gap: 0.4em; }
+  footer .live-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  @media (max-width: 620px) {
+    .event { grid-template-columns: 4px 60px 1fr; }
+    .status { grid-column: 2 / -1; justify-self: start; justify-content: flex-start; padding: 0 1.1rem 0.85rem; }
+    .countdown { text-align: left; }
+    .countdown-track { margin-left: 0; }
+    .hero-grid { flex-direction: column; align-items: flex-start; }
+    .timeline-node .tip { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <svg class="hero-motif" viewBox="0 0 960 220" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 170 C 140 130, 260 210, 420 160 S 680 110, 840 165 S 1000 150, 960 170" fill="none" stroke="currentColor" stroke-width="2"/>
+    <path d="M0 195 C 160 165, 300 225, 460 190 S 720 150, 880 195 S 1000 190, 960 200" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
+    <circle cx="860" cy="46" r="3" fill="currentColor"/>
+    <circle cx="900" cy="72" r="2" fill="currentColor"/>
+    <circle cx="828" cy="80" r="2" fill="currentColor"/>
+    <circle cx="70" cy="40" r="2" fill="currentColor"/>
+    <circle cx="110" cy="64" r="2.5" fill="currentColor"/>
+  </svg>
+  <div class="hero-inner">
+    <span class="eyebrow"><span class="pulse"></span>Otomatik izleniyor · Antalya 2026</span>
+    <div class="hero-grid">
+      <div>
+        <h1 class="masthead-title">COP31 <em>Türkiye</em> Takip</h1>
+        <p class="masthead-sub">Antalya'da düzenlenecek COP31 iklim zirvesi vesilesiyle Türkiye genelinde üniversite, STK, kurum ve resmi kurulların düzenlediği COP31 ve iklim değişikliğiyle ilgili tüm etkinliklerin tek ekrandan takibi.</p>
+      </div>
+      <div class="countdown">
+        <div class="countdown-num" id="countdownNum">—</div>
+        <div class="countdown-label">Antalya açılışına gün</div>
+        <div class="countdown-track"><div class="countdown-fill" id="countdownFill"></div></div>
+      </div>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-rail" id="timelineRail"></div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="keyfacts">
+    <div class="keyfact">
+      <div class="keyfact-label">Ana Konferans</div>
+      <div class="keyfact-value mono">9–20 Kas 2026</div>
+    </div>
+    <div class="keyfact">
+      <div class="keyfact-label">Yer</div>
+      <div class="keyfact-value">Antalya EXPO Center</div>
+    </div>
+    <div class="keyfact">
+      <div class="keyfact-label">Liderler Zirvesi</div>
+      <div class="keyfact-value mono">11–12 Kas 2026</div>
+    </div>
+    <div class="keyfact">
+      <div class="keyfact-label">Dönem Başkanı</div>
+      <div class="keyfact-value">Çevre, Şehircilik ve İklim Değişikliği Bakanlığı</div>
+    </div>
+  </div>
+
+  <div class="filters" id="filters" role="group" aria-label="Kategori filtrele">
+    <button class="chip" data-filter="all" aria-pressed="true">Tümü</button>
+    <button class="chip" data-filter="resmi" aria-pressed="false"><span class="dot" style="background:var(--accent)"></span>Resmi</button>
+    <button class="chip" data-filter="akademik" aria-pressed="false"><span class="dot" style="background:var(--indigo)"></span>Akademik</button>
+    <button class="chip" data-filter="stk" aria-pressed="false"><span class="dot" style="background:var(--gold)"></span>STK / Gençlik</button>
+    <button class="chip" data-filter="intl" aria-pressed="false"><span class="dot" style="background:var(--plum)"></span>Uluslararası</button>
+  </div>
+
+  <div class="section-label">Yaklaşan</div>
+  <div class="events" id="eventsUpcoming"></div>
+
+  <div class="section-label">Sürekli açık</div>
+  <div class="events" id="eventsOngoing"></div>
+
+  <div class="section-label">Geçti</div>
+  <div class="events" id="eventsPast"></div>
+
+  <div class="empty" id="emptyState" style="display:none;">Bu kategoride şu an listelenecek etkinlik yok.</div>
+
+  <div class="callout">
+    <strong>Kapsam notu.</strong> Antalya'daki ana program (açılış, tematik günler, Liderler Zirvesi, kapanış) resmi COP31 takviminden alınmıştır. Bunun yanında Türkiye'nin dört bir yanındaki üniversite, STK, meslek örgütü, belediye ve kurumların düzenlediği COP31'e dair ya da daha genel iklim değişikliği konulu paneller, çalıştaylar ve toplantılar da taranıyor. Bu etkinliklerin büyük kısmı merkezi bir takvimde yayınlanmıyor — bu yüzden sayfa düzenli olarak yeniden taranıp güncelleniyor. Bir etkinliği burada göremiyorsanız, henüz duyurulmamış ya da taramadığımız yerel bir kanaldan duyurulmuş olabilir.
+  </div>
+
+  <footer>
+    <span class="live-badge"><span class="dot"></span>Son güncelleme: <span class="mono" id="lastUpdated">26 Ağustos 2026, 00:00</span> · günde 2 kez taranıyor</span>
+    <span>Kaynaklar: cop31.tr · iklim.gov.tr · csb.gov.tr · unfccc.int · üniversite/STK duyuruları</span>
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  var EVENTS = [
+    {
+      title: "COP31 Kapanış — Karar Metinlerinin Kabulü",
+      date: "2026-11-20",
+      dateLabel: "20 Kas 2026",
+      loc: "Antalya EXPO Center",
+      org: "BM İklim Değişikliği Çerçeve Sözleşmesi Sekretaryası (UNFCCC)",
+      cat: "resmi",
+      status: "upcoming",
+      milestone: true,
+      milestoneLabel: "Kapanış",
+      src: { label: "cop31.tr", url: "https://cop31.tr/" }
+    },
+    {
+      title: "Dünya Liderleri İklim Eylem Zirvesi",
+      date: "2026-11-11",
+      dateLabel: "11–12 Kas 2026",
+      loc: "Antalya EXPO Center",
+      org: "UNFCCC · Türkiye Dönem Başkanlığı",
+      cat: "intl",
+      status: "upcoming",
+      milestone: true,
+      milestoneLabel: "Liderler Zirvesi",
+      src: { label: "unfccc.int/cop31", url: "https://unfccc.int/cop31/the-road-to-antalya" }
+    },
+    {
+      title: "COP31 Açılışı ve Müzakerelerin Başlaması",
+      date: "2026-11-09",
+      dateLabel: "9 Kas 2026",
+      loc: "Antalya EXPO Center",
+      org: "UNFCCC · T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı",
+      cat: "resmi",
+      status: "upcoming",
+      milestone: true,
+      milestoneLabel: "COP31 Açılış",
+      src: { label: "cop31.tr", url: "https://cop31.tr/" }
+    },
+    {
+      title: "Pre-COP Hazırlık Toplantısı",
+      date: "2026-10-05",
+      dateLabel: "5–8 Eki 2026",
+      loc: "Fiji",
+      org: "UNFCCC · COP30/COP31 Başkanlıkları",
+      cat: "intl",
+      status: "upcoming",
+      milestone: true,
+      milestoneLabel: "Pre-COP (Fiji)",
+      src: { label: "haber taraması", url: "https://unfccc.int/cop31/the-road-to-antalya" }
+    },
+    {
+      title: "COP31 Green Talent Gönüllülük Programı — başvurular",
+      date: null,
+      dateLabel: "Süreklilik gösteriyor",
+      loc: "Türkiye geneli",
+      org: "COP31 Gönüllülük Programı",
+      cat: "stk",
+      status: "ongoing",
+      src: { label: "cop31volunteers.com", url: "https://www.cop31volunteers.com/" }
+    },
+    {
+      title: "COP-SCIENCE — akademik etkinlik / proje başvuru kanalı",
+      date: null,
+      dateLabel: "Süreklilik gösteriyor",
+      loc: "Online başvuru",
+      org: "COP31 Akademik Platform",
+      cat: "akademik",
+      status: "ongoing",
+      src: { label: "cop31.tr", url: "https://cop31.tr/" }
+    },
+    {
+      title: "COP31 Paydaş Katılımı ve Yan Etkinlik Başvuru Son Tarihi",
+      date: "2026-08-14",
+      dateLabel: "14 Ağu 2026",
+      loc: "Online (partnership.cop31.center)",
+      org: "T.C. İklim Değişikliği Başkanlığı",
+      cat: "resmi",
+      status: "past",
+      milestone: true,
+      milestoneLabel: "Başvuru Kapandı",
+      src: { label: "iklim.gov.tr", url: "https://iklim.gov.tr/cop31-paydas-katilimi-ve-yan-etkinlik-basvurulari-basladi-haber-4955" }
+    },
+    {
+      title: "İklim ve Gençlik Çalıştayı — üniversiteli gençler (~25 üniversite)",
+      date: "2026-06-26",
+      dateLabel: "Haz 2026",
+      loc: "İstanbul",
+      org: "Üniversite gençlik toplulukları",
+      cat: "stk",
+      status: "past",
+      src: { label: "enerjibulteni.com", url: "https://www.enerjibulteni.com/2026/06/26/cop31e-giden-yol-iklim-ve-genclik-calistayi-universiteli-gencleri-bir-araya-getirdi/" }
+    },
+    {
+      title: "COP31 İstanbul Başlangıç Toplantısı",
+      date: "2026-02-12",
+      dateLabel: "12–13 Şub 2026",
+      loc: "İstanbul",
+      org: "T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı",
+      cat: "resmi",
+      status: "past",
+      milestone: true,
+      milestoneLabel: "İstanbul Toplantısı",
+      src: { label: "csb.gov.tr", url: "https://csb.gov.tr/haberler/istanbul-daki-cop31-baslangic-toplantisi-tamamlandi-303858" }
+    },
+    {
+      title: "COP31 Basın Akreditasyonu — Son Başvuru Tarihi",
+      date: "2026-10-16",
+      dateLabel: "16 Eki 2026",
+      loc: "Online (UNFCCC ORS)",
+      org: "İletişim Başkanlığı · UNFCCC Sekretaryası",
+      cat: "resmi",
+      status: "upcoming",
+      src: { label: "iletisim.gov.tr", url: "https://www.iletisim.gov.tr/turkce/duyurular/detay/birlesmis-milletler-iklim-degisikligi-konferansi-cop31-basin-akreditasyonu-duyurusu" }
+    },
+    {
+      title: "COP31 Genç Akademi Takımı — Başvurular (YÖK)",
+      date: "2026-08-24",
+      dateLabel: "24–26 Ağu 2026",
+      loc: "Online (COP31 resmi başvuru ekranı)",
+      org: "Yükseköğretim Kurulu (YÖK)",
+      cat: "akademik",
+      status: "ongoing",
+      src: { label: "trthaber.com", url: "https://www.trthaber.com/haber/gundem/cop31-genc-akademi-takimina-basvurular-basladi-954784.html" }
+    },
+    {
+      title: "COP31 Sürecinde Webinar Serisi — Enerji Yoksulluğu ve Soğutma Yoksunluğu",
+      date: "2026-08-20",
+      dateLabel: "20 Ağu 2026",
+      loc: "Online (Microsoft Teams)",
+      org: "Bolu Abant İzzet Baysal Üniversitesi İklim Koordinatörlüğü · ESAM",
+      cat: "akademik",
+      status: "past",
+      src: { label: "ajanda.ibu.edu.tr", url: "https://ajanda.ibu.edu.tr/cop31-surecinde-webinar-serisi-iklim-degisikligine-uyumda-enerji-yoksullugunu-yeniden-degerlendirmek-sogutma-yoksunlugu/" }
+    },
+    {
+      title: "Ankara Üniversitesi COP31 Koordinasyon Toplantısı",
+      date: "2026-07-28",
+      dateLabel: "28 Tem 2026",
+      loc: "Ankara",
+      org: "Ankara Üniversitesi",
+      cat: "akademik",
+      status: "past",
+      src: { label: "dehukam.org", url: "https://www.dehukam.org/en/2026/08/07/dehukam-participated-in-the-ankara-university-cop31-coordination-meeting" }
+    },
+    {
+      title: "D-8 Ülkeleri COP31 Toplantısı — İstanbul Deklarasyonu",
+      date: "2026-07-17",
+      dateLabel: "17 Tem 2026",
+      loc: "İstanbul",
+      org: "D-8 Çevre ve İklim İşbirliği Platformu · T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı",
+      cat: "intl",
+      status: "past",
+      src: { label: "alomaliye.com", url: "https://www.alomaliye.com/2026/07/17/d-8-ulkeleri-cop31-icin-istanbulda-bulustu/" }
+    },
+    {
+      title: "Sivil Sesler Festivali — COP31 Öncesi Sivil Toplum Buluşması",
+      date: "2026-06-05",
+      dateLabel: "5–6 Haz 2026",
+      loc: "Ankara (Esat Hal)",
+      org: "Sivil toplum örgütleri koalisyonu",
+      cat: "stk",
+      status: "past",
+      src: { label: "t24.com.tr", url: "https://t24.com.tr/gundem/sivil-sesler-festivalinin-programi-aciklandi-cop31-oncesi-sivil-toplum-ankarada-bulusuyor,1325908" }
+    },
+    {
+      title: "COP31 Business Forum — Türk İş Dünyası İstişare Toplantısı",
+      date: "2026-06-03",
+      dateLabel: "3 Haz 2026",
+      loc: "Ankara (TOBB İkiz Kuleler)",
+      org: "TOBB · T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı",
+      cat: "resmi",
+      status: "past",
+      src: { label: "iklim.gov.tr", url: "https://iklim.gov.tr/cop31-business-forum--turk-is-dunyasi-istisare-toplantisi-ankara-da-duzenlendi-haber-4933" }
+    },
+    {
+      title: "Uluslararası İklim Değişikliği, Enerji Dönüşümü ve Sürdürülebilirlik Konferansı",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor",
+      loc: "İstanbul (Marmara Üniversitesi)",
+      org: "Marmara Üniversitesi STKAM",
+      cat: "akademik",
+      status: "ongoing",
+      src: { label: "stkam.marmara.edu.tr", url: "https://stkam.marmara.edu.tr/notice/uluslararasi-iklim-degisikligi-enerji-donusumu-ve-surdurulebilirlik-konferansi" }
+    },
+    {
+      title: "COP31'e Doğru Konferansı — Gebze",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor",
+      loc: "Gebze, Kocaeli",
+      org: "Gebze Belediyesi",
+      cat: "resmi",
+      status: "ongoing",
+      src: { label: "gebze.bel.tr", url: "https://www.gebze.bel.tr/haber/cop31-e-dogru-gebze-de-kritik-konferans_7267.html" }
+    },
+    {
+      title: "COP31'e Doğru Konferansı — Bursa",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor",
+      loc: "Bursa",
+      org: "Yeşil İş Platformu",
+      cat: "stk",
+      status: "ongoing",
+      src: { label: "ekonomigazetesi.com", url: "https://www.ekonomigazetesi.com/sehirler/bursadan-cop31e-guclu-mesaj-yesil-donusum-rekabetin-yeni-anahtari-olacak" }
+    },
+    {
+      title: "COP31'e Doğru Türkiye'de İklim Değişikliği Gündemi — Konferans",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor",
+      loc: "Ankara",
+      org: "SETAV (Siyaset, Ekonomi ve Toplum Araştırmaları Vakfı)",
+      cat: "akademik",
+      status: "ongoing",
+      src: { label: "setav.org", url: "https://www.setav.org/etkinlikler/cop31e-dogru-turkiyede-iklim-degisikligi-gundemi-iklim-degisikligi-ve-cevre-programi" }
+    },
+    {
+      title: "COP31 Yolunda İklim Dirençli Şehirler Zirvesi",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor",
+      loc: "Ankara",
+      org: "Türkiye Belediyeler Birliği",
+      cat: "resmi",
+      status: "ongoing",
+      src: { label: "tbb.gov.tr", url: "https://www.tbb.gov.tr/tr/haberler/cop31-yolunda-iklim-direncli-sehirler-zirvesi-ankarada-gerceklestirildi" }
+    },
+    {
+      title: "1. Marmara Sürdürülebilir Çevre Sempozyumu",
+      date: "2026-06-08",
+      dateLabel: "8–10 Haz 2026",
+      loc: "Kocaeli",
+      org: "Kocaeli Üniversitesi · Kocaeli Ticaret Odası",
+      cat: "akademik",
+      status: "past",
+      src: { label: "kocaeli.edu.tr", url: "https://surdurulebilirlik.kocaeli.edu.tr/en/haberler/1marmara-surdurulebilir-cevre-sempozyumu-basvurulari-basladi-8dd" }
+    },
+    {
+      title: "EU Climate Ideathon 2026",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor · çok şehirli program",
+      loc: "Konya (Selçuk Üniversitesi) ve diğer şehirler",
+      org: "Selçuk Üniversitesi Araştırma Dekanlığı",
+      cat: "akademik",
+      status: "ongoing",
+      src: { label: "ardek.selcuk.edu.tr", url: "https://ardek.selcuk.edu.tr/eu-climate-ideathon-2026-programi/" }
+    },
+    {
+      title: "COP31 Türkiye Buluşmaları — Gaziantep",
+      date: "2026-08-20",
+      dateLabel: "20 Ağu 2026",
+      loc: "Gaziantep",
+      org: "T.C. Çevre, Şehircilik ve İklim Değişikliği Bakanlığı",
+      cat: "resmi",
+      status: "past",
+      src: { label: "iha.com.tr", url: "https://www.iha.com.tr/gaziantep-haberleri/cop31-turkiye-bulusmalari-gaziantep-toplantisi-duzenlendi-471605076" }
+    },
+    {
+      title: "Diyarbakır'da Sıfır Atık Çevre ve İklim Değişikliği Çalıştayı Sonuç Konferansı",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor",
+      loc: "Diyarbakır",
+      org: "Diyarbakır Valiliği / Sıfır Atık koordinasyonu",
+      cat: "resmi",
+      status: "ongoing",
+      src: { label: "aa.com.tr", url: "https://www.aa.com.tr/tr/yesilhat/sifir-atik/diyarbakirda-sifir-atik-cevre-ve-iklim-degisikligi-calistayi-sonuc-konferansi-yapildi/1830315" }
+    },
+    {
+      title: "İklim Elçileri Eğitim Kampı — Gaziantep",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor",
+      loc: "Gaziantep",
+      org: "SANKO Holding",
+      cat: "stk",
+      status: "ongoing",
+      src: { label: "ekonomigazetesi.com", url: "https://www.ekonomigazetesi.com/sehirler/iklim-elcileri-gaziantepte-bulusuyor-76939" }
+    },
+    {
+      title: "COP31 Öncesi Sürdürülebilirlik Konferansı — Adana",
+      date: null,
+      dateLabel: "Tarih doğrulanıyor",
+      loc: "Adana",
+      org: "İş dünyası ve akademi işbirliği",
+      cat: "akademik",
+      status: "ongoing",
+      src: { label: "haberturk.com", url: "https://www.haberturk.com/yerel-haberler/adana-haberleri/turkiyede-gerceklestirilecek-cop31-oncesi-adanada-konferans-duzenlendi-41369459" }
+    },
+    {
+      title: "COP31 Simulation Programme 2026 — Küresel Gençlik İklim Diplomasisi Eğitimi",
+      date: null,
+      dateLabel: "Süreklilik gösteriyor · başvuru bazlı",
+      loc: "Antalya",
+      org: "Uluslararası gençlik iklim diplomasisi programı",
+      cat: "stk",
+      status: "ongoing",
+      src: { label: "opportunitiesforyouth.org", url: "https://opportunitiesforyouth.org/2026/05/13/apply-for-the-cop31-simulation-programme-2026-in-antalya-turkiye-global-youth-climate-diplomacy-training-opportunity-now-open/" }
+    }
+  ];
+
+  var TODAY = "2026-08-26";
+
+  var CAT_TOKENS = {
+    resmi:    { color: "var(--accent)", ink: "var(--accent-ink)", soft: "var(--accent-soft)", label: "Resmi" },
+    akademik: { color: "var(--indigo)", ink: "var(--indigo)",     soft: "var(--indigo-soft)", label: "Akademik" },
+    stk:      { color: "var(--gold)",   ink: "var(--gold)",       soft: "var(--gold-soft)",   label: "STK / Gençlik" },
+    intl:     { color: "var(--plum)",   ink: "var(--plum)",       soft: "var(--plum-soft)",   label: "Uluslararası" }
+  };
+
+  var MONTHS = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
+
+  function dayOfYear(dateStr) {
+    var d = new Date(dateStr + "T00:00:00Z");
+    var start = new Date(dateStr.slice(0, 4) + "-01-01T00:00:00Z");
+    return Math.round((d - start) / 86400000);
+  }
+
+  function statusLabel(ev) {
+    if (ev.status === "ongoing") return "Devam ediyor";
+    if (ev.status === "past") return "Geçti";
+    if (ev.date === TODAY) return "Bugün";
+    return "Yaklaşıyor";
+  }
+  function statusClass(ev) {
+    if (ev.status === "ongoing") return "ongoing";
+    if (ev.status === "past") return "past";
+    if (ev.date === TODAY) return "live";
+    return "upcoming";
+  }
+
+  function renderEvent(ev) {
+    var tok = CAT_TOKENS[ev.cat];
+    var day = ev.date ? ev.date.slice(8, 10) : "•";
+    var mon = ev.date ? MONTHS[parseInt(ev.date.slice(5, 7), 10) - 1] : "";
+    var el = document.createElement("div");
+    el.className = "event" + (ev.status === "past" ? " is-past" : "") + (ev.date === TODAY ? " is-live" : "");
+    el.dataset.cat = ev.cat;
+    el.style.setProperty("--cat-color", tok.ink);
+    el.style.setProperty("--cat-soft", tok.soft);
+    el.innerHTML =
+      '<div class="event-stripe" style="background:' + tok.color + '"></div>' +
+      '<div class="event-date">' +
+        (ev.date ? '<span class="day">' + day + ' ' + mon + '</span>' + ev.date.slice(0, 4) : ev.dateLabel) +
+      '</div>' +
+      '<div class="event-body">' +
+        '<h3>' + ev.title + '</h3>' +
+        '<p class="event-meta">' + ev.org + ' · ' + ev.loc + '<span class="pill">' + tok.label + '</span></p>' +
+        '<p class="event-src"><a href="' + ev.src.url + '" target="_blank" rel="noopener">' + ev.src.label + ' ↗</a></p>' +
+      '</div>' +
+      '<div class="status ' + statusClass(ev) + '">' + statusLabel(ev) + '</div>';
+    return el;
+  }
+
+  function render(filter) {
+    var upcoming = document.getElementById("eventsUpcoming");
+    var ongoing = document.getElementById("eventsOngoing");
+    var past = document.getElementById("eventsPast");
+    upcoming.innerHTML = ""; ongoing.innerHTML = ""; past.innerHTML = "";
+
+    var filtered = EVENTS.filter(function (ev) { return filter === "all" || ev.cat === filter; });
+    var up = filtered.filter(function (ev) { return ev.status === "upcoming"; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var on = filtered.filter(function (ev) { return ev.status === "ongoing"; });
+    var pa = filtered.filter(function (ev) { return ev.status === "past"; }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+
+    up.forEach(function (ev) { upcoming.appendChild(renderEvent(ev)); });
+    on.forEach(function (ev) { ongoing.appendChild(renderEvent(ev)); });
+    pa.forEach(function (ev) { past.appendChild(renderEvent(ev)); });
+
+    var lists = [upcoming, ongoing, past];
+    var labels = document.getElementsByClassName("section-label");
+    for (var i = 0; i < lists.length; i++) {
+      if (labels[i]) labels[i].style.display = lists[i].children.length ? "flex" : "none";
+    }
+
+    document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
+  }
+
+  var filters = document.getElementById("filters");
+  filters.addEventListener("click", function (e) {
+    var btn = e.target.closest(".chip");
+    if (!btn) return;
+    filters.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+    btn.setAttribute("aria-pressed", "true");
+    render(btn.dataset.filter);
+  });
+
+  function daysUntil(dateStr) {
+    var d1 = new Date(TODAY + "T00:00:00Z");
+    var d2 = new Date(dateStr + "T00:00:00Z");
+    return Math.round((d2 - d1) / 86400000);
+  }
+
+  var MAIN_START = "2026-11-09";
+  document.getElementById("countdownNum").textContent = Math.max(daysUntil(MAIN_START), 0);
+
+  (function renderProgress() {
+    var elapsed = dayOfYear(TODAY) / dayOfYear(MAIN_START);
+    document.getElementById("countdownFill").style.width = Math.min(Math.max(elapsed, 0), 1) * 100 + "%";
+  })();
+
+  (function renderTimeline() {
+    var rail = document.getElementById("timelineRail");
+    var nodes = EVENTS.filter(function (ev) { return ev.milestone && ev.date; })
+      .sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    if (!nodes.length) return;
+    var first = dayOfYear(nodes[0].date);
+    var last = dayOfYear(nodes[nodes.length - 1].date);
+    var span = Math.max(last - first, 1);
+    var todayDoy = dayOfYear(TODAY);
+    var elapsedPct = Math.min(Math.max((todayDoy - first) / span, 0), 1) * 100;
+    rail.style.setProperty("--elapsed", elapsedPct + "%");
+
+    nodes.forEach(function (ev) {
+      var pos = ((dayOfYear(ev.date) - first) / span) * 100;
+      var day = ev.date.slice(8, 10);
+      var mon = MONTHS[parseInt(ev.date.slice(5, 7), 10) - 1];
+      var node = document.createElement("div");
+      node.className = "timeline-node" + (ev.date <= TODAY ? " is-past" : "");
+      node.style.left = pos + "%";
+      node.innerHTML =
+        '<div class="dot" title="' + ev.milestoneLabel + '"></div>' +
+        '<div class="tip"><span class="t-date">' + day + ' ' + mon + '</span><span class="t-label">' + ev.milestoneLabel + '</span></div>';
+      rail.appendChild(node);
+    });
+  })();
+
+  render("all");
+})();
+</script>
+</body>
+</html>
