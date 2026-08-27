@@ -355,14 +355,83 @@
   footer .live-badge { display: inline-flex; align-items: center; gap: 0.4em; }
   footer .live-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
+  /* ---------- Controls row ---------- */
+  .controls { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: center; margin-bottom: 1rem; }
+  .controls .search { flex: 1 1 220px; }
+  .controls .city-select { flex: 0 1 180px; }
+  .controls .filters { flex: 1 1 auto; }
+
+  /* ---------- Calendar ---------- */
+  .cal-layout {
+    display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(280px, 1fr);
+    gap: 1.25rem; margin-bottom: 1.75rem; align-items: start;
+  }
+  .cal-card, .day-panel {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.1rem; box-shadow: var(--shadow);
+  }
+  .cal-head { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.9rem; }
+  .cal-title {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 1.12rem;
+    flex: 1; text-align: center;
+  }
+  .cal-nav {
+    width: 2rem; height: 2rem; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--surface); color: var(--ink-soft); font-size: 1rem; line-height: 1;
+    cursor: pointer; flex-shrink: 0;
+  }
+  .cal-nav:hover { border-color: var(--accent); color: var(--accent-ink); }
+  .cal-nav:disabled { opacity: 0.35; cursor: not-allowed; }
+  .cal-jump {
+    font: inherit; font-size: 0.74rem; font-weight: 700; border: 1px solid var(--line);
+    background: var(--accent-soft); color: var(--accent-ink); border-radius: 999px;
+    padding: 0.35rem 0.7rem; cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  }
+  .cal-jump:hover { border-color: var(--accent); }
+  .cal-weekdays {
+    display: grid; grid-template-columns: repeat(7, 1fr); text-align: center;
+    font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--ink-faint); margin-bottom: 0.4rem;
+  }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-day {
+    aspect-ratio: 1; border-radius: 8px; border: 1px solid transparent;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; font-size: 0.78rem; color: var(--ink-faint); background: var(--surface-2);
+  }
+  .cal-day.out-month { visibility: hidden; }
+  .cal-day.has-events {
+    cursor: pointer; background: var(--surface); border-color: var(--line);
+    font-weight: 700; color: var(--ink);
+  }
+  .cal-day.has-events:hover { border-color: var(--accent); }
+  .cal-day.is-today { box-shadow: inset 0 0 0 2px var(--accent); }
+  .cal-day.is-cop { background: var(--accent-soft); }
+  .cal-day.is-selected { background: var(--ink); color: var(--bg); }
+  .cal-day-num { font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums; }
+  .cal-dots { display: flex; gap: 2px; }
+  .cal-dot { width: 5px; height: 5px; border-radius: 50%; }
+
+  .day-panel { min-height: 220px; }
+  .day-panel-head {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 600; font-size: 1.05rem;
+    margin-bottom: 0.8rem;
+  }
+  .day-panel .events { gap: 0.55rem; }
+  .day-empty { color: var(--ink-faint); font-size: 0.85rem; padding: 1rem 0; }
+
+  @media (max-width: 780px) {
+    .cal-layout { grid-template-columns: 1fr; }
+  }
+
   @media (max-width: 620px) {
-    .filter-panel { grid-template-columns: 1fr; }
     .event { grid-template-columns: 4px 60px 1fr; }
     .status { grid-column: 2 / -1; justify-self: start; justify-content: flex-start; padding: 0 1.1rem 0.85rem; }
     .countdown { text-align: left; }
     .countdown-track { margin-left: 0; }
     .hero-grid { flex-direction: column; align-items: flex-start; }
     .timeline-node .tip { display: none; }
+    .controls .city-select { flex-basis: 140px; }
   }
 </style>
 </head>
@@ -419,18 +488,11 @@
     </div>
   </div>
 
-  <div class="filter-panel">
-    <label>
-      <span class="sr-only">Etkinlik ara</span>
-      <input class="search" id="searchInput" type="search" placeholder="Etkinlik, kurum veya şehir ara…" autocomplete="off">
-    </label>
-    <label>
-      <span class="sr-only">Şehir seç</span>
-      <select class="city-select" id="citySelect"><option value="all">Tüm şehirler</option></select>
-    </label>
-  </div>
-
-  <div class="filter-row">
+  <div class="controls">
+    <label class="sr-only" for="searchInput">Etkinlik ara</label>
+    <input class="search" id="searchInput" type="search" placeholder="Etkinlik, kurum veya şehir ara…" autocomplete="off">
+    <label class="sr-only" for="citySelect">Şehir seç</label>
+    <select class="city-select" id="citySelect"><option value="all">Tüm şehirler</option></select>
     <div class="filters" id="filters" role="group" aria-label="Kategori filtrele">
       <button class="chip" data-filter="all" aria-pressed="true">Tümü</button>
       <button class="chip" data-filter="resmi" aria-pressed="false"><span class="dot" style="background:var(--accent)"></span>Resmi</button>
@@ -438,34 +500,39 @@
       <button class="chip" data-filter="stk" aria-pressed="false"><span class="dot" style="background:var(--gold)"></span>STK / Gençlik</button>
       <button class="chip" data-filter="intl" aria-pressed="false"><span class="dot" style="background:var(--plum)"></span>Uluslararası</button>
     </div>
-    <span class="filter-sep" aria-hidden="true"></span>
-    <div class="filters" id="timeFilters" role="group" aria-label="Zamana göre filtrele">
-      <button class="chip" data-time="active" aria-pressed="true">Güncel + yaklaşan</button>
-      <button class="chip" data-time="upcoming" aria-pressed="false">Yalnızca yaklaşan</button>
-      <button class="chip" data-time="past" aria-pressed="false">Geçmiş arşivi</button>
-      <button class="chip" data-time="all" aria-pressed="false">Tüm zamanlar</button>
-    </div>
   </div>
   <div class="result-summary" id="resultSummary" aria-live="polite"></div>
 
   <div class="cat-stats" id="catStats"></div>
 
-  <div class="section-label">Yaklaşan</div>
-  <div class="events" id="eventsUpcoming"></div>
+  <div class="cal-layout">
+    <div class="cal-card">
+      <div class="cal-head">
+        <button class="cal-nav" id="calPrev" type="button" aria-label="Önceki ay">‹</button>
+        <div class="cal-title" id="calTitle"></div>
+        <button class="cal-nav" id="calNext" type="button" aria-label="Sonraki ay">›</button>
+        <button class="cal-jump" id="calJump" type="button">COP31'e git →</button>
+      </div>
+      <div class="cal-weekdays">
+        <span>Pzt</span><span>Sal</span><span>Çar</span><span>Per</span><span>Cum</span><span>Cmt</span><span>Paz</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
 
-  <div class="section-label">Devam eden / başvurusu açık</div>
-  <div class="events" id="eventsOngoing"></div>
+    <div class="day-panel">
+      <div class="day-panel-head" id="dayPanelHead"></div>
+      <div class="events" id="dayEvents"></div>
+      <div class="day-empty" id="dayEmpty" style="display:none;">Bu günde kayıtlı etkinlik yok.</div>
+    </div>
+  </div>
 
-  <div class="section-label">Tarihi doğrulanmamış</div>
-  <div class="events" id="eventsUnverified"></div>
+  <div class="section-label">Tarihi belirsiz · Devam eden / başvurusu açık</div>
+  <div class="events" id="eventsUnresolved"></div>
 
-  <div class="section-label">Geçti</div>
-  <div class="events" id="eventsPast"></div>
-
-  <div class="empty" id="emptyState" style="display:none;">Bu kategoride şu an listelenecek etkinlik yok.</div>
+  <div class="empty" id="emptyState" style="display:none;">Bu filtrede etkinlik yok.</div>
 
   <div class="callout">
-    <strong>Veri notu.</strong> Kesin tarihi ve kaynak sayfası doğrulanmış kayıtlar normal listelerde gösterilir. Tarihi netleşmemiş veya yalnızca genel bir duyuru sayfasına dayanan kayıtlar ayrı “Tarihi doğrulanmamış” bölümünde tutulur. Bu liste Türkiye'deki tüm etkinlikleri eksiksiz temsil etmez; kaynak kalitesi ve kapsam düzenli olarak denetlenir.
+    <strong>Veri notu.</strong> Takvimde gösterilen kayıtların kesin tarihi doğrulanmıştır. Tarihi netleşmemiş veya yalnızca genel bir duyuru sayfasına dayanan kayıtlar takvime yerleştirilemediği için yukarıdaki “Tarihi belirsiz” bölümünde tutulur. Bu liste Türkiye'deki tüm etkinlikleri eksiksiz temsil etmez; kaynak kalitesi ve kapsam düzenli olarak denetlenir.
   </div>
 
   <footer>
@@ -1963,6 +2030,7 @@
   };
 
   var MONTHS = ["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];
+  var MONTHS_FULL = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
 
   function dayOfYear(dateStr) {
     var d = new Date(dateStr + "T00:00:00Z");
@@ -2032,78 +2100,115 @@
   }
 
   var activeFilter = "all";
-  var activeTime = "active";
+  var selectedDate = null;
+  var calYear, calMonth;
 
   function normalize(value) {
     return (value || "").toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
-  function monthLabel(dateStr) {
-    return MONTHS[parseInt(dateStr.slice(5, 7), 10) - 1] + " " + dateStr.slice(0, 4);
-  }
-
-  // Bir tarih-sıralı listeyi ay başlıklarıyla böler; liste yeterince uzunsa (>=6)
-  // ay ayırıcıları ekler, aksi halde tek liste olarak akar.
-  function appendGrouped(container, list) {
-    if (list.length >= 6) {
-      var lastMonth = null;
-      list.forEach(function (ev) {
-        if (ev.date) {
-          var label = monthLabel(ev.date);
-          if (label !== lastMonth) {
-            var divider = document.createElement("div");
-            divider.className = "month-divider";
-            divider.textContent = label;
-            container.appendChild(divider);
-            lastMonth = label;
-          }
-        }
-        container.appendChild(renderEvent(ev));
-      });
-    } else {
-      list.forEach(function (ev) { container.appendChild(renderEvent(ev)); });
-    }
-  }
-
-  function render() {
-    var upcoming = document.getElementById("eventsUpcoming");
-    var ongoing = document.getElementById("eventsOngoing");
-    var unverified = document.getElementById("eventsUnverified");
-    var past = document.getElementById("eventsPast");
-    upcoming.innerHTML = ""; ongoing.innerHTML = ""; unverified.innerHTML = ""; past.innerHTML = "";
-
+  function baseFiltered() {
     var query = normalize(document.getElementById("searchInput").value);
     var city = document.getElementById("citySelect").value;
-    var filtered = EVENTS.filter(function (ev) {
+    return EVENTS.filter(function (ev) {
       var categoryMatch = activeFilter === "all" || ev.cat === activeFilter;
       var cityMatch = city === "all" || normalize(ev.loc).includes(normalize(city));
       var haystack = normalize([ev.title, ev.org, ev.loc].join(" "));
-      var state = deriveStatus(ev);
-      var timeMatch = activeTime === "all" ||
-        (activeTime === "active" && state !== "past") ||
-        (activeTime === "upcoming" && state === "upcoming") ||
-        (activeTime === "past" && state === "past");
-      return categoryMatch && cityMatch && timeMatch && (!query || haystack.includes(query));
+      return categoryMatch && cityMatch && (!query || haystack.includes(query));
     });
-    var up = filtered.filter(function (ev) { return deriveStatus(ev) === "upcoming"; }).sort(function (a, b) { return a.date.localeCompare(b.date); });
-    var on = filtered.filter(function (ev) { return deriveStatus(ev) === "ongoing"; }).sort(function (a, b) { return (a.date || "9999-12-31").localeCompare(b.date || "9999-12-31"); });
-    var uv = filtered.filter(function (ev) { return deriveStatus(ev) === "unverified"; }).sort(function (a, b) { return a.title.localeCompare(b.title, "tr"); });
-    var pa = filtered.filter(function (ev) { return deriveStatus(ev) === "past"; }).sort(function (a, b) { return b.date.localeCompare(a.date); });
+  }
 
-    appendGrouped(upcoming, up);
-    on.forEach(function (ev) { ongoing.appendChild(renderEvent(ev)); });
-    uv.forEach(function (ev) { unverified.appendChild(renderEvent(ev)); });
-    appendGrouped(past, pa);
+  function eventsByDateMap(list) {
+    var map = {};
+    list.forEach(function (ev) {
+      if (!ev.date) return;
+      (map[ev.date] = map[ev.date] || []).push(ev);
+    });
+    return map;
+  }
 
-    var lists = [upcoming, ongoing, unverified, past];
-    var labels = document.getElementsByClassName("section-label");
-    for (var i = 0; i < lists.length; i++) {
-      if (labels[i]) labels[i].style.display = lists[i].children.length ? "flex" : "none";
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+
+  function buildMonthCells(year, month) {
+    var first = new Date(Date.UTC(year, month, 1));
+    var startOffset = (first.getUTCDay() + 6) % 7;
+    var daysInMonth = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    var cells = [];
+    for (var i = 0; i < startOffset; i++) cells.push(null);
+    for (var d = 1; d <= daysInMonth; d++) cells.push(year + "-" + pad2(month + 1) + "-" + pad2(d));
+    while (cells.length % 7 !== 0) cells.push(null);
+    return cells;
+  }
+
+  function selectDate(dateStr) {
+    selectedDate = (selectedDate === dateStr) ? null : dateStr;
+    render();
+  }
+
+  function renderCalendar(filtered) {
+    var byDate = eventsByDateMap(filtered);
+    document.getElementById("calTitle").textContent = MONTHS_FULL[calMonth] + " " + calYear;
+    document.getElementById("calPrev").disabled = (calYear === 2026 && calMonth <= 0);
+    document.getElementById("calNext").disabled = (calYear === 2026 && calMonth >= 11);
+    var grid = document.getElementById("calGrid");
+    grid.innerHTML = "";
+    buildMonthCells(calYear, calMonth).forEach(function (dateStr) {
+      var cell = document.createElement("div");
+      if (!dateStr) { cell.className = "cal-day out-month"; grid.appendChild(cell); return; }
+      var dayEvents = byDate[dateStr] || [];
+      var cats = [];
+      dayEvents.forEach(function (ev) { if (cats.indexOf(ev.cat) === -1) cats.push(ev.cat); });
+      cell.className = "cal-day" +
+        (dayEvents.length ? " has-events" : "") +
+        (dateStr === TODAY ? " is-today" : "") +
+        (dateStr >= "2026-11-09" && dateStr <= "2026-11-20" ? " is-cop" : "") +
+        (dateStr === selectedDate ? " is-selected" : "");
+      var dotsHtml = cats.slice(0, 4).map(function (c) {
+        return '<span class="cal-dot" style="background:' + CAT_TOKENS[c].ink + '"></span>';
+      }).join("");
+      cell.innerHTML = '<span class="cal-day-num">' + parseInt(dateStr.slice(8, 10), 10) + '</span>' +
+        (dayEvents.length ? '<span class="cal-dots">' + dotsHtml + '</span>' : '');
+      if (dayEvents.length) {
+        cell.setAttribute("role", "button");
+        cell.setAttribute("tabindex", "0");
+        cell.setAttribute("aria-label", dateStr + " – " + dayEvents.length + " etkinlik");
+        cell.addEventListener("click", function () { selectDate(dateStr); });
+        cell.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectDate(dateStr); }
+        });
+      }
+      grid.appendChild(cell);
+    });
+  }
+
+  function renderDayPanel(filtered) {
+    var head = document.getElementById("dayPanelHead");
+    var list = document.getElementById("dayEvents");
+    var empty = document.getElementById("dayEmpty");
+    list.innerHTML = "";
+    var items;
+    if (selectedDate) {
+      items = filtered.filter(function (ev) { return ev.date === selectedDate; });
+      head.textContent = parseInt(selectedDate.slice(8, 10), 10) + " " + MONTHS[parseInt(selectedDate.slice(5, 7), 10) - 1] + " " + selectedDate.slice(0, 4);
+    } else {
+      items = filtered.filter(function (ev) { return ev.date && ev.date >= TODAY; })
+        .sort(function (a, b) { return a.date.localeCompare(b.date); }).slice(0, 6);
+      head.textContent = "Yaklaşan etkinlikler";
     }
+    if (!items.length) { empty.style.display = "block"; return; }
+    empty.style.display = "none";
+    items.forEach(function (ev) { list.appendChild(renderEvent(ev)); });
+  }
 
-    document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
-    document.getElementById("resultSummary").textContent = filtered.length + " kayıt gösteriliyor · " + up.length + " yaklaşan · " + uv.length + " tarihi doğrulanmamış";
+  function renderUnresolved(filtered) {
+    var container = document.getElementById("eventsUnresolved");
+    container.innerHTML = "";
+    filtered.filter(function (ev) { return !ev.date; })
+      .sort(function (a, b) { return a.title.localeCompare(b.title, "tr"); })
+      .forEach(function (ev) { container.appendChild(renderEvent(ev)); });
+  }
 
+  function updateStats(filtered) {
     var statBox = document.getElementById("catStats");
     statBox.innerHTML = "";
     Object.keys(CAT_TOKENS).forEach(function (key) {
@@ -2117,11 +2222,22 @@
     });
   }
 
-  var filters = document.getElementById("filters");
-  filters.addEventListener("click", function (e) {
+  function render() {
+    var filtered = baseFiltered();
+    updateStats(filtered);
+    renderCalendar(filtered);
+    renderDayPanel(filtered);
+    renderUnresolved(filtered);
+    document.getElementById("resultSummary").textContent = filtered.length + " kayıt · " +
+      filtered.filter(function (ev) { return ev.date; }).length + " takvimde · " +
+      filtered.filter(function (ev) { return !ev.date; }).length + " tarihi belirsiz";
+    document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
+  }
+
+  document.getElementById("filters").addEventListener("click", function (e) {
     var btn = e.target.closest(".chip");
     if (!btn) return;
-    filters.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+    this.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
     btn.setAttribute("aria-pressed", "true");
     activeFilter = btn.dataset.filter;
     render();
@@ -2130,15 +2246,18 @@
   document.getElementById("searchInput").addEventListener("input", render);
   document.getElementById("citySelect").addEventListener("change", render);
 
-  var timeFilters = document.getElementById("timeFilters");
-  timeFilters.addEventListener("click", function (e) {
-    var btn = e.target.closest(".chip");
-    if (!btn) return;
-    timeFilters.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
-    btn.setAttribute("aria-pressed", "true");
-    activeTime = btn.dataset.time;
+  function shiftMonth(delta) {
+    calMonth += delta;
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    if (calMonth > 11) { calMonth = 0; calYear++; }
     render();
+  }
+  document.getElementById("calPrev").addEventListener("click", function () { shiftMonth(-1); });
+  document.getElementById("calNext").addEventListener("click", function () { shiftMonth(1); });
+  document.getElementById("calJump").addEventListener("click", function () {
+    calYear = 2026; calMonth = 10; selectedDate = "2026-11-09"; render();
   });
+
 
   (function populateCities() {
     var cities = ["Adana","Adıyaman","Afyonkarahisar","Aksaray","Amasya","Ankara","Antalya","Aydın","Balıkesir","Batman","Bayburt","Bolu","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzurum","Eskişehir","Gaziantep","Gümüşhane","Hakkari","Hatay","Isparta","İstanbul","İzmir","Kahramanmaraş","Karaman","Kars","Kayseri","Kırıkkale","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Mardin","Mersin","Muğla","Nevşehir","Niğde","Osmaniye","Sakarya","Samsun","Siirt","Sinop","Sivas","Şanlıurfa","Tekirdağ","Tokat","Trabzon","Tunceli","Uşak","Van","Yalova","Yozgat","Zonguldak"];
@@ -2190,6 +2309,8 @@
     });
   })();
 
+  calYear = parseInt(TODAY.slice(0, 4), 10);
+  calMonth = parseInt(TODAY.slice(5, 7), 10) - 1;
   render();
 })();
 </script>
