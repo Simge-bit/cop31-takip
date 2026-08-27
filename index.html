@@ -1937,7 +1937,7 @@
     if (isUnverified(ev)) return "unverified";
     if (ev.endDate && ev.date <= TODAY && ev.endDate >= TODAY) return "ongoing";
     if (ev.endDate && ev.endDate < TODAY) return "past";
-    if (ev.status === "ongoing" && !ev.endDate && ev.date <= TODAY) return "ongoing";
+    if (ev.status === "ongoing" && !ev.endDate && (!ev.date || ev.date <= TODAY)) return "ongoing";
     if (ev.date < TODAY) return "past";
     return "upcoming";
   }
