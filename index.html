@@ -360,6 +360,13 @@
   .controls .search { flex: 1 1 220px; }
   .controls .city-select { flex: 0 1 180px; }
   .controls .filters { flex: 1 1 auto; }
+  .suggest-btn {
+    font-family: inherit; font-size: 0.84rem; font-weight: 700;
+    padding: 0.42rem 0.9rem; border-radius: 999px;
+    border: 1px dashed var(--accent); background: var(--accent-soft); color: var(--accent-ink);
+    text-decoration: none; white-space: nowrap; flex-shrink: 0;
+  }
+  .suggest-btn:hover { background: var(--accent); color: var(--surface); border-style: solid; }
 
   /* ---------- Calendar ---------- */
   .cal-layout {
@@ -500,6 +507,7 @@
       <button class="chip" data-filter="stk" aria-pressed="false"><span class="dot" style="background:var(--gold)"></span>STK / Gençlik</button>
       <button class="chip" data-filter="intl" aria-pressed="false"><span class="dot" style="background:var(--plum)"></span>Uluslararası</button>
     </div>
+    <a class="suggest-btn" id="suggestLink" href="#" target="_blank" rel="noopener">+ Etkinlik öner</a>
   </div>
   <div class="result-summary" id="resultSummary" aria-live="polite"></div>
 
@@ -2307,6 +2315,23 @@
         '<div class="tip"><span class="t-date">' + day + ' ' + mon + '</span><span class="t-label">' + ev.milestoneLabel + '</span></div>';
       rail.appendChild(node);
     });
+  })();
+
+  (function wireSuggestLink() {
+    var issueTitle = "Yeni etkinlik önerisi: ";
+    var issueBody = [
+      "**Başlık:** ",
+      "**Tarih (YYYY-AA-GG):** ",
+      "**İl:** ",
+      "**Düzenleyen kurum:** ",
+      "**Kategori (resmi / akademik / stk / intl):** ",
+      "**Kaynak URL (haber/duyuru sayfası):** ",
+      "",
+      "_Bu formu doldurup gönderdiğinizde bir GitHub issue'su açılır, ekip bunu inceleyip panoya ekler._"
+    ].join("\n");
+    var url = "https://github.com/Simge-bit/cop31-takip/issues/new?labels=etkinlik-onerisi&title=" +
+      encodeURIComponent(issueTitle) + "&body=" + encodeURIComponent(issueBody);
+    document.getElementById("suggestLink").href = url;
   })();
 
   calYear = parseInt(TODAY.slice(0, 4), 10);
