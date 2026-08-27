@@ -1,0 +1,32 @@
+name: Saatlik COP31 veri denetimi
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cop31-hourly-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Etkinlik verisini denetle
+        run: node scripts/audit-events.mjs
+      - name: Özeti GitHub Actions'a yaz
+        run: cat reports/audit.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Denetim raporunu sakla
+        uses: actions/upload-artifact@v4
+        with:
+          name: cop31-veri-denetimi
+          path: reports/
+          retention-days: 14
