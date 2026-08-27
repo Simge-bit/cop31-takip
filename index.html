@@ -290,6 +290,7 @@
   .status.live { color: var(--gold); }
   .status.past { color: var(--ink-faint); font-weight: 600; }
   .status.ongoing { color: var(--accent-ink); }
+  .status.unknown { color: var(--indigo); }
 
   .empty { text-align: center; color: var(--ink-faint); padding: 2.5rem 1rem; font-size: 0.92rem; border: 1px dashed var(--line); border-radius: 10px; }
 
@@ -383,8 +384,11 @@
   <div class="section-label">Yaklaşan</div>
   <div class="events" id="eventsUpcoming"></div>
 
-  <div class="section-label">Sürekli açık</div>
+  <div class="section-label">Devam eden / sürekli açık</div>
   <div class="events" id="eventsOngoing"></div>
+
+  <div class="section-label">Tarihi doğrulanıyor</div>
+  <div class="events" id="eventsUnknown"></div>
 
   <div class="section-label">Geçti</div>
   <div class="events" id="eventsPast"></div>
@@ -396,7 +400,7 @@
   </div>
 
   <footer>
-    <span class="live-badge"><span class="dot"></span>Son güncelleme: <span class="mono" id="lastUpdated">26 Ağustos 2026, 19:30 (derin il taraması — dalga 1/2)</span> · saatlik taranıyor</span>
+    <span class="live-badge"><span class="dot"></span>Son veri güncellemesi: <span class="mono" id="lastUpdated">26 Ağustos 2026, 19:30 (derin il taraması — dalga 1/2)</span></span>
     <span>Kaynaklar: cop31.tr · iklim.gov.tr · csb.gov.tr · unfccc.int · üniversite/STK duyuruları</span>
   </footer>
 
@@ -495,7 +499,8 @@
     },
     {
       title: "ÜNİDES Çevre ve İklim Özel Çağrı Dönemi",
-      date: null,
+      date: "2026-06-22",
+      endDate: "2026-09-18",
       dateLabel: "Başvuru: 22 Haz–18 Eyl 2026",
       loc: "Türkiye geneli",
       org: "Gençlik Hizmetleri Genel Müdürlüğü",
@@ -510,7 +515,7 @@
       loc: "Bursa (ilk durak) ve diğer sanayi şehirleri",
       org: "Sanayi ve Teknoloji Bakanlığı · Dünya Bankası",
       cat: "resmi",
-      status: "ongoing",
+      status: "unknown",
       src: { label: "bursahakimiyet.com.tr", url: "https://www.bursahakimiyet.com.tr/bursa/turkiye-yesil-sanayi-bulusmalari-nin-ilk-duragi-bursa-oldu-1651835" }
     },
     {
@@ -540,7 +545,7 @@
       loc: "İstanbul (Marmara Üniversitesi)",
       org: "Marmara Üniversitesi STKAM",
       cat: "akademik",
-      status: "ongoing",
+      status: "unknown",
       src: { label: "stkam.marmara.edu.tr", url: "https://stkam.marmara.edu.tr/notice/uluslararasi-iklim-degisikligi-enerji-donusumu-ve-surdurulebilirlik-konferansi" }
     },
     {
@@ -550,7 +555,7 @@
       loc: "Ankara",
       org: "SETAV (Siyaset, Ekonomi ve Toplum Araştırmaları Vakfı)",
       cat: "akademik",
-      status: "ongoing",
+      status: "unknown",
       src: { label: "setav.org", url: "https://www.setav.org/etkinlikler/cop31e-dogru-turkiyede-iklim-degisikligi-gundemi-iklim-degisikligi-ve-cevre-programi" }
     },
     {
@@ -560,7 +565,7 @@
       loc: "Antalya",
       org: "Uluslararası gençlik iklim diplomasisi programı",
       cat: "stk",
-      status: "ongoing",
+      status: "unknown",
       src: { label: "opportunitiesforyouth.org", url: "https://opportunitiesforyouth.org/2026/05/13/apply-for-the-cop31-simulation-programme-2026-in-antalya-turkiye-global-youth-climate-diplomacy-training-opportunity-now-open/" }
     },
     {
@@ -717,7 +722,7 @@
     },
     {
       title: "COP31'e Doğru Konferansı — Bursa",
-      date: null,
+      date: "2026-05-14",
       dateLabel: "14 May 2026 (yaklaşık) — geçti",
       loc: "Bursa",
       org: "Yeşil İş Platformu",
@@ -1094,7 +1099,7 @@
       loc: "Uşak",
       org: "Uşak İl Milli Eğitim Müdürlüğü",
       cat: "resmi",
-      status: "ongoing",
+      status: "past",
       src: { label: "usakhabergazetesi.com.tr", url: "https://www.usakhabergazetesi.com.tr/usakta-cevre-seferberligi-basliyor-okullar-cevrefest26-icin-hazir" }
     },
     {
@@ -1309,12 +1314,13 @@
     },
     {
       title: "\"İklim Değişiyor: İlk Kim Değişecek?\" Paneli",
-      date: null,
+      date: "2026-05-01",
+      endDate: "2026-05-31",
       dateLabel: "Mayıs 2026",
       loc: "Tokat (TOGÜ)",
       org: "Tokat Gaziosmanpaşa Üniversitesi",
       cat: "akademik",
-      status: "ongoing",
+      status: "past",
       src: { label: "haberler.com", url: "https://www.haberler.com/egitim/togu-de-iklim-krizine-dikkat-cekildi-19800692-haberi/" }
     },
     {
@@ -1424,7 +1430,7 @@
       loc: "Tunceli (Munzur Ü.)",
       org: "Munzur Ü. · Ankara, Gazi, Fırat, Bingöl üniversiteleri",
       cat: "akademik",
-      status: "ongoing",
+      status: "past",
       src: { label: "ankara.edu.tr", url: "https://www.ankara.edu.tr/ankara-gazi-firat-ve-bingol-universitelerinin-destekleriyle-munzur-universitesinde-calistay-duzenlendi/" }
     },
     {
@@ -1469,12 +1475,13 @@
     },
     {
       title: "\"Adıyaman'ı Geleceğe Hazırlamak\" İklim Değişikliği Çalıştayı",
-      date: null,
+      date: "2026-02-01",
+      endDate: "2026-02-28",
       dateLabel: "Şubat 2026",
       loc: "Adıyaman",
       org: "Adıyaman Üniversitesi",
       cat: "akademik",
-      status: "ongoing",
+      status: "past",
       src: { label: "adiyamandahaber.com", url: "https://www.adiyamandahaber.com/haber/adiyaman-universitesinde-iklim-degisikligi-calistayi-duzenlendi-5155.html" }
     },
     {
@@ -1674,17 +1681,18 @@
       loc: "Edirne",
       org: "AB Türkiye Delegasyonu",
       cat: "intl",
-      status: "ongoing",
+      status: "unknown",
       src: { label: "canakkalehaber.com", url: "https://www.canakkalehaber.com/comulu-nodak-takimi-cop31-yolunda/53288" }
     },
     {
       title: "'Kadın ve İklim Krizi: Ekofeminist Bir Perspektif' Semineri",
-      date: null,
+      date: "2026-04-01",
+      endDate: "2026-04-30",
       dateLabel: "Nisan 2026",
       loc: "Kırklareli",
       org: "Kırklareli Üniversitesi",
       cat: "akademik",
-      status: "ongoing",
+      status: "past",
       src: { label: "yesilyurtgazete.com", url: "https://www.yesilyurtgazete.com/klu-de-kadin-ve-iklim-krizi-semineri/117012" }
     },
     {
@@ -1719,7 +1727,8 @@
     },
     {
       title: "'İklimde Yeşeren Özel Umutlar' Projesi",
-      date: null,
+      date: "2026-08-24",
+      endDate: "2026-08-28",
       dateLabel: "24–28 Ağu 2026",
       loc: "Niğde",
       org: "Niğde İl Milli Eğitim Müdürlüğü (TÜBİTAK 4008 destekli)",
@@ -1759,7 +1768,8 @@
     },
     {
       title: "SORGED — Afet Farkındalığı / İklim Değişikliği ESC Gönüllülük Programı",
-      date: null,
+      date: "2026-08-26",
+      endDate: "2026-09-24",
       dateLabel: "26 Ağu–24 Eyl 2026",
       loc: "Sorgun, Yozgat",
       org: "SORGED (Sorgun Gençlik Derneği), Avrupa Komisyonu desteğiyle",
@@ -1804,7 +1814,7 @@
       loc: "Eskişehir",
       org: "Eskişehir Ticaret Odası AB Bilgi Merkezi",
       cat: "intl",
-      status: "ongoing",
+      status: "unknown",
       src: { label: "pmyo.eskisehir.edu.tr", url: "https://pmyo.eskisehir.edu.tr/tr/Duyuru/Detay/eu-climate-ideathon-2026-programina-basvurular-basladi" }
     },
     {
@@ -1869,7 +1879,10 @@
     },
   ];
 
-  var TODAY = "2026-08-26";
+  // Türkiye tarihini her sayfa açılışında hesapla; durumlar sabit bir güne bağlı kalmasın.
+  var TODAY = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Istanbul", year: "numeric", month: "2-digit", day: "2-digit"
+  }).format(new Date());
 
   var CAT_TOKENS = {
     resmi:    { color: "var(--accent)", ink: "var(--accent-ink)", soft: "var(--accent-soft)", label: "Resmi" },
@@ -1886,15 +1899,27 @@
     return Math.round((d - start) / 86400000);
   }
 
+  function effectiveStatus(ev) {
+    if (ev.status === "unknown") return "unknown";
+    if (ev.endDate && TODAY > ev.endDate) return "past";
+    if (ev.date && TODAY < ev.date) return "upcoming";
+    if (ev.date && (!ev.endDate || TODAY <= ev.endDate)) return ev.endDate ? "ongoing" : (TODAY === ev.date ? "live" : "past");
+    return ev.status;
+  }
+
   function statusLabel(ev) {
-    if (ev.status === "ongoing") return "Devam ediyor";
-    if (ev.status === "past") return "Geçti";
+    var current = effectiveStatus(ev);
+    if (current === "unknown") return "Doğrulanıyor";
+    if (current === "ongoing") return "Devam ediyor";
+    if (current === "past") return "Geçti";
     if (ev.date === TODAY) return "Bugün";
     return "Yaklaşıyor";
   }
   function statusClass(ev) {
-    if (ev.status === "ongoing") return "ongoing";
-    if (ev.status === "past") return "past";
+    var current = effectiveStatus(ev);
+    if (current === "unknown") return "unknown";
+    if (current === "ongoing") return "ongoing";
+    if (current === "past") return "past";
     if (ev.date === TODAY) return "live";
     return "upcoming";
   }
@@ -1904,7 +1929,7 @@
     var day = ev.date ? ev.date.slice(8, 10) : "•";
     var mon = ev.date ? MONTHS[parseInt(ev.date.slice(5, 7), 10) - 1] : "";
     var el = document.createElement("div");
-    el.className = "event" + (ev.status === "past" ? " is-past" : "") + (ev.date === TODAY ? " is-live" : "");
+    el.className = "event" + (effectiveStatus(ev) === "past" ? " is-past" : "") + (ev.date === TODAY ? " is-live" : "");
     el.dataset.cat = ev.cat;
     el.style.setProperty("--cat-color", tok.ink);
     el.style.setProperty("--cat-soft", tok.soft);
@@ -1925,19 +1950,22 @@
   function render(filter) {
     var upcoming = document.getElementById("eventsUpcoming");
     var ongoing = document.getElementById("eventsOngoing");
+    var unknown = document.getElementById("eventsUnknown");
     var past = document.getElementById("eventsPast");
-    upcoming.innerHTML = ""; ongoing.innerHTML = ""; past.innerHTML = "";
+    upcoming.innerHTML = ""; ongoing.innerHTML = ""; unknown.innerHTML = ""; past.innerHTML = "";
 
     var filtered = EVENTS.filter(function (ev) { return filter === "all" || ev.cat === filter; });
-    var up = filtered.filter(function (ev) { return ev.status === "upcoming"; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
-    var on = filtered.filter(function (ev) { return ev.status === "ongoing"; });
-    var pa = filtered.filter(function (ev) { return ev.status === "past"; }).sort(function (a, b) { return a.date < b.date ? 1 : -1; });
+    var up = filtered.filter(function (ev) { return effectiveStatus(ev) === "upcoming"; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
+    var on = filtered.filter(function (ev) { return effectiveStatus(ev) === "ongoing" || effectiveStatus(ev) === "live"; });
+    var un = filtered.filter(function (ev) { return effectiveStatus(ev) === "unknown"; });
+    var pa = filtered.filter(function (ev) { return effectiveStatus(ev) === "past"; }).sort(function (a, b) { return (a.date || "") < (b.date || "") ? 1 : -1; });
 
     up.forEach(function (ev) { upcoming.appendChild(renderEvent(ev)); });
     on.forEach(function (ev) { ongoing.appendChild(renderEvent(ev)); });
+    un.forEach(function (ev) { unknown.appendChild(renderEvent(ev)); });
     pa.forEach(function (ev) { past.appendChild(renderEvent(ev)); });
 
-    var lists = [upcoming, ongoing, past];
+    var lists = [upcoming, ongoing, unknown, past];
     var labels = document.getElementsByClassName("section-label");
     for (var i = 0; i < lists.length; i++) {
       if (labels[i]) labels[i].style.display = lists[i].children.length ? "flex" : "none";
