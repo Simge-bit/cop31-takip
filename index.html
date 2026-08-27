@@ -222,7 +222,7 @@
   .keyfact-value.mono { font-family: 'IBM Plex Mono', monospace; font-weight: 500; }
 
   /* ---------- Filters ---------- */
-  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.75rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
   .filter-panel {
     display: grid; grid-template-columns: minmax(220px, 1fr) minmax(160px, 220px);
     gap: 0.75rem; margin-bottom: 0.8rem;
@@ -231,7 +231,39 @@
     width: 100%; font: inherit; color: var(--ink); background: var(--surface);
     border: 1px solid var(--line); border-radius: 10px; padding: 0.72rem 0.85rem;
   }
-  .result-summary { color: var(--ink-faint); font-size: 0.8rem; margin: -0.9rem 0 1.2rem; }
+  .filter-row {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.9rem;
+    margin-bottom: 0.6rem;
+  }
+  .filter-sep { width: 1px; align-self: stretch; background: var(--line); margin: 0 0.15rem; }
+  @media (max-width: 620px) { .filter-sep { display: none; } }
+  .result-summary { color: var(--ink-faint); font-size: 0.8rem; margin: 0 0 1.2rem; }
+
+  /* ---------- Category stats ---------- */
+  .cat-stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px; background: var(--line); border: 1px solid var(--line);
+    border-radius: 12px; overflow: hidden; margin-bottom: 1.5rem;
+  }
+  .cat-stat {
+    background: var(--surface); padding: 0.85rem 1rem;
+    border-left: 3px solid var(--cat-color, var(--accent));
+  }
+  .cat-stat-num {
+    font-family: 'Fraunces', Georgia, serif; font-weight: 700; font-size: 1.5rem;
+    color: var(--cat-color, var(--ink)); line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .cat-stat-label { font-size: 0.74rem; color: var(--ink-soft); margin-top: 0.25rem; }
+
+  /* ---------- Month dividers ---------- */
+  .month-divider {
+    display: flex; align-items: center; gap: 0.6rem;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint);
+    margin: 1.1rem 0 0.5rem;
+  }
+  .month-divider:first-child { margin-top: 0.2rem; }
+  .month-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   .chip {
     font-family: inherit; font-size: 0.84rem; font-weight: 600;
     padding: 0.42rem 0.9rem; border-radius: 999px;
@@ -398,20 +430,25 @@
     </label>
   </div>
 
-  <div class="filters" id="filters" role="group" aria-label="Kategori filtrele">
-    <button class="chip" data-filter="all" aria-pressed="true">Tümü</button>
-    <button class="chip" data-filter="resmi" aria-pressed="false"><span class="dot" style="background:var(--accent)"></span>Resmi</button>
-    <button class="chip" data-filter="akademik" aria-pressed="false"><span class="dot" style="background:var(--indigo)"></span>Akademik</button>
-    <button class="chip" data-filter="stk" aria-pressed="false"><span class="dot" style="background:var(--gold)"></span>STK / Gençlik</button>
-    <button class="chip" data-filter="intl" aria-pressed="false"><span class="dot" style="background:var(--plum)"></span>Uluslararası</button>
-  </div>
-  <div class="filters" id="timeFilters" role="group" aria-label="Zamana göre filtrele">
-    <button class="chip" data-time="active" aria-pressed="true">Güncel + yaklaşan</button>
-    <button class="chip" data-time="upcoming" aria-pressed="false">Yalnızca yaklaşan</button>
-    <button class="chip" data-time="past" aria-pressed="false">Geçmiş arşivi</button>
-    <button class="chip" data-time="all" aria-pressed="false">Tüm zamanlar</button>
+  <div class="filter-row">
+    <div class="filters" id="filters" role="group" aria-label="Kategori filtrele">
+      <button class="chip" data-filter="all" aria-pressed="true">Tümü</button>
+      <button class="chip" data-filter="resmi" aria-pressed="false"><span class="dot" style="background:var(--accent)"></span>Resmi</button>
+      <button class="chip" data-filter="akademik" aria-pressed="false"><span class="dot" style="background:var(--indigo)"></span>Akademik</button>
+      <button class="chip" data-filter="stk" aria-pressed="false"><span class="dot" style="background:var(--gold)"></span>STK / Gençlik</button>
+      <button class="chip" data-filter="intl" aria-pressed="false"><span class="dot" style="background:var(--plum)"></span>Uluslararası</button>
+    </div>
+    <span class="filter-sep" aria-hidden="true"></span>
+    <div class="filters" id="timeFilters" role="group" aria-label="Zamana göre filtrele">
+      <button class="chip" data-time="active" aria-pressed="true">Güncel + yaklaşan</button>
+      <button class="chip" data-time="upcoming" aria-pressed="false">Yalnızca yaklaşan</button>
+      <button class="chip" data-time="past" aria-pressed="false">Geçmiş arşivi</button>
+      <button class="chip" data-time="all" aria-pressed="false">Tüm zamanlar</button>
+    </div>
   </div>
   <div class="result-summary" id="resultSummary" aria-live="polite"></div>
+
+  <div class="cat-stats" id="catStats"></div>
 
   <div class="section-label">Yaklaşan</div>
   <div class="events" id="eventsUpcoming"></div>
@@ -2001,6 +2038,33 @@
     return (value || "").toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
   }
 
+  function monthLabel(dateStr) {
+    return MONTHS[parseInt(dateStr.slice(5, 7), 10) - 1] + " " + dateStr.slice(0, 4);
+  }
+
+  // Bir tarih-sıralı listeyi ay başlıklarıyla böler; liste yeterince uzunsa (>=6)
+  // ay ayırıcıları ekler, aksi halde tek liste olarak akar.
+  function appendGrouped(container, list) {
+    if (list.length >= 6) {
+      var lastMonth = null;
+      list.forEach(function (ev) {
+        if (ev.date) {
+          var label = monthLabel(ev.date);
+          if (label !== lastMonth) {
+            var divider = document.createElement("div");
+            divider.className = "month-divider";
+            divider.textContent = label;
+            container.appendChild(divider);
+            lastMonth = label;
+          }
+        }
+        container.appendChild(renderEvent(ev));
+      });
+    } else {
+      list.forEach(function (ev) { container.appendChild(renderEvent(ev)); });
+    }
+  }
+
   function render() {
     var upcoming = document.getElementById("eventsUpcoming");
     var ongoing = document.getElementById("eventsOngoing");
@@ -2026,10 +2090,10 @@
     var uv = filtered.filter(function (ev) { return deriveStatus(ev) === "unverified"; }).sort(function (a, b) { return a.title.localeCompare(b.title, "tr"); });
     var pa = filtered.filter(function (ev) { return deriveStatus(ev) === "past"; }).sort(function (a, b) { return b.date.localeCompare(a.date); });
 
-    up.forEach(function (ev) { upcoming.appendChild(renderEvent(ev)); });
+    appendGrouped(upcoming, up);
     on.forEach(function (ev) { ongoing.appendChild(renderEvent(ev)); });
     uv.forEach(function (ev) { unverified.appendChild(renderEvent(ev)); });
-    pa.forEach(function (ev) { past.appendChild(renderEvent(ev)); });
+    appendGrouped(past, pa);
 
     var lists = [upcoming, ongoing, unverified, past];
     var labels = document.getElementsByClassName("section-label");
@@ -2039,6 +2103,18 @@
 
     document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
     document.getElementById("resultSummary").textContent = filtered.length + " kayıt gösteriliyor · " + up.length + " yaklaşan · " + uv.length + " tarihi doğrulanmamış";
+
+    var statBox = document.getElementById("catStats");
+    statBox.innerHTML = "";
+    Object.keys(CAT_TOKENS).forEach(function (key) {
+      var count = filtered.filter(function (ev) { return ev.cat === key; }).length;
+      var tok = CAT_TOKENS[key];
+      var card = document.createElement("div");
+      card.className = "cat-stat";
+      card.style.setProperty("--cat-color", tok.ink);
+      card.innerHTML = '<div class="cat-stat-num">' + count + '</div><div class="cat-stat-label">' + tok.label + '</div>';
+      statBox.appendChild(card);
+    });
   }
 
   var filters = document.getElementById("filters");
