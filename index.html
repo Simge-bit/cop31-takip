@@ -75,6 +75,7 @@
   }
 
   * { box-sizing: border-box; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
   html, body { margin: 0; padding: 0; }
   body {
     background: var(--bg);
@@ -222,6 +223,15 @@
 
   /* ---------- Filters ---------- */
   .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.75rem; }
+  .filter-panel {
+    display: grid; grid-template-columns: minmax(220px, 1fr) minmax(160px, 220px);
+    gap: 0.75rem; margin-bottom: 0.8rem;
+  }
+  .search, .city-select {
+    width: 100%; font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px; padding: 0.72rem 0.85rem;
+  }
+  .result-summary { color: var(--ink-faint); font-size: 0.8rem; margin: -0.9rem 0 1.2rem; }
   .chip {
     font-family: inherit; font-size: 0.84rem; font-weight: 600;
     padding: 0.42rem 0.9rem; border-radius: 999px;
@@ -290,7 +300,10 @@
   .status.live { color: var(--gold); }
   .status.past { color: var(--ink-faint); font-weight: 600; }
   .status.ongoing { color: var(--accent-ink); }
-  .status.unknown { color: var(--indigo); }
+  .status.unverified { color: var(--plum); }
+  .event.is-unverified { border-style: dashed; box-shadow: none; }
+  .quality-note { display: block; color: var(--plum); font-size: 0.72rem; margin-top: 0.35rem; }
+  .source-kind { display: inline-flex; margin-left: 0.55rem; font-size: 0.68rem; color: var(--ink-faint); }
 
   .empty { text-align: center; color: var(--ink-faint); padding: 2.5rem 1rem; font-size: 0.92rem; border: 1px dashed var(--line); border-radius: 10px; }
 
@@ -311,6 +324,7 @@
   footer .live-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
   @media (max-width: 620px) {
+    .filter-panel { grid-template-columns: 1fr; }
     .event { grid-template-columns: 4px 60px 1fr; }
     .status { grid-column: 2 / -1; justify-self: start; justify-content: flex-start; padding: 0 1.1rem 0.85rem; }
     .countdown { text-align: left; }
@@ -368,9 +382,20 @@
       <div class="keyfact-value mono">11–12 Kas 2026</div>
     </div>
     <div class="keyfact">
-      <div class="keyfact-label">Dönem Başkanı</div>
-      <div class="keyfact-value">Çevre, Şehircilik ve İklim Değişikliği Bakanlığı</div>
+      <div class="keyfact-label">Başkanlık modeli</div>
+      <div class="keyfact-value">Türkiye başkanlığı · Avustralya müzakere liderliği</div>
     </div>
+  </div>
+
+  <div class="filter-panel">
+    <label>
+      <span class="sr-only">Etkinlik ara</span>
+      <input class="search" id="searchInput" type="search" placeholder="Etkinlik, kurum veya şehir ara…" autocomplete="off">
+    </label>
+    <label>
+      <span class="sr-only">Şehir seç</span>
+      <select class="city-select" id="citySelect"><option value="all">Tüm şehirler</option></select>
+    </label>
   </div>
 
   <div class="filters" id="filters" role="group" aria-label="Kategori filtrele">
@@ -380,15 +405,16 @@
     <button class="chip" data-filter="stk" aria-pressed="false"><span class="dot" style="background:var(--gold)"></span>STK / Gençlik</button>
     <button class="chip" data-filter="intl" aria-pressed="false"><span class="dot" style="background:var(--plum)"></span>Uluslararası</button>
   </div>
+  <div class="result-summary" id="resultSummary" aria-live="polite"></div>
 
   <div class="section-label">Yaklaşan</div>
   <div class="events" id="eventsUpcoming"></div>
 
-  <div class="section-label">Devam eden / sürekli açık</div>
+  <div class="section-label">Devam eden / başvurusu açık</div>
   <div class="events" id="eventsOngoing"></div>
 
-  <div class="section-label">Tarihi doğrulanıyor</div>
-  <div class="events" id="eventsUnknown"></div>
+  <div class="section-label">Tarihi doğrulanmamış</div>
+  <div class="events" id="eventsUnverified"></div>
 
   <div class="section-label">Geçti</div>
   <div class="events" id="eventsPast"></div>
@@ -396,11 +422,11 @@
   <div class="empty" id="emptyState" style="display:none;">Bu kategoride şu an listelenecek etkinlik yok.</div>
 
   <div class="callout">
-    <strong>Kapsam notu.</strong> Antalya'daki ana program (açılış, tematik günler, Liderler Zirvesi, kapanış) resmi COP31 takviminden alınmıştır. Bunun yanında Türkiye'nin dört bir yanındaki üniversite, STK, meslek örgütü, belediye ve kurumların düzenlediği COP31'e dair ya da daha genel iklim değişikliği konulu paneller, çalıştaylar ve toplantılar da taranıyor. 81 ilin tamamı değil — küçük illerde yerel haber kaynağı azlığından bazı etkinlikler kaçırılabiliyor. Bu yüzden sayfa düzenli olarak yeniden taranıp güncelleniyor. Bir etkinliği burada göremiyorsanız, henüz duyurulmamış ya da taramadığımız yerel bir kanaldan duyurulmuş olabilir.
+    <strong>Veri notu.</strong> Kesin tarihi ve kaynak sayfası doğrulanmış kayıtlar normal listelerde gösterilir. Tarihi netleşmemiş veya yalnızca genel bir duyuru sayfasına dayanan kayıtlar ayrı “Tarihi doğrulanmamış” bölümünde tutulur. Bu liste Türkiye'deki tüm etkinlikleri eksiksiz temsil etmez; kaynak kalitesi ve kapsam düzenli olarak denetlenir.
   </div>
 
   <footer>
-    <span class="live-badge"><span class="dot"></span>Son veri güncellemesi: <span class="mono" id="lastUpdated">26 Ağustos 2026, 19:30 (derin il taraması — dalga 1/2)</span></span>
+    <span class="live-badge"><span class="dot"></span>Son veri güncellemesi: <span class="mono" id="lastUpdated">26 Ağustos 2026, 19:30</span> · otomatik tarama kalite denetimi için durduruldu</span>
     <span>Kaynaklar: cop31.tr · iklim.gov.tr · csb.gov.tr · unfccc.int · üniversite/STK duyuruları</span>
   </footer>
 
@@ -571,6 +597,7 @@
     {
       title: "COP31 Genç Akademi Takımı — Başvurular (YÖK)",
       date: "2026-08-24",
+      endDate: "2026-08-26",
       dateLabel: "24–26 Ağu 2026",
       loc: "Online (COP31 resmi başvuru ekranı)",
       org: "Yükseköğretim Kurulu (YÖK)",
@@ -1809,7 +1836,8 @@
     },
     {
       title: "EU Climate Ideathon 2026 — Eskişehir Yerel Etabı",
-      date: null,
+      date: "2026-06-26",
+      endDate: "2026-07-13",
       dateLabel: "Başvuru: 26 Haz–13 Tem 2026",
       loc: "Eskişehir",
       org: "Eskişehir Ticaret Odası AB Bilgi Merkezi",
@@ -1899,27 +1927,34 @@
     return Math.round((d - start) / 86400000);
   }
 
-  function effectiveStatus(ev) {
-    if (ev.status === "unknown") return "unknown";
-    if (ev.endDate && TODAY > ev.endDate) return "past";
-    if (ev.date && TODAY < ev.date) return "upcoming";
-    if (ev.date && (!ev.endDate || TODAY <= ev.endDate)) return ev.endDate ? "ongoing" : (TODAY === ev.date ? "live" : "past");
-    return ev.status;
+  function isUnverified(ev) {
+    if (ev.status === "unknown") return true;
+    if (ev.date) return false;
+    return /doğrulan|belirsiz|yaklaşık|henüz|(^|\s)(ocak|şubat|mart|nisan|mayıs|haziran|temmuz|ağustos|eylül|ekim|kasım|aralık) 2026($|\s)/i.test(ev.dateLabel || "");
+  }
+
+  function deriveStatus(ev) {
+    if (isUnverified(ev)) return "unverified";
+    if (ev.endDate && ev.date <= TODAY && ev.endDate >= TODAY) return "ongoing";
+    if (ev.endDate && ev.endDate < TODAY) return "past";
+    if (ev.status === "ongoing" && !ev.endDate && ev.date <= TODAY) return "ongoing";
+    if (ev.date < TODAY) return "past";
+    return "upcoming";
   }
 
   function statusLabel(ev) {
-    var current = effectiveStatus(ev);
-    if (current === "unknown") return "Doğrulanıyor";
-    if (current === "ongoing") return "Devam ediyor";
-    if (current === "past") return "Geçti";
+    var state = deriveStatus(ev);
+    if (state === "unverified") return "Doğrulanıyor";
+    if (state === "ongoing") return "Devam ediyor";
+    if (state === "past") return "Geçti";
     if (ev.date === TODAY) return "Bugün";
     return "Yaklaşıyor";
   }
   function statusClass(ev) {
-    var current = effectiveStatus(ev);
-    if (current === "unknown") return "unknown";
-    if (current === "ongoing") return "ongoing";
-    if (current === "past") return "past";
+    var state = deriveStatus(ev);
+    if (state === "unverified") return "unverified";
+    if (state === "ongoing") return "ongoing";
+    if (state === "past") return "past";
     if (ev.date === TODAY) return "live";
     return "upcoming";
   }
@@ -1929,7 +1964,12 @@
     var day = ev.date ? ev.date.slice(8, 10) : "•";
     var mon = ev.date ? MONTHS[parseInt(ev.date.slice(5, 7), 10) - 1] : "";
     var el = document.createElement("div");
-    el.className = "event" + (effectiveStatus(ev) === "past" ? " is-past" : "") + (ev.date === TODAY ? " is-live" : "");
+    var host = "";
+    try { host = new URL(ev.src.url).hostname; } catch (e) {}
+    var officialSource = /(^|\.)(gov\.tr|bel\.tr|edu\.tr|unfccc\.int|cop31\.tr)$/.test(host) || /\.gov\.tr$|\.bel\.tr$|\.edu\.tr$/.test(host);
+    var recordType = /başvuru|çağrı|program|gönüllü|ideathon|akademi takımı/i.test(ev.title + " " + ev.dateLabel) ? "Başvuru / program" : "Etkinlik";
+    var state = deriveStatus(ev);
+    el.className = "event" + (state === "past" ? " is-past" : "") + (state === "unverified" ? " is-unverified" : "") + (ev.date === TODAY ? " is-live" : "");
     el.dataset.cat = ev.cat;
     el.style.setProperty("--cat-color", tok.ink);
     el.style.setProperty("--cat-soft", tok.soft);
@@ -1940,38 +1980,53 @@
       '</div>' +
       '<div class="event-body">' +
         '<h3>' + ev.title + '</h3>' +
-        '<p class="event-meta">' + ev.org + ' · ' + ev.loc + '<span class="pill">' + tok.label + '</span></p>' +
-        '<p class="event-src"><a href="' + ev.src.url + '" target="_blank" rel="noopener">' + ev.src.label + ' ↗</a></p>' +
+        '<p class="event-meta">' + ev.org + ' · ' + ev.loc + '<span class="pill">' + tok.label + '</span><span class="pill">' + recordType + '</span></p>' +
+        '<p class="event-src"><a href="' + ev.src.url + '" target="_blank" rel="noopener">Kaynağı aç · ' + ev.src.label + ' ↗</a><span class="source-kind">' + (officialSource ? 'Resmî / kurumsal kaynak' : 'İkincil kaynak') + '</span>' +
+        (state === "unverified" ? '<span class="quality-note">Kesin tarih kaynakta doğrulanmadı.</span>' : '') + '</p>' +
       '</div>' +
       '<div class="status ' + statusClass(ev) + '">' + statusLabel(ev) + '</div>';
     return el;
   }
 
-  function render(filter) {
+  var activeFilter = "all";
+
+  function normalize(value) {
+    return (value || "").toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function render() {
     var upcoming = document.getElementById("eventsUpcoming");
     var ongoing = document.getElementById("eventsOngoing");
-    var unknown = document.getElementById("eventsUnknown");
+    var unverified = document.getElementById("eventsUnverified");
     var past = document.getElementById("eventsPast");
-    upcoming.innerHTML = ""; ongoing.innerHTML = ""; unknown.innerHTML = ""; past.innerHTML = "";
+    upcoming.innerHTML = ""; ongoing.innerHTML = ""; unverified.innerHTML = ""; past.innerHTML = "";
 
-    var filtered = EVENTS.filter(function (ev) { return filter === "all" || ev.cat === filter; });
-    var up = filtered.filter(function (ev) { return effectiveStatus(ev) === "upcoming"; }).sort(function (a, b) { return a.date < b.date ? -1 : 1; });
-    var on = filtered.filter(function (ev) { return effectiveStatus(ev) === "ongoing" || effectiveStatus(ev) === "live"; });
-    var un = filtered.filter(function (ev) { return effectiveStatus(ev) === "unknown"; });
-    var pa = filtered.filter(function (ev) { return effectiveStatus(ev) === "past"; }).sort(function (a, b) { return (a.date || "") < (b.date || "") ? 1 : -1; });
+    var query = normalize(document.getElementById("searchInput").value);
+    var city = document.getElementById("citySelect").value;
+    var filtered = EVENTS.filter(function (ev) {
+      var categoryMatch = activeFilter === "all" || ev.cat === activeFilter;
+      var cityMatch = city === "all" || normalize(ev.loc).includes(normalize(city));
+      var haystack = normalize([ev.title, ev.org, ev.loc].join(" "));
+      return categoryMatch && cityMatch && (!query || haystack.includes(query));
+    });
+    var up = filtered.filter(function (ev) { return deriveStatus(ev) === "upcoming"; }).sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var on = filtered.filter(function (ev) { return deriveStatus(ev) === "ongoing"; }).sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var uv = filtered.filter(function (ev) { return deriveStatus(ev) === "unverified"; }).sort(function (a, b) { return a.title.localeCompare(b.title, "tr"); });
+    var pa = filtered.filter(function (ev) { return deriveStatus(ev) === "past"; }).sort(function (a, b) { return b.date.localeCompare(a.date); });
 
     up.forEach(function (ev) { upcoming.appendChild(renderEvent(ev)); });
     on.forEach(function (ev) { ongoing.appendChild(renderEvent(ev)); });
-    un.forEach(function (ev) { unknown.appendChild(renderEvent(ev)); });
+    uv.forEach(function (ev) { unverified.appendChild(renderEvent(ev)); });
     pa.forEach(function (ev) { past.appendChild(renderEvent(ev)); });
 
-    var lists = [upcoming, ongoing, unknown, past];
+    var lists = [upcoming, ongoing, unverified, past];
     var labels = document.getElementsByClassName("section-label");
     for (var i = 0; i < lists.length; i++) {
       if (labels[i]) labels[i].style.display = lists[i].children.length ? "flex" : "none";
     }
 
     document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
+    document.getElementById("resultSummary").textContent = filtered.length + " kayıt gösteriliyor · " + up.length + " yaklaşan · " + uv.length + " tarihi doğrulanmamış";
   }
 
   var filters = document.getElementById("filters");
@@ -1980,8 +2035,22 @@
     if (!btn) return;
     filters.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
     btn.setAttribute("aria-pressed", "true");
-    render(btn.dataset.filter);
+    activeFilter = btn.dataset.filter;
+    render();
   });
+
+  document.getElementById("searchInput").addEventListener("input", render);
+  document.getElementById("citySelect").addEventListener("change", render);
+
+  (function populateCities() {
+    var cities = ["Adana","Adıyaman","Afyonkarahisar","Aksaray","Amasya","Ankara","Antalya","Aydın","Balıkesir","Batman","Bayburt","Bolu","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzurum","Eskişehir","Gaziantep","Gümüşhane","Hakkari","Hatay","Isparta","İstanbul","İzmir","Kahramanmaraş","Karaman","Kars","Kayseri","Kırıkkale","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Mardin","Mersin","Muğla","Nevşehir","Niğde","Osmaniye","Sakarya","Samsun","Siirt","Sinop","Sivas","Şanlıurfa","Tekirdağ","Tokat","Trabzon","Tunceli","Uşak","Van","Yalova","Yozgat","Zonguldak"];
+    var select = document.getElementById("citySelect");
+    cities.filter(function (city) { return EVENTS.some(function (ev) { return normalize(ev.loc).includes(normalize(city)); }); })
+      .sort(function (a, b) { return a.localeCompare(b, "tr"); })
+      .forEach(function (city) {
+        var option = document.createElement("option"); option.value = city; option.textContent = city; select.appendChild(option);
+      });
+  })();
 
   function daysUntil(dateStr) {
     var d1 = new Date(TODAY + "T00:00:00Z");
@@ -2023,7 +2092,7 @@
     });
   })();
 
-  render("all");
+  render();
 })();
 </script>
 </body>
