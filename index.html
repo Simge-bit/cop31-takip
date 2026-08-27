@@ -405,6 +405,12 @@
     <button class="chip" data-filter="stk" aria-pressed="false"><span class="dot" style="background:var(--gold)"></span>STK / Gençlik</button>
     <button class="chip" data-filter="intl" aria-pressed="false"><span class="dot" style="background:var(--plum)"></span>Uluslararası</button>
   </div>
+  <div class="filters" id="timeFilters" role="group" aria-label="Zamana göre filtrele">
+    <button class="chip" data-time="active" aria-pressed="true">Güncel + yaklaşan</button>
+    <button class="chip" data-time="upcoming" aria-pressed="false">Yalnızca yaklaşan</button>
+    <button class="chip" data-time="past" aria-pressed="false">Geçmiş arşivi</button>
+    <button class="chip" data-time="all" aria-pressed="false">Tüm zamanlar</button>
+  </div>
   <div class="result-summary" id="resultSummary" aria-live="polite"></div>
 
   <div class="section-label">Yaklaşan</div>
@@ -1989,6 +1995,7 @@
   }
 
   var activeFilter = "all";
+  var activeTime = "active";
 
   function normalize(value) {
     return (value || "").toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -2007,7 +2014,12 @@
       var categoryMatch = activeFilter === "all" || ev.cat === activeFilter;
       var cityMatch = city === "all" || normalize(ev.loc).includes(normalize(city));
       var haystack = normalize([ev.title, ev.org, ev.loc].join(" "));
-      return categoryMatch && cityMatch && (!query || haystack.includes(query));
+      var state = deriveStatus(ev);
+      var timeMatch = activeTime === "all" ||
+        (activeTime === "active" && state !== "past") ||
+        (activeTime === "upcoming" && state === "upcoming") ||
+        (activeTime === "past" && state === "past");
+      return categoryMatch && cityMatch && timeMatch && (!query || haystack.includes(query));
     });
     var up = filtered.filter(function (ev) { return deriveStatus(ev) === "upcoming"; }).sort(function (a, b) { return a.date.localeCompare(b.date); });
     var on = filtered.filter(function (ev) { return deriveStatus(ev) === "ongoing"; }).sort(function (a, b) { return (a.date || "9999-12-31").localeCompare(b.date || "9999-12-31"); });
@@ -2041,6 +2053,16 @@
 
   document.getElementById("searchInput").addEventListener("input", render);
   document.getElementById("citySelect").addEventListener("change", render);
+
+  var timeFilters = document.getElementById("timeFilters");
+  timeFilters.addEventListener("click", function (e) {
+    var btn = e.target.closest(".chip");
+    if (!btn) return;
+    timeFilters.querySelectorAll(".chip").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+    btn.setAttribute("aria-pressed", "true");
+    activeTime = btn.dataset.time;
+    render();
+  });
 
   (function populateCities() {
     var cities = ["Adana","Adıyaman","Afyonkarahisar","Aksaray","Amasya","Ankara","Antalya","Aydın","Balıkesir","Batman","Bayburt","Bolu","Bursa","Çanakkale","Çankırı","Çorum","Denizli","Diyarbakır","Edirne","Elazığ","Erzurum","Eskişehir","Gaziantep","Gümüşhane","Hakkari","Hatay","Isparta","İstanbul","İzmir","Kahramanmaraş","Karaman","Kars","Kayseri","Kırıkkale","Kırklareli","Kırşehir","Kocaeli","Konya","Kütahya","Malatya","Manisa","Mardin","Mersin","Muğla","Nevşehir","Niğde","Osmaniye","Sakarya","Samsun","Siirt","Sinop","Sivas","Şanlıurfa","Tekirdağ","Tokat","Trabzon","Tunceli","Uşak","Van","Yalova","Yozgat","Zonguldak"];
