@@ -2010,7 +2010,7 @@
       return categoryMatch && cityMatch && (!query || haystack.includes(query));
     });
     var up = filtered.filter(function (ev) { return deriveStatus(ev) === "upcoming"; }).sort(function (a, b) { return a.date.localeCompare(b.date); });
-    var on = filtered.filter(function (ev) { return deriveStatus(ev) === "ongoing"; }).sort(function (a, b) { return a.date.localeCompare(b.date); });
+    var on = filtered.filter(function (ev) { return deriveStatus(ev) === "ongoing"; }).sort(function (a, b) { return (a.date || "9999-12-31").localeCompare(b.date || "9999-12-31"); });
     var uv = filtered.filter(function (ev) { return deriveStatus(ev) === "unverified"; }).sort(function (a, b) { return a.title.localeCompare(b.title, "tr"); });
     var pa = filtered.filter(function (ev) { return deriveStatus(ev) === "past"; }).sort(function (a, b) { return b.date.localeCompare(a.date); });
 
