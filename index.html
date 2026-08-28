@@ -470,11 +470,100 @@
   .source-kind { margin-left:0; padding:.2rem .48rem; border-radius:999px; background:var(--surface-2); }
   @media (max-width:760px) { .dashboard-stats{grid-template-columns:repeat(2,1fr)} }
   @media (max-width:620px) { .keyfacts{margin-top:-2rem}.event{grid-template-columns:5px 64px 1fr}.date-facts{flex-direction:column}.date-fact{align-items:flex-start} }
+
+  /* 2026 institutional redesign */
+  :root, :root:not([data-theme="dark"]) {
+    --bg:#f5f6f3; --surface:#fff; --surface-2:#eef1ed; --ink:#101a24;
+    --ink-soft:#50606e; --ink-faint:#798591; --line:#dfe4df;
+    --accent:#087f67; --accent-ink:#075b4c; --accent-soft:#e1f2ed;
+    --navy:#0b1826; --navy-2:#13283a; --gold:#a36a13;
+    --shadow:0 12px 36px -28px rgba(11,24,38,.55);
+  }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--ink); }
+  .site-header { position:sticky; top:0; z-index:30; background:rgba(255,255,255,.94); backdrop-filter:blur(14px); border-bottom:1px solid var(--line); }
+  .site-header-inner { max-width:1180px; height:72px; margin:0 auto; padding:0 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:2rem; }
+  .brand { display:flex; align-items:center; gap:.75rem; color:var(--ink); text-decoration:none; }
+  .brand-mark { width:40px; height:40px; display:grid; place-items:center; border-radius:10px; background:var(--navy); color:#70dfc3; font-family:'Fraunces',serif; font-size:1.25rem; font-weight:700; }
+  .brand strong,.brand small { display:block; }
+  .brand strong { font-size:.92rem; letter-spacing:-.01em; }
+  .brand small { margin-top:.1rem; color:var(--ink-faint); font-size:.65rem; letter-spacing:.035em; }
+  .site-nav { display:flex; align-items:center; gap:1.45rem; }
+  .site-nav a { color:var(--ink-soft); text-decoration:none; font-size:.78rem; font-weight:700; }
+  .site-nav a:hover { color:var(--accent); }
+  .verified-nav { display:inline-flex; align-items:center; gap:.42rem; padding:.4rem .65rem; border-radius:999px; background:var(--accent-soft); color:var(--accent-ink); font-size:.68rem; font-weight:800; }
+  .verified-nav span { width:6px; height:6px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 3px rgba(8,127,103,.12); }
+  .hero { margin:0 0 4rem; padding:5.1rem 1.5rem 5.4rem; background:linear-gradient(115deg,var(--navy) 0%,#102b37 58%,#0d5649 125%); }
+  .hero::after { content:""; position:absolute; inset:auto -10% -180px 42%; height:340px; border:1px solid rgba(112,223,195,.15); border-radius:50%; transform:rotate(-8deg); }
+  .hero-inner { max-width:1180px; }
+  .hero-motif { opacity:.1; }
+  .eyebrow { margin-bottom:1.45rem; background:transparent!important; border:0!important; padding:0!important; color:#83dcca!important; font-size:.67rem; }
+  .masthead-title { max-width:780px; margin-bottom:1.15rem; font-family:'Manrope',sans-serif; font-weight:700; font-size:clamp(2.55rem,5vw,4.6rem); line-height:1.02; letter-spacing:-.055em; }
+  .masthead-title em { display:block; font-family:'Fraunces',serif; font-weight:500; letter-spacing:-.025em; color:#78dfc7!important; }
+  .masthead-sub { max-width:670px; color:#b7c9cf!important; font-size:1.04rem; line-height:1.7; }
+  .hero-grid { align-items:center; }
+  .hero-actions { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.6rem; }
+  .hero-actions a { display:inline-flex; align-items:center; justify-content:center; min-height:43px; padding:0 1.05rem; border-radius:8px; text-decoration:none; font-size:.78rem; font-weight:800; }
+  .primary-action { background:#72dfc4; color:#09231e; }
+  .secondary-action { color:#d4e7e2; border:1px solid rgba(255,255,255,.2); }
+  .countdown { min-width:190px; padding:1.35rem 1.4rem; text-align:left; border:1px solid rgba(255,255,255,.12); border-radius:14px; background:rgba(5,18,26,.3); }
+  .countdown-num { color:#fff!important; font-family:'Manrope',sans-serif; font-size:3.6rem; font-weight:700; letter-spacing:-.07em; }
+  .countdown-track { margin-left:0; width:100%; background:rgba(255,255,255,.12)!important; }
+  .timeline { display:none; }
+  .wrap { max-width:1180px; padding-bottom:5rem; }
+  .keyfacts { margin-top:-7.1rem; margin-bottom:1.3rem; border:0; border-radius:14px; background:transparent; gap:.65rem; box-shadow:none; }
+  .keyfact { min-height:102px; padding:1.2rem 1.25rem; border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); }
+  .keyfact-label { color:var(--ink-faint); font-size:.64rem; font-weight:800; }
+  .keyfact-value { color:var(--ink); font-size:.92rem; line-height:1.45; }
+  .dashboard-stats { gap:.65rem; scroll-margin-top:95px; }
+  .stat-card { position:relative; overflow:hidden; padding:1.1rem 1.2rem; border-radius:12px; box-shadow:none; }
+  .stat-card::before { content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--accent); }
+  .stat-number { font-family:'Manrope',sans-serif; font-size:1.7rem; font-weight:800; letter-spacing:-.04em; }
+  .controls { padding:1rem; border:1px solid var(--line); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); }
+  .search,.city-select { min-height:44px; border-radius:8px; background:#f8faf8; }
+  .chip { min-height:36px; border-radius:7px; font-size:.76rem; }
+  .chip[aria-pressed="true"] { background:var(--navy); color:#fff; border-color:var(--navy); }
+  .suggest-btn { border-style:solid; border-radius:7px; padding:.6rem .85rem; }
+  .result-summary { margin:.75rem 0 1.25rem; }
+  .cat-stats { gap:.65rem; border:0; background:transparent; }
+  .cat-stat { border:1px solid var(--line); border-left:3px solid var(--cat-color); border-radius:10px; }
+  .cat-stat-num { font-family:'Manrope',sans-serif; font-weight:800; }
+  .cal-layout { gap:1rem; scroll-margin-top:95px; }
+  .cal-card,.day-panel { border-radius:14px; box-shadow:var(--shadow); }
+  .cal-title,.day-panel-head { font-family:'Manrope',sans-serif; font-weight:800; letter-spacing:-.025em; }
+  .cal-day { border-radius:7px; }
+  .event { grid-template-columns:4px 88px minmax(0,1fr) auto; border-radius:11px; box-shadow:none; }
+  .event:hover { transform:none; box-shadow:0 12px 30px -25px rgba(11,24,38,.6); }
+  .event-date { background:#fafbf9; }
+  .event-date .day { font-family:'Manrope',sans-serif; font-size:1.05rem; font-weight:800; }
+  .event-body h3 { font-size:.95rem; letter-spacing:-.015em; }
+  .event-meta { font-size:.76rem; }
+  .date-fact { background:#f7f9f7; border-radius:6px; }
+  .source-kind { font-weight:700; }
+  .callout { scroll-margin-top:95px; border-left:3px solid var(--accent); background:#edf4f1; }
+  footer { margin-top:3rem; }
+  @media(max-width:800px){ .site-nav a{display:none}.verified-nav{display:inline-flex}.hero{padding-top:3.8rem}.countdown{min-width:160px}.keyfacts{margin-top:-6rem}.masthead-title em{display:inline} }
+  @media(max-width:620px){ .site-header-inner{height:62px;padding:0 1rem}.brand small{display:none}.site-nav{gap:0}.hero{padding:3.4rem 1rem 5rem}.hero-grid{gap:1.7rem}.countdown{width:100%}.wrap{padding-left:1rem;padding-right:1rem}.keyfacts{margin-top:-6.1rem;grid-template-columns:1fr 1fr}.keyfact{min-height:112px;padding:1rem}.dashboard-stats{grid-template-columns:1fr 1fr}.controls{align-items:stretch}.controls .search,.controls .city-select{flex:1 1 100%}.event{grid-template-columns:4px 64px 1fr}.masthead-title{font-size:2.45rem}.hero-actions a{flex:1 1 auto}.site-header .verified-nav{font-size:0;width:32px;height:32px;justify-content:center;padding:0}.site-header .verified-nav span{width:8px;height:8px} }
 </style>
 </head>
 <body>
 
-<div class="hero">
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="brand" href="#top" aria-label="COP31 Türkiye Takip ana sayfa">
+      <span class="brand-mark" aria-hidden="true">31</span>
+      <span><strong>COP31 Türkiye Takip</strong><small>Ulusal iklim gündemi izleme platformu</small></span>
+    </a>
+    <nav class="site-nav" aria-label="Ana menü">
+      <a href="#gundem">Gündem</a>
+      <a href="#takvim">Takvim</a>
+      <a href="#kaynaklar">Metodoloji</a>
+      <span class="verified-nav"><span></span>Kaynak kontrollü</span>
+    </nav>
+  </div>
+</header>
+
+<div class="hero" id="top">
   <svg class="hero-motif" viewBox="0 0 960 220" preserveAspectRatio="none" aria-hidden="true">
     <path d="M0 170 C 140 130, 260 210, 420 160 S 680 110, 840 165 S 1000 150, 960 170" fill="none" stroke="currentColor" stroke-width="2"/>
     <path d="M0 195 C 160 165, 300 225, 460 190 S 720 150, 880 195 S 1000 190, 960 200" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.6"/>
@@ -485,15 +574,16 @@
     <circle cx="110" cy="64" r="2.5" fill="currentColor"/>
   </svg>
   <div class="hero-inner">
-    <span class="eyebrow"><span class="pulse"></span>Otomatik izleniyor · Antalya 2026</span>
+    <span class="eyebrow"><span class="pulse"></span>Türkiye geneli · Günlük güncellenen gündem</span>
     <div class="hero-grid">
       <div>
-        <h1 class="masthead-title">COP31 <em>Türkiye</em> Takip</h1>
-        <p class="masthead-sub">Antalya'da düzenlenecek COP31 iklim zirvesi vesilesiyle Türkiye genelinde üniversite, STK, kurum ve resmi kurulların düzenlediği COP31 ve iklim değişikliğiyle ilgili tüm etkinliklerin tek ekrandan takibi.</p>
+        <h1 class="masthead-title">Türkiye'nin <em>COP31 ve iklim gündemi</em>, tek merkezde.</h1>
+        <p class="masthead-sub">Kamu kurumları, üniversiteler, yerel yönetimler, iş dünyası ve sivil toplumun doğrulanmış etkinlik, çağrı ve başvuru takvimi.</p>
+        <div class="hero-actions"><a href="#takvim" class="primary-action">Gündemi incele</a><a href="#kaynaklar" class="secondary-action">Veri nasıl doğrulanıyor?</a></div>
       </div>
       <div class="countdown">
         <div class="countdown-num" id="countdownNum">—</div>
-        <div class="countdown-label">Antalya açılışına gün</div>
+        <div class="countdown-label">COP31 Antalya'ya kalan gün</div>
         <div class="countdown-track"><div class="countdown-fill" id="countdownFill"></div></div>
       </div>
     </div>
@@ -525,7 +615,7 @@
     </div>
   </div>
 
-  <div class="dashboard-stats" aria-label="Takip özeti">
+  <div class="dashboard-stats" id="gundem" aria-label="Takip özeti">
     <div class="stat-card"><span class="stat-number" id="statUpcoming">—</span><span class="stat-label">Yaklaşan etkinlik</span></div>
     <div class="stat-card"><span class="stat-number" id="statApplications">—</span><span class="stat-label">Başvurusu açık</span></div>
     <div class="stat-card"><span class="stat-number" id="statOfficial">—</span><span class="stat-label">Kurumsal kaynak</span></div>
@@ -550,7 +640,7 @@
 
   <div class="cat-stats" id="catStats"></div>
 
-  <div class="cal-layout">
+  <div class="cal-layout" id="takvim">
     <div class="cal-card">
       <div class="cal-head">
         <button class="cal-nav" id="calPrev" type="button" aria-label="Önceki ay">‹</button>
@@ -576,7 +666,7 @@
 
   <div class="empty" id="emptyState" style="display:none;">Bu filtrede etkinlik yok.</div>
 
-  <div class="callout">
+  <div class="callout" id="kaynaklar">
     <strong>Veri notu.</strong> Takvimde gösterilen kayıtların kesin tarihi doğrulanmıştır. Tarihi netleşmemiş veya yalnızca genel bir duyuru sayfasına dayanan kayıtlar takvime yerleştirilemediği için yukarıdaki “Tarihi belirsiz” bölümünde tutulur. Bu liste Türkiye'deki tüm etkinlikleri eksiksiz temsil etmez; kaynak kalitesi ve kapsam düzenli olarak denetlenir.
   </div>
 
