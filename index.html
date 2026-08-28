@@ -850,6 +850,27 @@
   .drawer-panel { background:#0a2142; color:var(--ink); box-shadow:-20px 0 50px rgba(0,0,0,.35); }
   .drawer-close { color:var(--ink); }
   footer { color:var(--ink-faint); border-top-color:var(--line); }
+  .workbench { margin:0 0 18px; border:1px solid var(--line); background:var(--surface); }
+  .workbench-head { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; padding:11px 12px; border-bottom:1px solid var(--line); }
+  .workbench-head h2 { margin:0; font:700 12px Arial,sans-serif; }
+  .view-actions,.export-actions { display:flex; flex-wrap:wrap; gap:6px; }
+  .tool-btn { border:1px solid #365c84; background:#0a2142; color:var(--ink-soft); padding:7px 9px; font:10px Arial,sans-serif; cursor:pointer; }
+  .tool-btn[aria-pressed="true"],.tool-btn:hover { background:var(--gold); color:#071a35; border-color:var(--gold); }
+  .workbench-body { display:grid; grid-template-columns:1.15fr 1fr 1fr; }
+  .brief-column { min-width:0; padding:12px; border-right:1px solid var(--line); }
+  .brief-column:last-child { border-right:0; }
+  .brief-column h3 { margin:0 0 9px; font:700 11px Arial,sans-serif; }
+  .brief-list { list-style:none; margin:0; padding:0; }
+  .brief-list li { padding:7px 0; border-top:1px solid var(--line); font:10px/1.4 Arial,sans-serif; }
+  .brief-list li:first-child { border-top:0; }
+  .brief-list strong { display:block; color:var(--ink); }
+  .brief-meta { color:var(--ink-faint); }
+  .coverage-row { display:flex; justify-content:space-between; gap:10px; padding:5px 0; font:10px Arial,sans-serif; }
+  .coverage-row b { color:var(--gold); }
+  .backend-note { margin-top:9px; padding-top:9px; border-top:1px solid var(--line); color:var(--ink-faint); font:9px/1.45 Arial,sans-serif; }
+  .event-actions { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  @media(max-width:820px){.workbench-body{grid-template-columns:1fr}.brief-column{border-right:0;border-bottom:1px solid var(--line)}.brief-column:last-child{border-bottom:0}}
+  @media print{.site-header,.hero,.operations,.controls,.workbench-head,.cat-stats,.cal-card,.track-btn,footer{display:none!important}body,.wrap,.day-panel,.event{background:#fff!important;color:#111!important}.wrap{max-width:none;padding:0}.cal-layout{display:block}.day-panel{border:0}.event{break-inside:avoid}.event-body h3,.event-meta,.event-src,.event-date,.status{color:#111!important}}
 </style>
 </head>
 <body>
@@ -863,6 +884,7 @@
     <nav class="site-nav" aria-label="Ana menü">
       <a href="#gundem">Gündem</a>
       <a href="#harita">Harita</a>
+      <a href="#operasyon">Operasyon</a>
       <a href="#takvim">Takvim</a>
       <span class="verified-nav"><span></span>Güncel</span>
       <a class="party-logo" href="https://www.iyiparti.org.tr/" target="_blank" rel="noopener" aria-label="İYİ Parti resmî sitesi">
@@ -929,6 +951,27 @@
     <div class="stat-card"><span class="stat-number" id="statOfficial">—</span><span class="stat-label">Kurumsal kaynak</span></div>
     <div class="stat-card"><span class="stat-number" id="statCities">—</span><span class="stat-label">Şehir kapsaması</span></div>
   </div>
+
+  <section class="workbench" id="operasyon" aria-labelledby="workbenchTitle">
+    <div class="workbench-head">
+      <h2 id="workbenchTitle">Operasyon görünümü</h2>
+      <div class="view-actions" id="viewActions" role="group" aria-label="Kayıt görünümü">
+        <button class="tool-btn" type="button" data-view="all" aria-pressed="true">Tüm gündem</button>
+        <button class="tool-btn" type="button" data-view="today" aria-pressed="false">Bugün</button>
+        <button class="tool-btn" type="button" data-view="followed" aria-pressed="false">Takip listem</button>
+        <button class="tool-btn" type="button" data-view="changed" aria-pressed="false">Yeni / değişen <span id="changeCount"></span></button>
+      </div>
+      <div class="export-actions">
+        <button class="tool-btn" id="exportCsv" type="button">CSV indir</button>
+        <button class="tool-btn" id="printPdf" type="button">PDF / yazdır</button>
+      </div>
+    </div>
+    <div class="workbench-body">
+      <section class="brief-column"><h3>Bugünün özeti</h3><ul class="brief-list" id="todayBrief"></ul></section>
+      <section class="brief-column"><h3>Kurum rehberi</h3><ul class="brief-list" id="directoryList"></ul></section>
+      <section class="brief-column"><h3>Tarama kapsamı</h3><div id="coveragePanel"></div><p class="backend-note">Güvenli kullanıcı girişi ve site kapalıyken push bildirimi için kimlik doğrulamalı bir backend henüz bağlı değil. Mevcut özel notlar bu cihazda kalır.</p></section>
+    </div>
+  </section>
 
   <div class="operations" id="harita">
     <section class="ops-panel" aria-labelledby="mapTitle">
@@ -2575,8 +2618,11 @@
 
   var TRACKING_KEY = "cop31-private-tracking-v1";
   var ALERT_PREF_KEY = "cop31-alert-preferences-v1";
+  var SNAPSHOT_KEY = "cop31-event-snapshot-v1";
   var trackingData = readLocal(TRACKING_KEY, {});
   var activeTrackingId = null;
+  var activeView = "all";
+  var changedIds = [];
 
   function readLocal(key, fallback) {
     try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch (e) { return fallback; }
@@ -2594,6 +2640,22 @@
     var item = trackingData[eventId(ev)];
     return !!(item && item.status);
   }
+  function eventFingerprint(ev) { return [ev.date,ev.eventEnd,ev.applicationEnd,ev.loc,ev.org,ev.src.url].join("|"); }
+  function initializeSnapshot() {
+    var previous=readLocal(SNAPSHOT_KEY,{}), current={};
+    EVENTS.forEach(function(ev){ var id=eventId(ev); current[id]=eventFingerprint(ev); if(previous[id] && previous[id]!==current[id]) changedIds.push(id); if(Object.keys(previous).length && !previous[id]) changedIds.push(id); });
+    writeLocal(SNAPSHOT_KEY,current);
+    document.getElementById("changeCount").textContent = changedIds.length ? "("+changedIds.length+")" : "";
+  }
+  function escapeIcs(value){ return String(value||"").replace(/\\/g,"\\\\").replace(/\n/g,"\\n").replace(/,/g,"\\,").replace(/;/g,"\\;"); }
+  function icsDate(value){ return (value||"").replace(/-/g,""); }
+  function downloadBlob(name,content,type){ var blob=new Blob([content],{type:type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},1000); }
+  function downloadIcs(ev){
+    var start=ev.eventStart||ev.date, end=ev.eventEnd||ev.date;
+    var content=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//COP31 Türkiye Takip//TR","BEGIN:VEVENT","UID:"+eventId(ev)+"@cop31-takip","DTSTART;VALUE=DATE:"+icsDate(start),"DTEND;VALUE=DATE:"+icsDate(addDays(end,1)),"SUMMARY:"+escapeIcs(ev.title),"LOCATION:"+escapeIcs(ev.loc),"DESCRIPTION:"+escapeIcs(ev.org+"\\n"+ev.src.url),"URL:"+ev.src.url,"END:VEVENT","END:VCALENDAR"].join("\r\n");
+    downloadBlob("cop31-"+eventId(ev)+".ics",content,"text/calendar;charset=utf-8");
+  }
+  function addDays(dateStr,n){ var d=new Date(dateStr+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10); }
 
   function renderEvent(ev) {
     var tok = CAT_TOKENS[ev.cat];
@@ -2623,10 +2685,11 @@
         (dateFacts ? '<div class="date-facts">' + dateFacts + '</div>' : '') +
         '<p class="event-src source-row"><a href="' + ev.src.url + '" target="_blank" rel="noopener">Kaynağı aç · ' + ev.src.label + ' ↗</a><span class="source-kind">' + (ev.sourceType === 'social' ? 'Kurumsal sosyal hesap' : (officialSource ? 'Resmî / kurumsal kaynak' : 'İkincil kaynak')) + '</span>' +
         (state === "unverified" ? '<span class="quality-note">Kesin tarih kaynakta doğrulanmadı.</span>' : '') + '</p>' +
-        '<button class="track-btn' + (isFollowed(ev) ? ' is-followed' : '') + '" type="button">' + (isFollowed(ev) ? 'Takipte · düzenle' : 'Özel takibe al') + '</button>' +
+        '<div class="event-actions"><button class="track-btn' + (isFollowed(ev) ? ' is-followed' : '') + '" type="button">' + (isFollowed(ev) ? 'Takipte · düzenle' : 'Özel takibe al') + '</button><button class="track-btn calendar-btn" type="button">Takvime ekle</button></div>' +
       '</div>' +
       '<div class="status ' + statusClass(ev) + '">' + statusLabel(ev) + '</div>';
     el.querySelector(".track-btn").addEventListener("click", function () { openTracking(ev); });
+    el.querySelector(".calendar-btn").addEventListener("click", function () { downloadIcs(ev); });
     return el;
   }
 
@@ -2663,7 +2726,11 @@
       var categoryMatch = activeFilter === "all" || ev.cat === activeFilter;
       var cityMatch = city === "all" || normalize(ev.loc).includes(normalize(city));
       var haystack = normalize([ev.title, ev.org, ev.loc].join(" "));
-      return categoryMatch && cityMatch && (!query || haystack.includes(query));
+      var viewMatch = activeView === "all" ||
+        (activeView === "today" && (ev.date === TODAY || deriveStatus(ev) === "ongoing" || ev.applicationEnd === TODAY)) ||
+        (activeView === "followed" && isFollowed(ev)) ||
+        (activeView === "changed" && changedIds.indexOf(eventId(ev)) !== -1);
+      return categoryMatch && cityMatch && viewMatch && (!query || haystack.includes(query));
     });
   }
 
@@ -2739,6 +2806,9 @@
     if (selectedDate) {
       items = filtered.filter(function (ev) { return ev.date === selectedDate; });
       head.textContent = parseInt(selectedDate.slice(8, 10), 10) + " " + MONTHS[parseInt(selectedDate.slice(5, 7), 10) - 1] + " " + selectedDate.slice(0, 4);
+    } else if (activeView !== "all") {
+      items = filtered.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).slice(0,20);
+      head.textContent = activeView === "today" ? "Bugünün gündemi" : activeView === "followed" ? "Takip listem" : "Yeni / değişen kayıtlar";
     } else if (selectedMapCity || document.getElementById("citySelect").value !== "all") {
       var cityName = selectedMapCity || document.getElementById("citySelect").value;
       items = filtered.slice().sort(function (a, b) {
@@ -2781,6 +2851,16 @@
     document.getElementById("statCities").textContent = cityCount;
   }
 
+  function renderWorkbench() {
+    var todayItems=EVENTS.filter(function(ev){ return ev.date && !isUnverified(ev) && (ev.date===TODAY || deriveStatus(ev)==="ongoing" || ev.applicationEnd===TODAY); }).slice(0,5);
+    var todayList=document.getElementById("todayBrief"); todayList.innerHTML=todayItems.length?todayItems.map(function(ev){return '<li><strong>'+ev.title+'</strong><span class="brief-meta">'+(ev.eventLabel||ev.dateLabel)+' · '+statusLabel(ev)+'</span></li>';}).join(""):'<li>Bugün için etkinlik veya son başvuru bulunmuyor.</li>';
+    var orgs={}; EVENTS.forEach(function(ev){ var host="";try{host=new URL(ev.src.url).hostname.replace(/^www\./,"");}catch(e){} var key=ev.org.split(" · ")[0]; if(!orgs[key])orgs[key]={count:0,host:host};orgs[key].count++; });
+    var top=Object.keys(orgs).sort(function(a,b){return orgs[b].count-orgs[a].count;}).slice(0,8);
+    document.getElementById("directoryList").innerHTML=top.map(function(name){return '<li><strong>'+name+'</strong><span class="brief-meta">'+orgs[name].count+' kayıt · '+orgs[name].host+'</span></li>';}).join("");
+    var verified=EVENTS.filter(function(ev){return ev.date&&!isUnverified(ev);}), official=verified.filter(function(ev){try{return /\.gov\.tr$|\.bel\.tr$|\.edu\.tr$|unfccc\.int$|cop31\.tr$/.test(new URL(ev.src.url).hostname)||ev.sourceType==="social";}catch(e){return false;}}).length;
+    document.getElementById("coveragePanel").innerHTML='<div class="coverage-row"><span>Doğrulanmış kayıt</span><b>'+verified.length+'</b></div><div class="coverage-row"><span>İl kapsaması</span><b>'+(document.getElementById("citySelect").options.length-1)+' / 81</b></div><div class="coverage-row"><span>Kurumsal kaynak</span><b>'+official+'</b></div><div class="coverage-row"><span>Son tarama</span><b>28 Ağu 2026</b></div><div class="coverage-row"><span>Takip edilen özel kayıt</span><b>'+Object.keys(trackingData).filter(function(id){return trackingData[id]&&trackingData[id].status;}).length+'</b></div>';
+  }
+
   function render() {
     var filtered = baseFiltered();
     updateStats(filtered);
@@ -2788,7 +2868,19 @@
     renderDayPanel(filtered);
     document.getElementById("resultSummary").textContent = filtered.length + " doğrulanmış kayıt takvimde gösteriliyor";
     document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
+    renderWorkbench();
   }
+
+  document.getElementById("viewActions").addEventListener("click",function(e){
+    var btn=e.target.closest("[data-view]");if(!btn)return; activeView=btn.dataset.view; selectedDate=null;
+    this.querySelectorAll("[data-view]").forEach(function(b){b.setAttribute("aria-pressed",String(b===btn));});render();document.getElementById("takvim").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+  document.getElementById("exportCsv").addEventListener("click",function(){
+    var rows=[["Başlık","Etkinlik tarihi","Başvuru bitişi","İl/Yer","Kurum","Kategori","Durum","Kaynak"]];
+    baseFiltered().forEach(function(ev){rows.push([ev.title,ev.eventLabel||ev.dateLabel,ev.applicationLabel||"",ev.loc,ev.org,CAT_TOKENS[ev.cat].label,statusLabel(ev),ev.src.url]);});
+    var csv="\ufeff"+rows.map(function(row){return row.map(function(v){return '"'+String(v||"").replace(/"/g,'""')+'"';}).join(";");}).join("\r\n"); downloadBlob("cop31-takip.csv",csv,"text/csv;charset=utf-8");
+  });
+  document.getElementById("printPdf").addEventListener("click",function(){window.print();});
 
   document.getElementById("filters").addEventListener("click", function (e) {
     var btn = e.target.closest(".chip");
@@ -2998,6 +3090,7 @@
     document.getElementById("suggestLink").href = url;
   })();
 
+  initializeSnapshot();
   calYear = parseInt(TODAY.slice(0, 4), 10);
   calMonth = parseInt(TODAY.slice(5, 7), 10) - 1;
   render();
