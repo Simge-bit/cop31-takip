@@ -440,6 +440,36 @@
     .timeline-node .tip { display: none; }
     .controls .city-select { flex-basis: 140px; }
   }
+
+  /* Kurumsal takip paneli */
+  body { background: #f4f7f6; }
+  .hero { padding-top: 2.2rem; background: radial-gradient(circle at 82% 10%, rgba(64,207,181,.22), transparent 28%), linear-gradient(135deg,#071d19 0%,#0a322b 58%,#0b4b40 100%); border:0; color:#f2fbf8; }
+  .hero-motif { opacity:.2; }
+  .hero .eyebrow { color:#bff5e9; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.14); }
+  .hero .masthead-title em,.hero .countdown-num { color:#62e1c8; }
+  .hero .masthead-sub,.hero .countdown-label { color:#b6d0c9; }
+  .hero .countdown-track,.hero .timeline-rail { background:rgba(255,255,255,.16); }
+  .hero .timeline-node .tip .t-label { color:#dcece8; }
+  .hero .timeline-node .tip .t-date { color:#9ebdb5; }
+  .hero .timeline-node .dot { background:#0b332c; border-color:#62e1c8; }
+  .hero .timeline-node.is-past .dot,.hero .countdown-fill,.hero .timeline-rail::after { background:#62e1c8; }
+  .wrap { max-width:1120px; }
+  .keyfacts { margin-top:-3.25rem; position:relative; z-index:2; box-shadow:0 20px 50px -34px #071d19; border-radius:16px; }
+  .dashboard-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:.8rem; margin:0 0 1.4rem; }
+  .stat-card { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:1rem 1.1rem; }
+  .stat-number { display:block; font-family:'Fraunces',serif; font-size:1.8rem; line-height:1; color:var(--accent-ink); }
+  .stat-label { display:block; margin-top:.35rem; font-size:.72rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; }
+  .filter-shell { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:1rem; box-shadow:var(--shadow); margin-bottom:1.25rem; }
+  .filter-shell .filters { margin-bottom:.65rem; }
+  .event { grid-template-columns:5px 92px minmax(0,1fr) auto; border-radius:14px; box-shadow:0 8px 26px -22px rgba(15,33,29,.7); }
+  .date-facts { display:flex; flex-wrap:wrap; gap:.45rem; margin:.65rem 0 .5rem; }
+  .date-fact { display:inline-flex; align-items:center; gap:.38rem; padding:.4rem .58rem; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--ink-soft); font-size:.75rem; }
+  .date-fact strong { color:var(--ink); font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; }
+  .date-fact.application { border-color:#e6c98f; background:#fff8e9; }
+  .source-row { display:flex; flex-wrap:wrap; align-items:center; gap:.45rem; }
+  .source-kind { margin-left:0; padding:.2rem .48rem; border-radius:999px; background:var(--surface-2); }
+  @media (max-width:760px) { .dashboard-stats{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:620px) { .keyfacts{margin-top:-2rem}.event{grid-template-columns:5px 64px 1fr}.date-facts{flex-direction:column}.date-fact{align-items:flex-start} }
 </style>
 </head>
 <body>
@@ -495,6 +525,13 @@
     </div>
   </div>
 
+  <div class="dashboard-stats" aria-label="Takip özeti">
+    <div class="stat-card"><span class="stat-number" id="statUpcoming">—</span><span class="stat-label">Yaklaşan etkinlik</span></div>
+    <div class="stat-card"><span class="stat-number" id="statApplications">—</span><span class="stat-label">Başvurusu açık</span></div>
+    <div class="stat-card"><span class="stat-number" id="statOfficial">—</span><span class="stat-label">Kurumsal kaynak</span></div>
+    <div class="stat-card"><span class="stat-number" id="statCities">—</span><span class="stat-label">Şehir kapsaması</span></div>
+  </div>
+
   <div class="controls">
     <label class="sr-only" for="searchInput">Etkinlik ara</label>
     <input class="search" id="searchInput" type="search" placeholder="Etkinlik, kurum veya şehir ara…" autocomplete="off">
@@ -544,7 +581,7 @@
   </div>
 
   <footer>
-    <span class="live-badge"><span class="dot"></span>Son veri güncellemesi: <span class="mono" id="lastUpdated">26 Ağustos 2026, 19:30</span> · otomatik tarama kalite denetimi için durduruldu</span>
+    <span class="live-badge"><span class="dot"></span>Son veri güncellemesi: <span class="mono" id="lastUpdated">28 Ağustos 2026</span> · web ve kurumsal sosyal hesaplar denetleniyor</span>
     <span>Kaynaklar: cop31.tr · iklim.gov.tr · csb.gov.tr · unfccc.int · üniversite/STK duyuruları</span>
   </footer>
 
@@ -553,6 +590,19 @@
 <script>
 (function () {
   var EVENTS = [
+    { title:"İstanbul İklim Finansmanı Zirvesi", date:"2026-09-04", eventStart:"2026-09-04", eventEnd:"2026-09-04", eventLabel:"4 Eyl 2026", dateLabel:"4 Eyl 2026", loc:"İstanbul Finans Merkezi, İstanbul", org:"COP31 Başkanlığı · Cumhurbaşkanlığı Yatırım ve Finans Ofisi", cat:"resmi", status:"upcoming", sourceType:"social", src:{label:"COP31 Başkanlığı · LinkedIn",url:"https://tr.linkedin.com/posts/cop31-precidency-office-t%C3%BCrki%CC%87ye_cop31-cop31t%C3%BCrkiye-climatefinance-activity-7497978647333462017-04Q6"} },
+    { title:"COP31 Okyanuslar ve Denizler Üst Düzey Toplantısı — Trabzon", date:null, dateLabel:"Eylül 2026 · kesin gün bekleniyor", loc:"Trabzon", org:"Çevre Yönetimi Genel Müdürlüğü · COP31 Başkanlığı", cat:"resmi", status:"unknown", sourceType:"social", src:{label:"Çevre Yönetimi GM · LinkedIn",url:"https://tr.linkedin.com/posts/cevreyonetimitr_cop31-okyanuslar-ve-denizler-%C3%A7al%C4%B1%C5%9Ftay%C4%B1-i%CC%87stanbul-activity-7495033609305776128-f3Vx"} },
+    { title:"COP31 Gençlik İklim Ideathonu — İstanbul", date:"2026-09-04", eventStart:"2026-09-04", eventEnd:"2026-09-06", eventLabel:"4–6 Eyl 2026", applicationLabel:"E-Genç üzerinden başvuru", dateLabel:"4–6 Eyl 2026", loc:"İstanbul", org:"Gençlik ve Spor Bakanlığı", cat:"resmi", status:"upcoming", src:{label:"eakgm.gsb.gov.tr",url:"https://eakgm.gsb.gov.tr/HaberDetaylari/1/10005/302444/cop31-genclik-iklim-ideathonu-basvurulari-basladi.aspx"} },
+    { title:"COP31 Gençlik İklim Ideathonu — Rize", date:"2026-09-09", eventStart:"2026-09-09", eventEnd:"2026-09-11", eventLabel:"9–11 Eyl 2026", applicationLabel:"E-Genç üzerinden başvuru", dateLabel:"9–11 Eyl 2026", loc:"Rize", org:"Gençlik ve Spor Bakanlığı", cat:"resmi", status:"upcoming", src:{label:"eakgm.gsb.gov.tr",url:"https://eakgm.gsb.gov.tr/HaberDetaylari/1/10005/302444/cop31-genclik-iklim-ideathonu-basvurulari-basladi.aspx"} },
+    { title:"COP31 Gençlik İklim Ideathonu — Adana", date:"2026-09-18", eventStart:"2026-09-18", eventEnd:"2026-09-20", eventLabel:"18–20 Eyl 2026", applicationLabel:"E-Genç üzerinden başvuru", dateLabel:"18–20 Eyl 2026", loc:"Adana", org:"Gençlik ve Spor Bakanlığı", cat:"resmi", status:"upcoming", src:{label:"eakgm.gsb.gov.tr",url:"https://eakgm.gsb.gov.tr/HaberDetaylari/1/10005/302444/cop31-genclik-iklim-ideathonu-basvurulari-basladi.aspx"} },
+    { title:"COP31 Gençlik İklim Ideathonu — Konya", date:"2026-09-25", eventStart:"2026-09-25", eventEnd:"2026-09-27", eventLabel:"25–27 Eyl 2026", applicationLabel:"E-Genç üzerinden başvuru", dateLabel:"25–27 Eyl 2026", loc:"Konya", org:"Gençlik ve Spor Bakanlığı", cat:"resmi", status:"upcoming", src:{label:"eakgm.gsb.gov.tr",url:"https://eakgm.gsb.gov.tr/HaberDetaylari/1/10005/302444/cop31-genclik-iklim-ideathonu-basvurulari-basladi.aspx"} },
+    { title:"COP31 Gençlik İklim Ideathonu — İzmir", date:"2026-10-02", eventStart:"2026-10-02", eventEnd:"2026-10-04", eventLabel:"2–4 Eki 2026", applicationLabel:"E-Genç üzerinden başvuru", dateLabel:"2–4 Eki 2026", loc:"İzmir", org:"Gençlik ve Spor Bakanlığı", cat:"resmi", status:"upcoming", src:{label:"eakgm.gsb.gov.tr",url:"https://eakgm.gsb.gov.tr/HaberDetaylari/1/10005/302444/cop31-genclik-iklim-ideathonu-basvurulari-basladi.aspx"} },
+    { title:"COP31 Gençlik İklim Ideathonu — Mardin", date:"2026-10-09", eventStart:"2026-10-09", eventEnd:"2026-10-11", eventLabel:"9–11 Eki 2026", applicationLabel:"E-Genç üzerinden başvuru", dateLabel:"9–11 Eki 2026", loc:"Mardin", org:"Gençlik ve Spor Bakanlığı", cat:"resmi", status:"upcoming", src:{label:"eakgm.gsb.gov.tr",url:"https://eakgm.gsb.gov.tr/HaberDetaylari/1/10005/302444/cop31-genclik-iklim-ideathonu-basvurulari-basladi.aspx"} },
+    { title:"COP31 Gençlik İklim Ideathonu — Erzurum", date:"2026-10-16", eventStart:"2026-10-16", eventEnd:"2026-10-18", eventLabel:"16–18 Eki 2026", applicationLabel:"E-Genç üzerinden başvuru", dateLabel:"16–18 Eki 2026", loc:"Erzurum", org:"Gençlik ve Spor Bakanlığı", cat:"resmi", status:"upcoming", src:{label:"eakgm.gsb.gov.tr",url:"https://eakgm.gsb.gov.tr/HaberDetaylari/1/10005/302444/cop31-genclik-iklim-ideathonu-basvurulari-basladi.aspx"} },
+    { title:"11. Kent Araştırmaları Kongresi — İklim Değişikliğine Dirençli Kentler", date:"2026-10-12", eventStart:"2026-10-12", eventEnd:"2026-10-14", eventLabel:"12–14 Eki 2026", applicationEnd:"2026-06-29", applicationLabel:"Son başvuru: 29 Haz 2026 · kapandı", dateLabel:"12–14 Eki 2026", loc:"Ankara · hibrit", org:"Kent Araştırmaları Enstitüsü", cat:"akademik", status:"upcoming", src:{label:"cag.edu.tr",url:"https://www.cag.edu.tr/tr/sosyal-sorumluluk-arastirmalari-uygulama-ve-arastirma-merkezi-surdurulebilirlik-calismalari-haberlerduyurular/duyurular/11-kent-arastirmalari-kongresi-iklim-degisikligine-direncli-kentler"} },
+    { title:"AB İklim Ideathonu 2026 — İstanbul Yerel Jüri Etabı", date:"2026-10-21", eventStart:"2026-10-21", eventEnd:"2026-10-21", eventLabel:"21 Eki 2026", applicationStart:"2026-06-26", applicationEnd:"2026-07-13", applicationLabel:"26 Haz–13 Tem 2026 · kapandı", dateLabel:"21 Eki 2026", loc:"İstanbul", org:"AB Türkiye Delegasyonu · İKV", cat:"intl", status:"upcoming", src:{label:"ikv.org.tr",url:"https://www.ikv.org.tr/ikv.asp?id=10127&lng=tr&ust_id=9878"} },
+    { title:"COP31 Uluslararası Sürdürülebilir Bina Yarışması", date:"2026-10-15", applicationEnd:"2026-10-15", applicationLabel:"Son başvuru: 15 Eki 2026", eventStart:"2026-11-09", eventEnd:"2026-11-20", eventLabel:"Sergi ve ödül: COP31 boyunca", dateLabel:"Son başvuru 15 Eki 2026", loc:"Online başvuru · Antalya sergisi", org:"Çevre, Şehircilik ve İklim Değişikliği Bakanlığı", cat:"resmi", status:"upcoming", recordType:"application", src:{label:"meslekihizmetler.csb.gov.tr",url:"https://meslekihizmetler.csb.gov.tr/haberler/bakanligimiz-cop31-kapsaminda-uluslararasi-surdurulebilir-bina-yarismasi-duzenliyor-305573"} },
+    { title:"KOSGEB COP31 Odaklı Hızlandırma Desteği Çağrısı", date:"2026-08-09", applicationStart:"2026-08-09", applicationEnd:"2026-08-30", applicationLabel:"9–30 Ağu 2026", dateLabel:"Başvuru: 9–30 Ağu 2026", loc:"Türkiye geneli", org:"KOSGEB", cat:"resmi", status:"ongoing", recordType:"application", src:{label:"kosgeb.gov.tr",url:"https://www.kosgeb.gov.tr/site/tr/genel/detay/9453/kosgebden-cop31-odakli-hizlandirma-destegi-cagrisi"} },
     {
       title: "COP31 Kapanış — Karar Metinlerinin Kabulü",
       date: "2026-11-20",
@@ -604,6 +654,10 @@
     {
       title: "COP31 Basın Akreditasyonu — Son Başvuru Tarihi",
       date: "2026-10-16",
+      applicationEnd: "2026-10-16",
+      applicationLabel: "Son başvuru: 16 Eki 2026",
+      eventStart: "2026-11-09", eventEnd: "2026-11-20", eventLabel: "COP31: 9–20 Kas 2026",
+      recordType: "application",
       dateLabel: "16 Eki 2026",
       loc: "Online (UNFCCC ORS)",
       org: "İletişim Başkanlığı · UNFCCC Sekretaryası",
@@ -632,19 +686,12 @@
       src: { label: "61saat.com", url: "https://61saat.com/trabzonda-universite-ogrencilerine-iklim-icin-buyuk-firsat" }
     },
     {
-      title: "COP31 Gençlik İklim İdeathonu",
-      date: null,
-      dateLabel: "Başvurular 13 Ağu 2026'da başladı",
-      loc: "7 şehir (açıklanacak)",
-      org: "Gençlik ve Spor Bakanlığı",
-      cat: "resmi",
-      status: "ongoing",
-      src: { label: "gsb.gov.tr", url: "https://gsb.gov.tr/tr/haber-detay/302437-cop31-genclik-iklim-ideathonu-basvurulari-basladi" }
-    },
-    {
       title: "ÜNİDES Çevre ve İklim Özel Çağrı Dönemi",
       date: "2026-06-22",
       endDate: "2026-09-18",
+      applicationStart: "2026-06-22", applicationEnd: "2026-09-18",
+      applicationLabel: "22 Haz–18 Eyl 2026", eventLabel: "Sonuçlar: 5 Eki 2026, 17.00 sonrası",
+      recordType: "application",
       dateLabel: "Başvuru: 22 Haz–18 Eyl 2026",
       loc: "Türkiye geneli",
       org: "Gençlik Hizmetleri Genel Müdürlüğü",
@@ -664,13 +711,15 @@
     },
     {
       title: "COP31 Green Talent Gönüllülük Programı — başvurular",
-      date: null,
-      dateLabel: "Süreklilik gösteriyor",
+      date: "2026-07-20",
+      applicationEnd: "2026-07-20", applicationLabel: "Son başvuru: 20 Tem 2026 · kapandı",
+      eventStart: "2026-11-09", eventEnd: "2026-11-20", eventLabel: "Görev dönemi: COP31",
+      dateLabel: "Son başvuru 20 Tem 2026",
       loc: "Türkiye geneli",
       org: "COP31 Gönüllülük Programı",
       cat: "stk",
-      status: "ongoing",
-      src: { label: "cop31volunteers.com", url: "https://www.cop31volunteers.com/" }
+      status: "past", recordType: "application",
+      src: { label: "iso.org.tr", url: "https://www.iso.org.tr/duyurular/genel-duyurular/cop31-gonulluk-programi/" }
     },
     {
       title: "COP-SCIENCE — akademik etkinlik / proje başvuru kanalı",
@@ -2054,8 +2103,9 @@
 
   function deriveStatus(ev) {
     if (isUnverified(ev)) return "unverified";
-    if (ev.endDate && ev.date <= TODAY && ev.endDate >= TODAY) return "ongoing";
-    if (ev.endDate && ev.endDate < TODAY) return "past";
+    var end = ev.applicationEnd && ev.applicationEnd >= TODAY ? ev.applicationEnd : (ev.eventEnd || ev.endDate);
+    if (end && ev.date <= TODAY && end >= TODAY) return "ongoing";
+    if (end && end < TODAY && (!ev.eventStart || ev.eventStart < TODAY)) return "past";
     if (ev.status === "ongoing" && !ev.endDate && (!ev.date || ev.date <= TODAY)) return "ongoing";
     if (ev.date < TODAY) return "past";
     return "upcoming";
@@ -2085,8 +2135,11 @@
     var el = document.createElement("div");
     var host = "";
     try { host = new URL(ev.src.url).hostname; } catch (e) {}
-    var officialSource = /(^|\.)(gov\.tr|bel\.tr|edu\.tr|unfccc\.int|cop31\.tr)$/.test(host) || /\.gov\.tr$|\.bel\.tr$|\.edu\.tr$/.test(host);
-    var recordType = /başvuru|çağrı|program|gönüllü|ideathon|akademi takımı/i.test(ev.title + " " + ev.dateLabel) ? "Başvuru / program" : "Etkinlik";
+    var officialSource = /(^|\.)(gov\.tr|bel\.tr|edu\.tr|unfccc\.int|cop31\.tr)$/.test(host) || /\.gov\.tr$|\.bel\.tr$|\.edu\.tr$/.test(host) || ev.sourceType === "social";
+    var recordType = ev.recordType === "application" || /başvuru|çağrı|program|gönüllü|akademi takımı/i.test(ev.title + " " + ev.dateLabel) ? "Başvuru / program" : "Etkinlik";
+    var dateFacts = '';
+    if (ev.applicationLabel) dateFacts += '<span class="date-fact application"><strong>Başvuru</strong> ' + ev.applicationLabel + '</span>';
+    if (ev.eventLabel) dateFacts += '<span class="date-fact"><strong>Etkinlik</strong> ' + ev.eventLabel + '</span>';
     var state = deriveStatus(ev);
     el.className = "event" + (state === "past" ? " is-past" : "") + (state === "unverified" ? " is-unverified" : "") + (ev.date === TODAY ? " is-live" : "");
     el.dataset.cat = ev.cat;
@@ -2100,7 +2153,8 @@
       '<div class="event-body">' +
         '<h3>' + ev.title + '</h3>' +
         '<p class="event-meta">' + ev.org + ' · ' + ev.loc + '<span class="pill">' + tok.label + '</span><span class="pill">' + recordType + '</span></p>' +
-        '<p class="event-src"><a href="' + ev.src.url + '" target="_blank" rel="noopener">Kaynağı aç · ' + ev.src.label + ' ↗</a><span class="source-kind">' + (officialSource ? 'Resmî / kurumsal kaynak' : 'İkincil kaynak') + '</span>' +
+        (dateFacts ? '<div class="date-facts">' + dateFacts + '</div>' : '') +
+        '<p class="event-src source-row"><a href="' + ev.src.url + '" target="_blank" rel="noopener">Kaynağı aç · ' + ev.src.label + ' ↗</a><span class="source-kind">' + (ev.sourceType === 'social' ? 'Kurumsal sosyal hesap' : (officialSource ? 'Resmî / kurumsal kaynak' : 'İkincil kaynak')) + '</span>' +
         (state === "unverified" ? '<span class="quality-note">Kesin tarih kaynakta doğrulanmadı.</span>' : '') + '</p>' +
       '</div>' +
       '<div class="status ' + statusClass(ev) + '">' + statusLabel(ev) + '</div>';
@@ -2228,6 +2282,15 @@
       card.innerHTML = '<div class="cat-stat-num">' + count + '</div><div class="cat-stat-label">' + tok.label + '</div>';
       statBox.appendChild(card);
     });
+    var hostsOfficial = filtered.filter(function(ev){
+      try { return /\.gov\.tr$|\.bel\.tr$|\.edu\.tr$|unfccc\.int$|cop31\.tr$/.test(new URL(ev.src.url).hostname) || ev.sourceType === "social"; } catch(e) { return false; }
+    }).length;
+    var availableCities = Array.prototype.slice.call(document.getElementById("citySelect").options, 1).map(function(o){ return o.value; });
+    var cityCount = availableCities.filter(function(city){ return filtered.some(function(ev){ return normalize(ev.loc).includes(normalize(city)); }); }).length;
+    document.getElementById("statUpcoming").textContent = filtered.filter(function(ev){ return ev.date && ev.date >= TODAY && ev.recordType !== "application"; }).length;
+    document.getElementById("statApplications").textContent = filtered.filter(function(ev){ return ev.applicationEnd && ev.applicationEnd >= TODAY && (!ev.applicationStart || ev.applicationStart <= TODAY); }).length;
+    document.getElementById("statOfficial").textContent = hostsOfficial;
+    document.getElementById("statCities").textContent = cityCount;
   }
 
   function render() {
