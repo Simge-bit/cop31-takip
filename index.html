@@ -794,6 +794,62 @@
   .drawer-actions .primary { background:#111; color:#fff; }
   @media(max-width:900px){ .operations{grid-template-columns:1fr}.map-body{grid-template-columns:1fr}.map-aside{border-left:0;border-top:1px solid var(--line)} }
   @media(max-width:560px){ .map-body{display:block}#turkeyMap{height:260px}.notification-settings{align-items:stretch;flex-direction:column}.notification-settings select,.notify-btn{width:100%} }
+
+  /* İYİ Parti kurumsal lacivert tema */
+  :root, :root:not([data-theme="light"]), :root:not([data-theme="dark"]) {
+    --bg:#06162f; --surface:#0b2345; --surface-2:#0e2d56; --ink:#f3f7fc;
+    --ink-soft:#b8c8db; --ink-faint:#7f98b5; --line:#294a70;
+    --accent:#39a9dc; --accent-ink:#75c8ed; --accent-soft:#153a61;
+    --gold:#f3d21b; --gold-soft:#4c4517; --indigo:#92b6e4; --indigo-soft:#1c3a61;
+    --plum:#b29bc8; --plum-soft:#382d50; --shadow:none; color-scheme:dark;
+  }
+  body { background:var(--bg); color:var(--ink); }
+  ::selection { background:var(--gold); color:#071a35; }
+  .site-header { background:#05152d; border-bottom-color:#24476f; color:var(--ink); box-shadow:0 1px 0 rgba(255,255,255,.03); }
+  .brand,.brand strong,.site-nav a { color:var(--ink); }
+  .brand-mark,.verified-nav { color:var(--accent-ink); }
+  .party-logo { border-left-color:#294a70; }
+  .party-logo img { background:#fff; }
+  .hero { background:linear-gradient(120deg,#071a37 0%,#0b2b55 68%,#0d3565 100%); color:var(--ink); border-bottom-color:#2a4d75; }
+  .hero::after { content:""; display:block; position:absolute; inset:0; background:linear-gradient(90deg,transparent 0 76%,rgba(243,210,27,.08) 76% 76.35%,transparent 76.35%); pointer-events:none; }
+  .eyebrow { color:#8bcceb!important; }
+  .masthead-title,.countdown-num { color:#fff!important; }
+  .masthead-sub,.countdown-label { color:#b9c9dc!important; }
+  .keyfacts,.dashboard-stats,.controls,.ops-panel,.cal-card,.day-panel,.cat-stat { background:var(--surface); border-color:var(--line); }
+  .keyfact,.stat-card { background:var(--surface); border-color:var(--line); }
+  .keyfact-label,.stat-label,.result-summary,.event-meta,.event-src,.map-count,.privacy-note,.map-record-meta { color:var(--ink-faint); }
+  .keyfact-value,.stat-number,.ops-head h2,.map-city,.cal-title,.day-panel-head,.event-body h3,.cat-stat-num { color:var(--ink); }
+  .search,.city-select,.notification-settings select,.field input,.field select,.field textarea { background:#081b38; color:var(--ink); border-color:#31577f; }
+  .search::placeholder,.field input::placeholder,.field textarea::placeholder { color:#718ba8; }
+  .chip { color:var(--ink-soft); }
+  .chip[aria-pressed="true"] { color:#fff; background:#164b78; border-color:#3b79a9; }
+  .suggest-btn,.map-reset,.notify-btn,.track-btn,.drawer-actions button,.cal-nav,.cal-jump { background:#0a2142; color:var(--ink-soft); border-color:#365c84; }
+  .suggest-btn:hover,.map-reset:hover,.notify-btn:hover,.track-btn:hover,.drawer-actions button:hover { background:var(--accent); color:#04152e; border-color:var(--accent); }
+  .track-btn.is-followed,.drawer-actions .primary { background:var(--gold); color:#071a35; border-color:var(--gold); }
+  .ops-head,.map-aside,.map-next,.map-record,.alert-item,.cal-head,.day-panel-head,.event,.date-fact,.date-fact.application { border-color:var(--line); }
+  #turkeyMap { background:#081b38; }
+  .province { fill:#17385e; stroke:#071a35; stroke-width:.8; }
+  .province.has-events { fill:#246791; }
+  .province.has-many { fill:#39a9dc; }
+  .province:hover,.province:focus { fill:#f3d21b; }
+  .province.is-selected { fill:#f3d21b!important; stroke:#fff; stroke-width:1.2; }
+  .map-record a,.event-src a,a { color:#83d0f2; }
+  .cal-day { color:var(--ink-soft); background:#081b38; border-color:#1e4168; }
+  .cal-day.has-events { background:#0d2a50; border-color:#31577f; }
+  .cal-day.is-selected { background:var(--gold); color:#071a35; border-color:var(--gold); }
+  .event { background:transparent; }
+  .event:hover { background:#0d2a50; }
+  .event.is-past { opacity:.7; }
+  .pill,.source-kind { color:#8fc8e5; }
+  .date-fact,.date-fact.application { background:#081b38; color:var(--ink-soft); }
+  .status.upcoming,.status.live,.status.ongoing { color:#78caee; }
+  .status.past { color:#8298af; }
+  .notification-body,.map-aside { background:#0a2142; }
+  .alert-date { color:var(--gold); }
+  .tracking-drawer .drawer-backdrop { background:rgba(2,10,24,.72); }
+  .drawer-panel { background:#0a2142; color:var(--ink); box-shadow:-20px 0 50px rgba(0,0,0,.35); }
+  .drawer-close { color:var(--ink); }
+  footer { color:var(--ink-faint); border-top-color:var(--line); }
 </style>
 </head>
 <body>
