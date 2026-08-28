@@ -660,9 +660,6 @@
     </div>
   </div>
 
-  <div class="section-label">Tarihi belirsiz · Devam eden / başvurusu açık</div>
-  <div class="events" id="eventsUnresolved"></div>
-
   <div class="empty" id="emptyState" style="display:none;">Bu filtrede etkinlik yok.</div>
 
   <footer>
@@ -675,6 +672,10 @@
 <script>
 (function () {
   var EVENTS = [
+    { title:"CDP–ICLEI Track Raporlama Platformu Bilgilendirme Webinarı", date:"2026-09-02", eventStart:"2026-09-02", eventEnd:"2026-09-02", eventLabel:"2 Eyl 2026 · 15.00–16.00", dateLabel:"2 Eyl 2026", loc:"Online · Türkiye geneli", org:"Marmara Belediyeler Birliği · ICLEI Europe · CDP", cat:"resmi", status:"upcoming", src:{label:"marmara.gov.tr",url:"https://www.marmara.gov.tr/tr/cdp-iclei-track-raporlama-platformu-bilgilendirme-webinari"} },
+    { title:"COP31'e Doğru Net Konuşalım Zirvesi", date:"2026-09-09", eventStart:"2026-09-09", eventEnd:"2026-09-09", eventLabel:"9 Eyl 2026", dateLabel:"9 Eyl 2026", loc:"Hilton İstanbul Bomonti, İstanbul", org:"TÜRKONFED · Ekonomi Gazetesi", cat:"stk", status:"upcoming", src:{label:"ekonomigazetesi.com",url:"https://www.ekonomigazetesi.com/kose-yazisi/iklim-gundemini-is-dunyasinin-karar-masasina-tasiyoruz-85749"} },
+    { title:"İklim Adaleti İçin İçerik Üretim Hackathonu", date:"2026-09-24", eventStart:"2026-09-24", eventEnd:"2026-09-25", eventLabel:"24–25 Eyl 2026", applicationEnd:"2026-09-13", applicationLabel:"Son başvuru: 13 Eyl 2026", dateLabel:"24–25 Eyl 2026", loc:"Postane, Beyoğlu, İstanbul", org:"Postane · Mekanda Adalet Derneği · Bertha Impact Fund", cat:"stk", status:"upcoming", sourceType:"social", src:{label:"Postane · LinkedIn",url:"https://tr.linkedin.com/posts/postaneistanbul_cop31-bu-sene-t%C3%BCrkiyede-ger%C3%A7ekle%C5%9Firken-activity-7498696843422392320-F9gW"} },
+    { title:"NextGenCOP 30.5 — İklim Diplomasisi Simülasyonu", date:"2026-08-27", eventStart:"2026-08-27", eventEnd:"2026-09-01", eventLabel:"27 Ağu–1 Eyl 2026", applicationEnd:"2026-08-10", applicationLabel:"Son başvuru: 10 Ağu 2026 · kapandı", dateLabel:"27 Ağu–1 Eyl 2026", loc:"İstanbul", org:"Cemre Vakfı", cat:"stk", status:"ongoing", sourceType:"social", src:{label:"Cemre Vakfı · LinkedIn",url:"https://tr.linkedin.com/posts/cemrevakfi_nextgencop-climatediplomacy-cop31-activity-7488600400573575169-JWTL"} },
     { title:"İstanbul İklim Finansmanı Zirvesi", date:"2026-09-04", eventStart:"2026-09-04", eventEnd:"2026-09-04", eventLabel:"4 Eyl 2026", dateLabel:"4 Eyl 2026", loc:"İstanbul Finans Merkezi, İstanbul", org:"COP31 Başkanlığı · Cumhurbaşkanlığı Yatırım ve Finans Ofisi", cat:"resmi", status:"upcoming", sourceType:"social", src:{label:"COP31 Başkanlığı · LinkedIn",url:"https://tr.linkedin.com/posts/cop31-precidency-office-t%C3%BCrki%CC%87ye_cop31-cop31t%C3%BCrkiye-climatefinance-activity-7497978647333462017-04Q6"} },
     { title:"COP31 Okyanuslar ve Denizler Üst Düzey Toplantısı — Trabzon", date:null, dateLabel:"Eylül 2026 · kesin gün bekleniyor", loc:"Trabzon", org:"Çevre Yönetimi Genel Müdürlüğü · COP31 Başkanlığı", cat:"resmi", status:"unknown", sourceType:"social", src:{label:"Çevre Yönetimi GM · LinkedIn",url:"https://tr.linkedin.com/posts/cevreyonetimitr_cop31-okyanuslar-ve-denizler-%C3%A7al%C4%B1%C5%9Ftay%C4%B1-i%CC%87stanbul-activity-7495033609305776128-f3Vx"} },
     { title:"COP31 Gençlik İklim Ideathonu — İstanbul", date:"2026-09-04", eventStart:"2026-09-04", eventEnd:"2026-09-06", eventLabel:"4–6 Eyl 2026", applicationLabel:"E-Genç üzerinden başvuru", dateLabel:"4–6 Eyl 2026", loc:"İstanbul", org:"Gençlik ve Spor Bakanlığı", cat:"resmi", status:"upcoming", src:{label:"eakgm.gsb.gov.tr",url:"https://eakgm.gsb.gov.tr/HaberDetaylari/1/10005/302444/cop31-genclik-iklim-ideathonu-basvurulari-basladi.aspx"} },
@@ -2258,6 +2259,7 @@
     var query = normalize(document.getElementById("searchInput").value);
     var city = document.getElementById("citySelect").value;
     return EVENTS.filter(function (ev) {
+      if (!ev.date || isUnverified(ev)) return false;
       var categoryMatch = activeFilter === "all" || ev.cat === activeFilter;
       var cityMatch = city === "all" || normalize(ev.loc).includes(normalize(city));
       var haystack = normalize([ev.title, ev.org, ev.loc].join(" "));
@@ -2338,21 +2340,13 @@
       items = filtered.filter(function (ev) { return ev.date === selectedDate; });
       head.textContent = parseInt(selectedDate.slice(8, 10), 10) + " " + MONTHS[parseInt(selectedDate.slice(5, 7), 10) - 1] + " " + selectedDate.slice(0, 4);
     } else {
-      items = filtered.filter(function (ev) { return ev.date && ev.date >= TODAY; })
+      items = filtered.filter(function (ev) { return ev.date && (ev.date >= TODAY || deriveStatus(ev) === "ongoing"); })
         .sort(function (a, b) { return a.date.localeCompare(b.date); }).slice(0, 6);
       head.textContent = "Yaklaşan etkinlikler";
     }
     if (!items.length) { empty.style.display = "block"; return; }
     empty.style.display = "none";
     items.forEach(function (ev) { list.appendChild(renderEvent(ev)); });
-  }
-
-  function renderUnresolved(filtered) {
-    var container = document.getElementById("eventsUnresolved");
-    container.innerHTML = "";
-    filtered.filter(function (ev) { return !ev.date; })
-      .sort(function (a, b) { return a.title.localeCompare(b.title, "tr"); })
-      .forEach(function (ev) { container.appendChild(renderEvent(ev)); });
   }
 
   function updateStats(filtered) {
@@ -2383,10 +2377,7 @@
     updateStats(filtered);
     renderCalendar(filtered);
     renderDayPanel(filtered);
-    renderUnresolved(filtered);
-    document.getElementById("resultSummary").textContent = filtered.length + " kayıt · " +
-      filtered.filter(function (ev) { return ev.date; }).length + " takvimde · " +
-      filtered.filter(function (ev) { return !ev.date; }).length + " tarihi belirsiz";
+    document.getElementById("resultSummary").textContent = filtered.length + " doğrulanmış kayıt takvimde gösteriliyor";
     document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
   }
 
