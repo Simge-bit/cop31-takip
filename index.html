@@ -911,7 +911,6 @@
     <nav class="site-nav" aria-label="Ana menü">
       <a href="#gundem">Gündem</a>
       <a href="#harita">Harita</a>
-      <a href="#operasyon">Operasyon</a>
       <a href="#takvim">Takvim</a>
       <span class="verified-nav"><span></span>Güncel</span>
       <a class="party-logo" href="https://www.iyiparti.org.tr/" target="_blank" rel="noopener" aria-label="İYİ Parti resmî sitesi">
@@ -978,26 +977,6 @@
     <div class="stat-card"><span class="stat-number" id="statOfficial">—</span><span class="stat-label">Kurumsal kaynak</span></div>
     <div class="stat-card"><span class="stat-number" id="statCities">—</span><span class="stat-label">Şehir kapsaması</span></div>
   </div>
-
-  <section class="workbench" id="operasyon" aria-labelledby="workbenchTitle">
-    <div class="workbench-head">
-      <h2 id="workbenchTitle">Operasyon görünümü</h2>
-      <div class="view-actions" id="viewActions" role="group" aria-label="Kayıt görünümü">
-        <button class="tool-btn" type="button" data-view="all" aria-pressed="true">Tüm gündem</button>
-        <button class="tool-btn" type="button" data-view="today" aria-pressed="false">Bugün</button>
-        <button class="tool-btn" type="button" data-view="followed" aria-pressed="false">Takip listem</button>
-        <button class="tool-btn" type="button" data-view="changed" aria-pressed="false">Yeni / değişen <span id="changeCount"></span></button>
-      </div>
-      <div class="export-actions">
-        <button class="tool-btn" id="exportCsv" type="button">CSV indir</button>
-        <button class="tool-btn" id="printPdf" type="button">PDF / yazdır</button>
-      </div>
-    </div>
-    <div class="workbench-body">
-      <section class="brief-column"><h3>Kurum rehberi</h3><ul class="brief-list" id="directoryList"></ul></section>
-      <section class="brief-column"><h3>Tarama kapsamı</h3><div id="coveragePanel"></div><p class="backend-note">Özel takip notları yalnızca bu cihazda saklanır. Site kapalıyken bildirim göndermek için ayrıca push sunucusu gerekir.</p></section>
-    </div>
-  </section>
 
   <div class="operations" id="harita">
     <section class="ops-panel" aria-labelledby="mapTitle">
@@ -2671,7 +2650,6 @@
     var previous=readLocal(SNAPSHOT_KEY,{}), current={};
     EVENTS.forEach(function(ev){ var id=eventId(ev); current[id]=eventFingerprint(ev); if(previous[id] && previous[id]!==current[id]) changedIds.push(id); if(Object.keys(previous).length && !previous[id]) changedIds.push(id); });
     writeLocal(SNAPSHOT_KEY,current);
-    document.getElementById("changeCount").textContent = changedIds.length ? "("+changedIds.length+")" : "";
   }
   function escapeIcs(value){ return String(value||"").replace(/\\/g,"\\\\").replace(/\n/g,"\\n").replace(/,/g,"\\,").replace(/;/g,"\\;"); }
   function icsDate(value){ return (value||"").replace(/-/g,""); }
@@ -2877,14 +2855,6 @@
     document.getElementById("statCities").textContent = cityCount;
   }
 
-  function renderWorkbench() {
-    var orgs={}; EVENTS.forEach(function(ev){ var host="";try{host=new URL(ev.src.url).hostname.replace(/^www\./,"");}catch(e){} var key=ev.org.split(" · ")[0]; if(!orgs[key])orgs[key]={count:0,host:host};orgs[key].count++; });
-    var top=Object.keys(orgs).sort(function(a,b){return orgs[b].count-orgs[a].count;}).slice(0,8);
-    document.getElementById("directoryList").innerHTML=top.map(function(name){return '<li><strong>'+name+'</strong><span class="brief-meta">'+orgs[name].count+' kayıt · '+orgs[name].host+'</span></li>';}).join("");
-    var verified=EVENTS.filter(function(ev){return ev.date&&!isUnverified(ev);}), official=verified.filter(function(ev){try{return /\.gov\.tr$|\.bel\.tr$|\.edu\.tr$|unfccc\.int$|cop31\.tr$/.test(new URL(ev.src.url).hostname)||ev.sourceType==="social";}catch(e){return false;}}).length;
-    document.getElementById("coveragePanel").innerHTML='<div class="coverage-row"><span>Doğrulanmış kayıt</span><b>'+verified.length+'</b></div><div class="coverage-row"><span>İl kapsaması</span><b>'+(document.getElementById("citySelect").options.length-1)+' / 81</b></div><div class="coverage-row"><span>Kurumsal kaynak</span><b>'+official+'</b></div><div class="coverage-row"><span>Son tarama</span><b>28 Ağu 2026</b></div><div class="coverage-row"><span>Takip edilen özel kayıt</span><b>'+Object.keys(trackingData).filter(function(id){return trackingData[id]&&trackingData[id].status;}).length+'</b></div>';
-  }
-
   function render() {
     var filtered = baseFiltered();
     updateStats(filtered);
@@ -2892,19 +2862,7 @@
     renderDayPanel(filtered);
     document.getElementById("resultSummary").textContent = filtered.length + " doğrulanmış kayıt takvimde gösteriliyor";
     document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
-    renderWorkbench();
   }
-
-  document.getElementById("viewActions").addEventListener("click",function(e){
-    var btn=e.target.closest("[data-view]");if(!btn)return; activeView=btn.dataset.view; selectedDate=null;
-    this.querySelectorAll("[data-view]").forEach(function(b){b.setAttribute("aria-pressed",String(b===btn));});render();document.getElementById("takvim").scrollIntoView({behavior:"smooth",block:"start"});
-  });
-  document.getElementById("exportCsv").addEventListener("click",function(){
-    var rows=[["Başlık","Etkinlik tarihi","Başvuru bitişi","İl/Yer","Kurum","Kategori","Durum","Kaynak"]];
-    baseFiltered().forEach(function(ev){rows.push([ev.title,ev.eventLabel||ev.dateLabel,ev.applicationLabel||"",ev.loc,ev.org,CAT_TOKENS[ev.cat].label,statusLabel(ev),ev.src.url]);});
-    var csv="\ufeff"+rows.map(function(row){return row.map(function(v){return '"'+String(v||"").replace(/"/g,'""')+'"';}).join(";");}).join("\r\n"); downloadBlob("cop31-takip.csv",csv,"text/csv;charset=utf-8");
-  });
-  document.getElementById("printPdf").addEventListener("click",function(){window.print();});
 
   document.getElementById("filters").addEventListener("click", function (e) {
     var btn = e.target.closest(".chip");
