@@ -809,7 +809,8 @@
   .brand,.brand strong,.site-nav a { color:var(--ink); }
   .brand-mark,.verified-nav { color:var(--accent-ink); }
   .party-logo { border-left-color:#294a70; }
-  .party-logo img { background:#fff; }
+  .party-logo { overflow:hidden; }
+  .party-logo img { background:transparent; transform:scale(1.12); transform-origin:center; clip-path:inset(1px); }
   .hero { background:linear-gradient(120deg,#071a37 0%,#0b2b55 68%,#0d3565 100%); color:var(--ink); border-bottom-color:#2a4d75; }
   .hero::after { content:""; display:block; position:absolute; inset:0; background:linear-gradient(90deg,transparent 0 76%,rgba(243,210,27,.08) 76% 76.35%,transparent 76.35%); pointer-events:none; }
   .eyebrow { color:#8bcceb!important; }
