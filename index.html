@@ -740,8 +740,10 @@
   .status { padding:11px 0 10px 6px; font:9px Arial,sans-serif; text-transform:none; }
   footer { border-top:1px solid var(--line); font:10px Arial,sans-serif; }
   footer::after { display:none; }
-  @media(max-width:760px){ .site-header-inner{padding:0 12px}.site-nav a{display:none}.hero{padding:24px 12px 20px}.hero-grid{display:block}.countdown{margin-top:14px;text-align:left}.wrap{padding:12px 12px 36px}.keyfacts{grid-template-columns:1fr 1fr}.dashboard-stats{display:grid;grid-template-columns:1fr 1fr}.stat-card:nth-child(2){border-right:0}.cal-layout{grid-template-columns:1fr}.cat-stats{display:grid;grid-template-columns:1fr 1fr}.controls .search,.controls .city-select{flex:1 1 100%} }
-  @media(max-width:480px){ .brand strong{font-size:12px}.masthead-title{font-size:25px}.event{grid-template-columns:58px minmax(0,1fr)}.status{grid-column:2;padding-top:0}.keyfact{padding:9px}.keyfact-value{font-size:11px} }
+  .party-logo { display:flex; align-items:center; margin-left:2px; padding-left:14px; border-left:1px solid var(--line); }
+  .party-logo img { display:block; width:32px; height:32px; object-fit:contain; }
+  @media(max-width:760px){ .site-header-inner{padding:0 12px}.site-nav a{display:none}.site-nav .party-logo{display:flex}.hero{padding:24px 12px 20px}.hero-grid{display:block}.countdown{margin-top:14px;text-align:left}.wrap{padding:12px 12px 36px}.keyfacts{grid-template-columns:1fr 1fr}.dashboard-stats{display:grid;grid-template-columns:1fr 1fr}.stat-card:nth-child(2){border-right:0}.cal-layout{grid-template-columns:1fr}.cat-stats{display:grid;grid-template-columns:1fr 1fr}.controls .search,.controls .city-select{flex:1 1 100%} }
+  @media(max-width:480px){ .brand strong{font-size:12px}.masthead-title{font-size:25px}.event{grid-template-columns:58px minmax(0,1fr)}.status{grid-column:2;padding-top:0}.keyfact{padding:9px}.keyfact-value{font-size:11px}.party-logo{padding-left:10px}.party-logo img{width:28px;height:28px} }
 </style>
 </head>
 <body>
@@ -756,6 +758,9 @@
       <a href="#gundem">Gündem</a>
       <a href="#takvim">Takvim</a>
       <span class="verified-nav"><span></span>Güncel</span>
+      <a class="party-logo" href="https://www.iyiparti.org.tr/" target="_blank" rel="noopener" aria-label="İYİ Parti resmî sitesi">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/%C4%B0Y%C4%B0_Party_square_logo.svg" alt="İYİ Parti">
+      </a>
     </nav>
   </div>
 </header>
