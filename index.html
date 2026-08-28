@@ -744,6 +744,50 @@
   .party-logo img { display:block; width:32px; height:32px; object-fit:contain; }
   @media(max-width:760px){ .site-header-inner{padding:0 12px}.site-nav a{display:none}.site-nav .party-logo{display:flex}.hero{padding:24px 12px 20px}.hero-grid{display:block}.countdown{margin-top:14px;text-align:left}.wrap{padding:12px 12px 36px}.keyfacts{grid-template-columns:1fr 1fr}.dashboard-stats{display:grid;grid-template-columns:1fr 1fr}.stat-card:nth-child(2){border-right:0}.cal-layout{grid-template-columns:1fr}.cat-stats{display:grid;grid-template-columns:1fr 1fr}.controls .search,.controls .city-select{flex:1 1 100%} }
   @media(max-width:480px){ .brand strong{font-size:12px}.masthead-title{font-size:25px}.event{grid-template-columns:58px minmax(0,1fr)}.status{grid-column:2;padding-top:0}.keyfact{padding:9px}.keyfact-value{font-size:11px}.party-logo{padding-left:10px}.party-logo img{width:28px;height:28px} }
+  .operations { display:grid; grid-template-columns:minmax(0,1.65fr) minmax(280px,.75fr); gap:16px; margin:0 0 18px; }
+  .ops-panel { border:1px solid var(--line); background:#fff; min-width:0; }
+  .ops-head { min-height:46px; padding:10px 12px; border-bottom:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; }
+  .ops-head h2 { margin:0; font:700 12px Arial,sans-serif; letter-spacing:.02em; }
+  .ops-head p { margin:2px 0 0; color:var(--muted); font:10px Arial,sans-serif; }
+  .map-body { display:grid; grid-template-columns:minmax(0,1fr) 190px; min-height:320px; }
+  #turkeyMap { width:100%; height:320px; display:block; background:#f7f8f6; }
+  .province { fill:#e5e9e4; stroke:#fff; stroke-width:.6; cursor:pointer; transition:fill .15s ease; }
+  .province.has-events { fill:#aebdb3; }
+  .province.has-many { fill:#708b78; }
+  .province:hover,.province:focus { fill:#d7b51d; outline:none; }
+  .province.is-selected { fill:#111 !important; }
+  .map-aside { border-left:1px solid var(--line); padding:14px 12px; }
+  .map-city { margin:0 0 4px; font:700 18px Georgia,serif; }
+  .map-count { margin:0 0 16px; color:var(--muted); font:10px Arial,sans-serif; }
+  .map-next { border-top:1px solid var(--line); padding-top:12px; font:11px/1.45 Arial,sans-serif; }
+  .map-next strong { display:block; margin-bottom:4px; }
+  .map-reset,.notify-btn,.track-btn,.drawer-actions button { border:1px solid #222; background:#fff; color:#111; padding:7px 9px; font:10px Arial,sans-serif; cursor:pointer; }
+  .map-reset:hover,.notify-btn:hover,.track-btn:hover,.drawer-actions button:hover { background:#111; color:#fff; }
+  .notification-body { padding:12px; }
+  .notification-settings { display:flex; gap:8px; align-items:center; margin-bottom:12px; }
+  .notification-settings select { min-width:94px; padding:7px; border:1px solid var(--line); background:#fff; font:10px Arial,sans-serif; }
+  .alert-list { list-style:none; padding:0; margin:0; }
+  .alert-item { padding:9px 0; border-top:1px solid var(--line); font:10px/1.35 Arial,sans-serif; }
+  .alert-item:first-child { border-top:0; }
+  .alert-item strong { display:block; font-size:11px; }
+  .alert-date { color:#8b6d00; }
+  .privacy-note { margin:10px 0 0; color:var(--muted); font:9px/1.4 Arial,sans-serif; }
+  .track-btn { margin-top:8px; padding:5px 8px; border-color:var(--line); }
+  .track-btn.is-followed { background:#111; color:#fff; border-color:#111; }
+  .tracking-drawer { position:fixed; inset:0; z-index:80; display:none; }
+  .tracking-drawer.is-open { display:block; }
+  .drawer-backdrop { position:absolute; inset:0; background:rgba(0,0,0,.35); }
+  .drawer-panel { position:absolute; top:0; right:0; width:min(430px,100%); height:100%; overflow:auto; padding:22px; background:#fff; box-shadow:-12px 0 30px rgba(0,0,0,.12); }
+  .drawer-close { float:right; border:0; background:none; font-size:24px; cursor:pointer; }
+  .drawer-kicker { color:var(--muted); font:10px Arial,sans-serif; text-transform:uppercase; letter-spacing:.06em; }
+  .drawer-title { margin:7px 30px 20px 0; font:700 22px/1.2 Georgia,serif; }
+  .field { display:block; margin:0 0 14px; font:700 10px Arial,sans-serif; }
+  .field input,.field select,.field textarea { display:block; width:100%; margin-top:6px; padding:9px; border:1px solid var(--line); border-radius:0; background:#fff; color:#111; font:12px Arial,sans-serif; box-sizing:border-box; }
+  .field textarea { min-height:110px; resize:vertical; }
+  .drawer-actions { display:flex; gap:8px; padding-top:8px; }
+  .drawer-actions .primary { background:#111; color:#fff; }
+  @media(max-width:900px){ .operations{grid-template-columns:1fr}.map-body{grid-template-columns:1fr}.map-aside{border-left:0;border-top:1px solid var(--line)} }
+  @media(max-width:560px){ .map-body{display:block}#turkeyMap{height:260px}.notification-settings{align-items:stretch;flex-direction:column}.notification-settings select,.notify-btn{width:100%} }
 </style>
 </head>
 <body>
@@ -756,6 +800,7 @@
     </a>
     <nav class="site-nav" aria-label="Ana menü">
       <a href="#gundem">Gündem</a>
+      <a href="#harita">Harita</a>
       <a href="#takvim">Takvim</a>
       <span class="verified-nav"><span></span>Güncel</span>
       <a class="party-logo" href="https://www.iyiparti.org.tr/" target="_blank" rel="noopener" aria-label="İYİ Parti resmî sitesi">
@@ -823,6 +868,39 @@
     <div class="stat-card"><span class="stat-number" id="statCities">—</span><span class="stat-label">Şehir kapsaması</span></div>
   </div>
 
+  <div class="operations" id="harita">
+    <section class="ops-panel" aria-labelledby="mapTitle">
+      <div class="ops-head">
+        <div><h2 id="mapTitle">Türkiye etkinlik haritası</h2><p>Bir ili seçerek takvimi daraltın.</p></div>
+        <button class="map-reset" id="mapReset" type="button">Tüm Türkiye</button>
+      </div>
+      <div class="map-body">
+        <svg id="turkeyMap" role="img" aria-label="İllere göre COP31 ve iklim etkinlikleri haritası"></svg>
+        <aside class="map-aside" aria-live="polite">
+          <h3 class="map-city" id="mapCity">Türkiye</h3>
+          <p class="map-count" id="mapCount">Şehir seçilmedi</p>
+          <div class="map-next" id="mapNext">Haritada koyu görünen illerde daha fazla kayıt bulunuyor.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="ops-panel" aria-labelledby="notificationTitle">
+      <div class="ops-head"><div><h2 id="notificationTitle">Bildirim merkezi</h2><p>Yaklaşan etkinlik ve başvuru tarihleri.</p></div></div>
+      <div class="notification-body">
+        <div class="notification-settings">
+          <select id="alertWindow" aria-label="Bildirim süresi">
+            <option value="3">3 gün kala</option>
+            <option value="7" selected>7 gün kala</option>
+            <option value="14">14 gün kala</option>
+          </select>
+          <button class="notify-btn" id="enableNotifications" type="button">Tarayıcı bildirimini aç</button>
+        </div>
+        <ul class="alert-list" id="alertList"></ul>
+        <p class="privacy-note">Bildirim tercihi ve kişisel takip bilgileri yalnızca bu cihazda saklanır. Site kapalıyken bildirim göndermek için ayrıca sunucu tabanlı push altyapısı gerekir.</p>
+      </div>
+    </section>
+  </div>
+
   <div class="controls">
     <label class="sr-only" for="searchInput">Etkinlik ara</label>
     <input class="search" id="searchInput" type="search" placeholder="Etkinlik, kurum veya şehir ara…" autocomplete="off">
@@ -871,6 +949,23 @@
 
 </div>
 
+<div class="tracking-drawer" id="trackingDrawer" aria-hidden="true">
+  <div class="drawer-backdrop" data-close-drawer></div>
+  <section class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <button class="drawer-close" type="button" data-close-drawer aria-label="Kapat">×</button>
+    <div class="drawer-kicker">Özel takip alanı · yalnızca bu cihaz</div>
+    <h2 class="drawer-title" id="drawerTitle">Etkinlik</h2>
+    <form id="trackingForm">
+      <label class="field">Takip durumu<select id="trackingStatus"><option value="">Takip edilmiyor</option><option value="following">Takipte</option><option value="contacted">İletişime geçildi</option><option value="attending">Katılım planlandı</option><option value="done">Tamamlandı</option></select></label>
+      <label class="field">Öncelik<select id="trackingPriority"><option value="normal">Normal</option><option value="high">Yüksek</option><option value="critical">Kritik</option></select></label>
+      <label class="field">Sorumlu kişi<input id="trackingOwner" type="text" maxlength="80" placeholder="Ad soyad veya ekip"></label>
+      <label class="field">Ekip notu<textarea id="trackingNote" maxlength="1000" placeholder="Görüşme, katılım veya hazırlık notu…"></textarea></label>
+      <div class="drawer-actions"><button class="primary" type="submit">Kaydet</button><button id="clearTracking" type="button">Kaydı temizle</button></div>
+    </form>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 <script>
 (function () {
   var EVENTS = [
@@ -2416,6 +2511,28 @@
     return "upcoming";
   }
 
+  var TRACKING_KEY = "cop31-private-tracking-v1";
+  var ALERT_PREF_KEY = "cop31-alert-preferences-v1";
+  var trackingData = readLocal(TRACKING_KEY, {});
+  var activeTrackingId = null;
+
+  function readLocal(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch (e) { return fallback; }
+  }
+  function writeLocal(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (e) {}
+  }
+  function eventId(ev) {
+    var input = [ev.title, ev.date || ev.dateLabel, ev.loc].join("|");
+    var hash = 2166136261;
+    for (var i = 0; i < input.length; i++) { hash ^= input.charCodeAt(i); hash = Math.imul(hash, 16777619); }
+    return "ev-" + (hash >>> 0).toString(36);
+  }
+  function isFollowed(ev) {
+    var item = trackingData[eventId(ev)];
+    return !!(item && item.status);
+  }
+
   function renderEvent(ev) {
     var tok = CAT_TOKENS[ev.cat];
     var day = ev.date ? ev.date.slice(8, 10) : "•";
@@ -2444,9 +2561,28 @@
         (dateFacts ? '<div class="date-facts">' + dateFacts + '</div>' : '') +
         '<p class="event-src source-row"><a href="' + ev.src.url + '" target="_blank" rel="noopener">Kaynağı aç · ' + ev.src.label + ' ↗</a><span class="source-kind">' + (ev.sourceType === 'social' ? 'Kurumsal sosyal hesap' : (officialSource ? 'Resmî / kurumsal kaynak' : 'İkincil kaynak')) + '</span>' +
         (state === "unverified" ? '<span class="quality-note">Kesin tarih kaynakta doğrulanmadı.</span>' : '') + '</p>' +
+        '<button class="track-btn' + (isFollowed(ev) ? ' is-followed' : '') + '" type="button">' + (isFollowed(ev) ? 'Takipte · düzenle' : 'Özel takibe al') + '</button>' +
       '</div>' +
       '<div class="status ' + statusClass(ev) + '">' + statusLabel(ev) + '</div>';
+    el.querySelector(".track-btn").addEventListener("click", function () { openTracking(ev); });
     return el;
+  }
+
+  function openTracking(ev) {
+    activeTrackingId = eventId(ev);
+    var saved = trackingData[activeTrackingId] || {};
+    document.getElementById("drawerTitle").textContent = ev.title;
+    document.getElementById("trackingStatus").value = saved.status || "";
+    document.getElementById("trackingPriority").value = saved.priority || "normal";
+    document.getElementById("trackingOwner").value = saved.owner || "";
+    document.getElementById("trackingNote").value = saved.note || "";
+    var drawer = document.getElementById("trackingDrawer");
+    drawer.classList.add("is-open"); drawer.setAttribute("aria-hidden", "false");
+    document.getElementById("trackingStatus").focus();
+  }
+  function closeTracking() {
+    var drawer = document.getElementById("trackingDrawer");
+    drawer.classList.remove("is-open"); drawer.setAttribute("aria-hidden", "true"); activeTrackingId = null;
   }
 
   var activeFilter = "all";
@@ -2459,7 +2595,7 @@
 
   function baseFiltered() {
     var query = normalize(document.getElementById("searchInput").value);
-    var city = document.getElementById("citySelect").value;
+    var city = selectedMapCity || document.getElementById("citySelect").value;
     return EVENTS.filter(function (ev) {
       if (!ev.date || isUnverified(ev)) return false;
       var categoryMatch = activeFilter === "all" || ev.cat === activeFilter;
@@ -2593,7 +2729,11 @@
   });
 
   document.getElementById("searchInput").addEventListener("input", render);
-  document.getElementById("citySelect").addEventListener("change", render);
+  document.getElementById("citySelect").addEventListener("change", function(){
+    selectedMapCity = this.value === "all" ? null : this.value;
+    document.querySelectorAll(".province").forEach(function(path){ path.classList.toggle("is-selected", path.dataset.city === selectedMapCity); });
+    updateMapAside(selectedMapCity); render();
+  });
 
   function shiftMonth(delta) {
     calMonth += delta;
@@ -2617,6 +2757,110 @@
         var option = document.createElement("option"); option.value = city; option.textContent = city; select.appendChild(option);
       });
   })();
+
+  var selectedMapCity = null;
+  function cityEvents(city) {
+    return EVENTS.filter(function (ev) { return ev.date && !isUnverified(ev) && normalize(ev.loc).includes(normalize(city)); });
+  }
+  function geoCityName(feature) {
+    var p = feature.properties || {};
+    return p.name || p.NAME_1 || p.NAME || p.il_adi || p.IL_ADI || p.city || p.ad || "";
+  }
+  function updateMapAside(city) {
+    var items = city ? cityEvents(city).sort(function(a,b){ return a.date.localeCompare(b.date); }) : [];
+    var upcoming = items.filter(function(ev){ return ev.date >= TODAY || deriveStatus(ev) === "ongoing"; })[0];
+    document.getElementById("mapCity").textContent = city || "Türkiye";
+    document.getElementById("mapCount").textContent = city ? items.length + " doğrulanmış kayıt" : "Şehir seçilmedi";
+    document.getElementById("mapNext").innerHTML = upcoming
+      ? '<strong>Sıradaki kayıt</strong>' + upcoming.eventLabel + '<br>' + upcoming.title
+      : (city ? "Bu şehirde yaklaşan kayıt bulunmuyor." : "Haritada koyu görünen illerde daha fazla kayıt bulunuyor.");
+  }
+  function selectMapCity(city) {
+    selectedMapCity = city;
+    var select = document.getElementById("citySelect");
+    var hasOption = Array.prototype.some.call(select.options, function(o){ return o.value === city; });
+    select.value = hasOption ? city : "all";
+    document.querySelectorAll(".province").forEach(function(path){ path.classList.toggle("is-selected", path.dataset.city === city); });
+    updateMapAside(city);
+    render();
+  }
+  function renderTurkeyMap(geo) {
+    if (!window.d3 || !geo || !geo.features) throw new Error("Harita verisi okunamadı");
+    var svg = d3.select("#turkeyMap");
+    svg.selectAll("*").remove();
+    var width = Math.max(document.getElementById("turkeyMap").clientWidth, 420), height = 320;
+    svg.attr("viewBox", "0 0 " + width + " " + height);
+    var projection = d3.geoMercator().fitExtent([[12,18],[width-12,height-18]], geo);
+    var path = d3.geoPath(projection);
+    svg.selectAll("path").data(geo.features).enter().append("path")
+      .attr("d", path).attr("class", function(d){ var count=cityEvents(geoCityName(d)).length; return "province" + (count ? " has-events" : "") + (count >= 4 ? " has-many" : ""); })
+      .attr("data-city", function(d){ return geoCityName(d); }).attr("tabindex", "0")
+      .attr("aria-label", function(d){ var city=geoCityName(d), count=cityEvents(city).length; return city + ", " + count + " kayıt"; })
+      .on("click", function(e,d){ selectMapCity(geoCityName(d)); })
+      .on("keydown", function(e,d){ if(e.key === "Enter" || e.key === " "){ e.preventDefault(); selectMapCity(geoCityName(d)); } });
+  }
+  fetch("https://cdn.jsdelivr.net/gh/cihadturhan/tr-geojson@master/geo/tr-cities-utf8.json")
+    .then(function(r){ if(!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(renderTurkeyMap)
+    .catch(function(){ document.getElementById("turkeyMap").outerHTML = '<div id="turkeyMap" style="padding:24px;font:11px Arial,sans-serif">Harita bağlantısı kurulamadı. Şehir filtresini kullanabilirsiniz.</div>'; });
+  document.getElementById("mapReset").addEventListener("click", function(){
+    selectedMapCity = null; document.getElementById("citySelect").value = "all";
+    document.querySelectorAll(".province").forEach(function(path){ path.classList.remove("is-selected"); });
+    updateMapAside(null); render();
+  });
+
+  function alertCandidates(days) {
+    var result = [];
+    EVENTS.forEach(function(ev){
+      if (!ev.date || isUnverified(ev)) return;
+      var dates = [];
+      if (ev.applicationEnd && ev.applicationEnd >= TODAY) dates.push({date:ev.applicationEnd,type:"Başvuru bitişi"});
+      if (ev.date >= TODAY) dates.push({date:ev.date,type:ev.recordType === "application" ? "Başvuru" : "Etkinlik"});
+      dates.forEach(function(item){ var left=daysUntil(item.date); if(left >= 0 && left <= days) result.push({ev:ev,date:item.date,type:item.type,left:left}); });
+    });
+    return result.sort(function(a,b){ return a.date.localeCompare(b.date); }).slice(0,8);
+  }
+  function renderAlerts() {
+    var days = parseInt(document.getElementById("alertWindow").value,10);
+    var list = document.getElementById("alertList"), items = alertCandidates(days);
+    list.innerHTML = "";
+    if (!items.length) { list.innerHTML = '<li class="alert-item">Bu aralıkta yaklaşan tarih yok.</li>'; return; }
+    items.forEach(function(item){
+      var li=document.createElement("li"); li.className="alert-item";
+      li.innerHTML='<strong>'+item.ev.title+'</strong><span class="alert-date">'+item.type+' · '+(item.left===0?'bugün':item.left+' gün kaldı')+'</span>';
+      list.appendChild(li);
+    });
+  }
+  var savedAlertPref = readLocal(ALERT_PREF_KEY, {days:7});
+  document.getElementById("alertWindow").value = String(savedAlertPref.days || 7);
+  document.getElementById("alertWindow").addEventListener("change", function(){ writeLocal(ALERT_PREF_KEY,{days:parseInt(this.value,10)}); renderAlerts(); });
+  document.getElementById("enableNotifications").addEventListener("click", function(){
+    if (!("Notification" in window)) { this.textContent="Bu tarayıcı desteklemiyor"; return; }
+    var button=this;
+    Notification.requestPermission().then(function(permission){
+      button.textContent = permission === "granted" ? "Bildirimler açık" : "Bildirim izni verilmedi";
+      if(permission === "granted") {
+        var first=alertCandidates(parseInt(document.getElementById("alertWindow").value,10))[0];
+        if(first) new Notification("COP31 Takip · " + first.type,{body:first.ev.title + " — " + (first.left===0?"bugün":first.left+" gün kaldı")});
+      }
+    });
+  });
+  if ("Notification" in window && Notification.permission === "granted") document.getElementById("enableNotifications").textContent="Bildirimler açık";
+  renderAlerts();
+
+  document.getElementById("trackingForm").addEventListener("submit", function(e){
+    e.preventDefault(); if(!activeTrackingId) return;
+    trackingData[activeTrackingId] = {
+      status:document.getElementById("trackingStatus").value,
+      priority:document.getElementById("trackingPriority").value,
+      owner:document.getElementById("trackingOwner").value.trim(),
+      note:document.getElementById("trackingNote").value.trim(), updatedAt:new Date().toISOString()
+    };
+    writeLocal(TRACKING_KEY, trackingData); closeTracking(); render();
+  });
+  document.getElementById("clearTracking").addEventListener("click", function(){ if(activeTrackingId){ delete trackingData[activeTrackingId]; writeLocal(TRACKING_KEY,trackingData); closeTracking(); render(); } });
+  document.querySelectorAll("[data-close-drawer]").forEach(function(el){ el.addEventListener("click",closeTracking); });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape") closeTracking(); });
 
   function daysUntil(dateStr) {
     var d1 = new Date(TODAY + "T00:00:00Z");
