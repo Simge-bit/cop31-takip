@@ -2677,6 +2677,15 @@
     if (selectedDate) {
       items = filtered.filter(function (ev) { return ev.date === selectedDate; });
       head.textContent = parseInt(selectedDate.slice(8, 10), 10) + " " + MONTHS[parseInt(selectedDate.slice(5, 7), 10) - 1] + " " + selectedDate.slice(0, 4);
+    } else if (selectedMapCity || document.getElementById("citySelect").value !== "all") {
+      var cityName = selectedMapCity || document.getElementById("citySelect").value;
+      items = filtered.slice().sort(function (a, b) {
+        var aFuture = a.date >= TODAY || deriveStatus(a) === "ongoing";
+        var bFuture = b.date >= TODAY || deriveStatus(b) === "ongoing";
+        if (aFuture !== bFuture) return aFuture ? -1 : 1;
+        return aFuture ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date);
+      }).slice(0, 12);
+      head.textContent = cityName + " kayıtları · geçmiş ve yaklaşan";
     } else {
       items = filtered.filter(function (ev) { return ev.date && (ev.date >= TODAY || deriveStatus(ev) === "ongoing"); })
         .sort(function (a, b) { return a.date.localeCompare(b.date); }).slice(0, 6);
@@ -2731,6 +2740,7 @@
   document.getElementById("searchInput").addEventListener("input", render);
   document.getElementById("citySelect").addEventListener("change", function(){
     selectedMapCity = this.value === "all" ? null : this.value;
+    selectedDate = null;
     document.querySelectorAll(".province").forEach(function(path){ path.classList.toggle("is-selected", path.dataset.city === selectedMapCity); });
     updateMapAside(selectedMapCity); render();
   });
@@ -2777,6 +2787,7 @@
   }
   function selectMapCity(city) {
     selectedMapCity = city;
+    selectedDate = null;
     var select = document.getElementById("citySelect");
     var hasOption = Array.prototype.some.call(select.options, function(o){ return o.value === city; });
     select.value = hasOption ? city : "all";
