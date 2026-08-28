@@ -544,6 +544,123 @@
   footer { margin-top:3rem; }
   @media(max-width:800px){ .site-nav a{display:none}.verified-nav{display:inline-flex}.hero{padding-top:3.8rem}.countdown{min-width:160px}.keyfacts{margin-top:-6rem}.masthead-title em{display:inline} }
   @media(max-width:620px){ .site-header-inner{height:62px;padding:0 1rem}.brand small{display:none}.site-nav{gap:0}.hero{padding:3.4rem 1rem 5rem}.hero-grid{gap:1.7rem}.countdown{width:100%}.wrap{padding-left:1rem;padding-right:1rem}.keyfacts{margin-top:-6.1rem;grid-template-columns:1fr 1fr}.keyfact{min-height:112px;padding:1rem}.dashboard-stats{grid-template-columns:1fr 1fr}.controls{align-items:stretch}.controls .search,.controls .city-select{flex:1 1 100%}.event{grid-template-columns:4px 64px 1fr}.masthead-title{font-size:2.45rem}.hero-actions a{flex:1 1 auto}.site-header .verified-nav{font-size:0;width:32px;height:32px;justify-content:center;padding:0}.site-header .verified-nav span{width:8px;height:8px} }
+
+  /* Editorial redesign — deliberately avoids dashboard/AI visual tropes */
+  :root, :root:not([data-theme="dark"]) {
+    --bg:#f3f1ec; --surface:#fbfaf7; --surface-2:#ece9e1; --ink:#171916;
+    --ink-soft:#555a53; --ink-faint:#7b7f77; --line:#cacbc5;
+    --accent:#176b52; --accent-ink:#12533f; --accent-soft:#e3ece6;
+    --gold:#8b5d20; --indigo:#4c5d7d; --plum:#7a4d68; --shadow:none;
+  }
+  body { background:var(--bg); font-family:'Manrope',sans-serif; }
+  .site-header { position:static; background:var(--bg); backdrop-filter:none; border-bottom:1px solid #22251f; }
+  .site-header-inner { max-width:1240px; height:64px; padding:0 2rem; }
+  .brand-mark { width:auto; height:auto; padding:0; border-radius:0; background:transparent; color:var(--ink); font-family:'IBM Plex Mono',monospace; font-size:.75rem; letter-spacing:.12em; }
+  .brand-mark::after { content:" / "; color:var(--accent); }
+  .brand strong { font-family:'Fraunces',serif; font-size:1rem; font-weight:600; }
+  .brand small { display:none; }
+  .site-nav { gap:1.8rem; }
+  .site-nav a { color:var(--ink); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; }
+  .verified-nav { padding:0; border-radius:0; background:transparent; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-size:.62rem; font-weight:500; text-transform:uppercase; letter-spacing:.06em; }
+  .verified-nav span { box-shadow:none; width:5px; height:5px; }
+  .hero { margin:0; padding:4.5rem 2rem 3.6rem; background:var(--bg); color:var(--ink); border-bottom:1px solid var(--line); }
+  .hero::after,.hero-motif,.timeline { display:none; }
+  .hero-inner { max-width:1240px; }
+  .eyebrow { color:var(--accent)!important; font-size:.64rem; letter-spacing:.16em; margin-bottom:1.1rem; }
+  .eyebrow .pulse { animation:none; width:5px; height:5px; box-shadow:none; }
+  .hero-grid { display:grid; grid-template-columns:minmax(0,1fr) 210px; gap:5rem; align-items:end; }
+  .masthead-title { max-width:850px; margin:0 0 1.1rem; font-family:'Fraunces',serif; font-size:clamp(2.7rem,5.2vw,5.2rem); font-weight:500; line-height:.98; letter-spacing:-.035em; }
+  .masthead-title em { display:inline; color:var(--accent)!important; font:inherit; font-style:italic; letter-spacing:inherit; }
+  .masthead-sub { max-width:680px; color:var(--ink-soft)!important; font-size:.94rem; line-height:1.65; }
+  .hero-actions { margin-top:1.4rem; }
+  .hero-actions a { min-height:auto; padding:0 0 .2rem; border-radius:0; border-bottom:1px solid var(--ink); background:transparent; color:var(--ink); font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; }
+  .countdown { min-width:0; padding:0 0 .3rem 1.3rem; border:0; border-left:1px solid var(--ink); border-radius:0; background:transparent; }
+  .countdown-num { color:var(--ink)!important; font-family:'Fraunces',serif; font-size:4.8rem; font-weight:500; line-height:.9; letter-spacing:-.05em; }
+  .countdown-label { color:var(--ink-soft)!important; font-family:'IBM Plex Mono',monospace; font-size:.58rem; line-height:1.5; }
+  .countdown-track { display:none; }
+  .wrap { max-width:1240px; padding:2.2rem 2rem 5rem; }
+  .keyfacts { margin:0 0 2rem; display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--ink); border-radius:0; background:transparent; }
+  .keyfact { min-height:0; padding:1rem 1.1rem; border:0; border-right:1px solid var(--ink); border-radius:0; background:transparent; box-shadow:none; }
+  .keyfact:last-child { border-right:0; }
+  .keyfact-label { font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); font-size:.57rem; letter-spacing:.1em; }
+  .keyfact-value { font-size:.83rem; font-weight:600; }
+  .dashboard-stats { margin:0 0 2.2rem; display:flex; gap:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .stat-card { flex:1; padding:1rem 0; border:0; border-right:1px solid var(--line); border-radius:0; background:transparent; }
+  .stat-card:last-child { border-right:0; }
+  .stat-card::before { display:none; }
+  .stat-number { font-family:'Fraunces',serif; color:var(--ink); font-size:2rem; font-weight:500; }
+  .stat-label { font-family:'IBM Plex Mono',monospace; font-size:.56rem; letter-spacing:.09em; }
+  .controls { margin-bottom:1rem; padding:0 0 1.1rem; border:0; border-bottom:1px solid var(--ink); border-radius:0; background:transparent; box-shadow:none; }
+  .search,.city-select { min-height:40px; border:1px solid var(--line); border-radius:0; background:var(--surface); font-size:.78rem; }
+  .chip { min-height:32px; padding:.35rem .65rem; border:0; border-radius:0; background:transparent; font-size:.68rem; text-transform:uppercase; letter-spacing:.04em; }
+  .chip[aria-pressed="true"] { background:transparent; color:var(--accent); border-bottom:2px solid var(--accent); }
+  .suggest-btn { padding:.45rem .7rem; border:1px solid var(--ink); border-radius:0; background:transparent; color:var(--ink); font-size:.68rem; text-transform:uppercase; }
+  .result-summary { font-family:'IBM Plex Mono',monospace; font-size:.64rem; }
+  .cat-stats { margin-bottom:2.3rem; grid-template-columns:repeat(4,1fr); gap:0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); border-radius:0; }
+  .cat-stat { padding:.75rem 0; border:0; border-radius:0; background:transparent; }
+  .cat-stat-num { font-family:'Fraunces',serif; font-size:1.55rem; font-weight:500; }
+  .cat-stat-label { font-size:.62rem; }
+  .cal-layout { grid-template-columns:minmax(0,1.05fr) minmax(360px,.95fr); gap:2.4rem; }
+  .cal-card,.day-panel { padding:0; border:0; border-radius:0; background:transparent; box-shadow:none; }
+  .cal-head { padding-bottom:.75rem; border-bottom:1px solid var(--ink); }
+  .cal-title,.day-panel-head { font-family:'Fraunces',serif; font-size:1.25rem; font-weight:600; }
+  .cal-nav { border:0; border-radius:0; background:transparent; }
+  .cal-jump { border:0; border-radius:0; background:transparent; border-bottom:1px solid var(--accent); font-size:.62rem; }
+  .cal-grid { gap:1px; background:var(--line); border:1px solid var(--line); }
+  .cal-day { border:0; border-radius:0; background:var(--surface); }
+  .cal-day.has-events { background:var(--surface); border:0; }
+  .cal-day.is-today { box-shadow:inset 0 0 0 1px var(--accent); }
+  .cal-day.is-selected { background:var(--accent); color:#fff; }
+  .day-panel-head { padding-bottom:.75rem; border-bottom:1px solid var(--ink); }
+  .events { gap:0; }
+  .event { grid-template-columns:76px minmax(0,1fr) auto; border:0; border-bottom:1px solid var(--line); border-radius:0; background:transparent; box-shadow:none; }
+  .event:hover { box-shadow:none; background:rgba(255,255,255,.35); }
+  .event-stripe { display:none; }
+  .event-date { padding:.95rem .7rem 1rem 0; border-right:0; background:transparent; font-size:.68rem; }
+  .event-date .day { font-family:'Fraunces',serif; font-size:1rem; font-weight:600; }
+  .event-body { padding:.9rem .7rem 1rem 0; }
+  .event-body h3 { font-family:'Fraunces',serif; font-size:1rem; font-weight:600; line-height:1.25; }
+  .event-meta { font-size:.68rem; }
+  .pill { padding:0; border-radius:0; background:transparent; font-size:.56rem; }
+  .date-facts { margin:.5rem 0; }
+  .date-fact,.date-fact.application { padding:.2rem .35rem; border:1px solid var(--line); border-radius:0; background:transparent; font-size:.64rem; }
+  .event-src { font-size:.65rem; }
+  .source-kind { padding:0; border-radius:0; background:transparent; }
+  .status { padding:.9rem 0 1rem .5rem; font-family:'IBM Plex Mono',monospace; font-size:.57rem; text-transform:uppercase; }
+  footer { border-top:1px solid var(--ink); font-family:'IBM Plex Mono',monospace; font-size:.61rem; }
+  @media(max-width:800px){ .site-header-inner{padding:0 1rem}.hero{padding:3rem 1rem 2.6rem}.hero-grid{grid-template-columns:1fr;gap:2rem}.masthead-title{font-size:3.2rem}.countdown{max-width:170px}.wrap{padding:1.5rem 1rem 4rem}.keyfacts{grid-template-columns:1fr 1fr}.keyfact:nth-child(2){border-right:0}.keyfact:nth-child(-n+2){border-bottom:1px solid var(--ink)}.dashboard-stats{display:grid;grid-template-columns:1fr 1fr}.stat-card:nth-child(2){border-right:0}.stat-card:nth-child(-n+2){border-bottom:1px solid var(--line)}.cal-layout{grid-template-columns:1fr;gap:2rem} }
+  @media(max-width:520px){ .site-nav a{display:none}.hero{padding-top:2.5rem}.masthead-title{font-size:2.65rem}.masthead-sub{font-size:.83rem}.keyfacts{margin-bottom:1.5rem}.keyfact{padding:.8rem}.dashboard-stats{margin-bottom:1.5rem}.stat-card{padding:.8rem 0}.controls{gap:.4rem}.event{grid-template-columns:60px minmax(0,1fr)}.status{grid-column:2;padding:.3rem 0 .7rem}.cat-stats{grid-template-columns:1fr 1fr}.cat-stat:nth-child(-n+2){border-bottom:1px solid var(--line)} }
+
+  /* Restricted briefing-room tone; visual treatment, not an authentication claim */
+  .site-header { background:#101713; border-bottom-color:#2d3932; color:#e7ece8; }
+  .brand,.site-nav a { color:#e7ece8; }
+  .brand-mark { color:#8fc7b4; }
+  .brand strong { font-family:'IBM Plex Mono',monospace; font-size:.77rem; letter-spacing:.045em; text-transform:uppercase; }
+  .verified-nav { color:#9db0a5; }
+  .access-band { background:#18231d; color:#8fa198; border-bottom:1px solid #334139; font-family:'IBM Plex Mono',monospace; font-size:.55rem; letter-spacing:.09em; }
+  .access-band>div { max-width:1240px; min-height:30px; margin:0 auto; padding:0 2rem; display:flex; align-items:center; gap:1.5rem; }
+  .access-band strong { margin-left:auto; color:#c8a96a; font-weight:500; }
+  .access-band span+span::before { content:"•"; margin-right:1.5rem; color:#526258; }
+  .hero { background:#101713; color:#eef2ef; border-bottom-color:#2d3932; }
+  .hero::before { content:"C31"; position:absolute; right:3%; bottom:-.19em; color:rgba(255,255,255,.022); font-family:'Fraunces',serif; font-size:23rem; line-height:1; pointer-events:none; }
+  .eyebrow { color:#81b9a5!important; }
+  .masthead-title { color:#f0f3f0; }
+  .masthead-title em { color:#86bba8!important; }
+  .masthead-sub { color:#a9b5ae!important; max-width:620px; }
+  .hero-actions a { color:#dfe7e1; border-bottom-color:#7da895; }
+  .countdown { border-left-color:#75857c; }
+  .countdown-num { color:#e9eee9!important; }
+  .countdown-label { color:#92a198!important; }
+  .keyfacts { border-color:#2a312d; }
+  .keyfact { background:#e8e5dc; border-right-color:#2a312d; }
+  .keyfact-label { color:#62675f; }
+  .wrap { position:relative; }
+  .wrap::before { content:"INTERNAL BRIEF / C31–TR"; position:absolute; top:11px; right:2rem; color:#a7aaa3; font-family:'IBM Plex Mono',monospace; font-size:.5rem; letter-spacing:.12em; }
+  .controls { border-bottom-color:#343a35; }
+  .search,.city-select { background:#eceae4; border-color:#c3c4be; }
+  .cal-head,.day-panel-head { border-bottom-color:#333832; }
+  footer::after { content:"C31–TR / END OF BRIEF"; color:#176b52; }
+  @media(max-width:800px){ .access-band>div{padding:0 1rem}.access-band span:nth-child(2),.access-band span:nth-child(3){display:none}.hero::before{font-size:14rem}.wrap::before{right:1rem} }
 </style>
 </head>
 <body>
@@ -551,16 +668,17 @@
 <header class="site-header">
   <div class="site-header-inner">
     <a class="brand" href="#top" aria-label="COP31 Türkiye Takip ana sayfa">
-      <span class="brand-mark" aria-hidden="true">31</span>
-      <span><strong>COP31 Türkiye Takip</strong><small>Ulusal iklim gündemi izleme platformu</small></span>
+      <span class="brand-mark" aria-hidden="true">C31 / TR</span>
+      <span><strong>COP31 Stratejik İzleme</strong><small>Yönetici brifing sistemi</small></span>
     </a>
     <nav class="site-nav" aria-label="Ana menü">
       <a href="#gundem">Gündem</a>
       <a href="#takvim">Takvim</a>
-      <span class="verified-nav"><span></span>Kaynak kontrollü</span>
+      <span class="verified-nav"><span></span>Yönetici görünümü</span>
     </nav>
   </div>
 </header>
+<div class="access-band"><div><span>BRIEFING ROOM</span><span>DOSYA: C31–TR/2026</span><span>OTURUM: GÜNCEL</span><strong>SEÇİLİ GÜNDEM</strong></div></div>
 
 <div class="hero" id="top">
   <svg class="hero-motif" viewBox="0 0 960 220" preserveAspectRatio="none" aria-hidden="true">
@@ -573,12 +691,12 @@
     <circle cx="110" cy="64" r="2.5" fill="currentColor"/>
   </svg>
   <div class="hero-inner">
-    <span class="eyebrow"><span class="pulse"></span>Türkiye geneli · Günlük güncellenen gündem</span>
+    <span class="eyebrow"><span class="pulse"></span>BRİFİNG 028 · TÜRKİYE · 28 AĞUSTOS 2026</span>
     <div class="hero-grid">
       <div>
-        <h1 class="masthead-title">Türkiye'nin <em>COP31 ve iklim gündemi</em>, tek merkezde.</h1>
-        <p class="masthead-sub">Kamu kurumları, üniversiteler, yerel yönetimler, iş dünyası ve sivil toplumun doğrulanmış etkinlik, çağrı ve başvuru takvimi.</p>
-        <div class="hero-actions"><a href="#takvim" class="primary-action">Gündemi incele</a></div>
+        <h1 class="masthead-title">COP31 <em>stratejik gündem</em></h1>
+        <p class="masthead-sub">Türkiye genelindeki kurumsal hareketlilik, kritik tarihler ve doğrulanmış katılım fırsatları için hazırlanmış yönetici özeti.</p>
+        <div class="hero-actions"><a href="#takvim" class="primary-action">Brifingi aç</a></div>
       </div>
       <div class="countdown">
         <div class="countdown-num" id="countdownNum">—</div>
