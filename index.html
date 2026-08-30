@@ -1040,7 +1040,6 @@
       <button class="chip" data-filter="stk" aria-pressed="false"><span class="dot" style="background:var(--gold)"></span>STK / Gençlik</button>
       <button class="chip" data-filter="intl" aria-pressed="false"><span class="dot" style="background:var(--plum)"></span>Uluslararası</button>
     </div>
-    <a class="suggest-btn" id="suggestLink" href="#" target="_blank" rel="noopener">+ Etkinlik öner</a>
   </div>
   <div class="result-summary" id="resultSummary" aria-live="polite"></div>
 
@@ -2718,7 +2717,7 @@
     var host = "";
     try { host = new URL(ev.src.url).hostname; } catch (e) {}
     var officialSource = /(^|\.)(gov\.tr|bel\.tr|edu\.tr|unfccc\.int|cop31\.tr)$/.test(host) || /\.gov\.tr$|\.bel\.tr$|\.edu\.tr$/.test(host) || ev.sourceType === "social";
-    var recordType = ev.recordType === "application" || /başvuru|çağrı|program|gönüllü|akademi takımı/i.test(ev.title + " " + ev.dateLabel) ? "Başvuru / program" : "Etkinlik";
+    var recordType = ev.applicationLabel ? "Başvuru / program" : "Etkinlik";
     var dateFacts = '';
     if (ev.applicationLabel) dateFacts += '<span class="date-fact application"><strong>Başvuru</strong> ' + ev.applicationLabel + '</span>';
     if (ev.eventLabel) dateFacts += '<span class="date-fact"><strong>Etkinlik</strong> ' + ev.eventLabel + '</span>';
@@ -2783,7 +2782,7 @@
         (activeView === "today" && (ev.date === TODAY || deriveStatus(ev) === "ongoing" || ev.applicationEnd === TODAY)) ||
         (activeView === "followed" && isFollowed(ev)) ||
         (activeView === "changed" && changedIds.indexOf(eventId(ev)) !== -1) ||
-        (activeView === "upcoming" && ev.date >= TODAY && ev.recordType !== "application") ||
+        (activeView === "upcoming" && ev.date >= TODAY && !ev.applicationLabel) ||
         (activeView === "applications" && ev.applicationEnd && ev.applicationEnd >= TODAY && (!ev.applicationStart || ev.applicationStart <= TODAY));
       return categoryMatch && cityMatch && viewMatch && (!query || haystack.includes(query));
     });
@@ -2900,7 +2899,7 @@
     }).length;
     var availableCities = Array.prototype.slice.call(document.getElementById("citySelect").options, 1).map(function(o){ return o.value; });
     var cityCount = availableCities.filter(function(city){ return filtered.some(function(ev){ return normalize(ev.loc).includes(normalize(city)); }); }).length;
-    document.getElementById("statUpcoming").textContent = filtered.filter(function(ev){ return ev.date && ev.date >= TODAY && ev.recordType !== "application"; }).length;
+    document.getElementById("statUpcoming").textContent = filtered.filter(function(ev){ return ev.date && ev.date >= TODAY && !ev.applicationLabel; }).length;
     document.getElementById("statApplications").textContent = filtered.filter(function(ev){ return ev.applicationEnd && ev.applicationEnd >= TODAY && (!ev.applicationStart || ev.applicationStart <= TODAY); }).length;
     document.getElementById("statOfficial").textContent = hostsOfficial;
     document.getElementById("statCities").textContent = cityCount;
@@ -3033,7 +3032,7 @@ var PROVINCE_VIEWBOX = "0 0 820 346";
       if (!ev.date || isUnverified(ev)) return;
       var dates = [];
       if (ev.applicationEnd && ev.applicationEnd >= TODAY) dates.push({date:ev.applicationEnd,type:"Başvuru bitişi"});
-      if (ev.date >= TODAY) dates.push({date:ev.date,type:ev.recordType === "application" ? "Başvuru" : "Etkinlik"});
+      if (ev.date >= TODAY) dates.push({date:ev.date,type:ev.applicationLabel ? "Başvuru" : "Etkinlik"});
       dates.forEach(function(item){ var left=daysUntil(item.date); if(left >= 0 && left <= days) result.push({ev:ev,date:item.date,type:item.type,left:left}); });
     });
     return result.sort(function(a,b){ return a.date.localeCompare(b.date); }).slice(0,8);
@@ -3121,23 +3120,6 @@ var PROVINCE_VIEWBOX = "0 0 820 346";
         '<div class="tip"><span class="t-date">' + day + ' ' + mon + '</span><span class="t-label">' + ev.milestoneLabel + '</span></div>';
       rail.appendChild(node);
     });
-  })();
-
-  (function wireSuggestLink() {
-    var issueTitle = "Yeni etkinlik önerisi: ";
-    var issueBody = [
-      "**Başlık:** ",
-      "**Tarih (YYYY-AA-GG):** ",
-      "**İl:** ",
-      "**Düzenleyen kurum:** ",
-      "**Kategori (resmi / akademik / stk / intl):** ",
-      "**Kaynak URL (haber/duyuru sayfası):** ",
-      "",
-      "_Bu formu doldurup gönderdiğinizde bir GitHub issue'su açılır, ekip bunu inceleyip panoya ekler._"
-    ].join("\n");
-    var url = "https://github.com/Simge-bit/cop31-takip/issues/new?labels=etkinlik-onerisi&title=" +
-      encodeURIComponent(issueTitle) + "&body=" + encodeURIComponent(issueBody);
-    document.getElementById("suggestLink").href = url;
   })();
 
   initializeSnapshot();
