@@ -465,6 +465,10 @@
   .keyfacts { margin-top:-3.25rem; position:relative; z-index:2; box-shadow:0 20px 50px -34px #071d19; border-radius:16px; }
   .dashboard-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:.8rem; margin:0 0 1.4rem; }
   .stat-card { background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:1rem 1.1rem; }
+  .stat-card-btn { font:inherit; text-align:left; width:100%; cursor:pointer; transition:box-shadow .15s,transform .15s; }
+  .stat-card-btn:hover { box-shadow:0 0 0 2px var(--accent); }
+  .stat-card-btn:active { transform:scale(.98); }
+  .stat-card-btn.is-active { box-shadow:0 0 0 2px var(--accent); background:var(--accent-soft); }
   .stat-number { display:block; font-family:'Fraunces',serif; font-size:1.8rem; line-height:1; color:var(--accent-ink); }
   .stat-label { display:block; margin-top:.35rem; font-size:.72rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.06em; }
   .filter-shell { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:1rem; box-shadow:var(--shadow); margin-bottom:1.25rem; }
@@ -981,8 +985,8 @@
   </div>
 
   <div class="dashboard-stats" id="gundem" aria-label="Takip özeti">
-    <div class="stat-card"><span class="stat-number" id="statUpcoming">—</span><span class="stat-label">Yaklaşan etkinlik</span></div>
-    <div class="stat-card"><span class="stat-number" id="statApplications">—</span><span class="stat-label">Başvurusu açık</span></div>
+    <button class="stat-card stat-card-btn" type="button" data-stat-view="upcoming"><span class="stat-number" id="statUpcoming">—</span><span class="stat-label">Yaklaşan etkinlik</span></button>
+    <button class="stat-card stat-card-btn" type="button" data-stat-view="applications"><span class="stat-number" id="statApplications">—</span><span class="stat-label">Başvurusu açık</span></button>
     <div class="stat-card"><span class="stat-number" id="statOfficial">—</span><span class="stat-label">Kurumsal kaynak</span></div>
     <div class="stat-card"><span class="stat-number" id="statCities">—</span><span class="stat-label">Şehir kapsaması</span></div>
   </div>
@@ -2761,7 +2765,9 @@
       var viewMatch = activeView === "all" ||
         (activeView === "today" && (ev.date === TODAY || deriveStatus(ev) === "ongoing" || ev.applicationEnd === TODAY)) ||
         (activeView === "followed" && isFollowed(ev)) ||
-        (activeView === "changed" && changedIds.indexOf(eventId(ev)) !== -1);
+        (activeView === "changed" && changedIds.indexOf(eventId(ev)) !== -1) ||
+        (activeView === "upcoming" && ev.date >= TODAY && ev.recordType !== "application") ||
+        (activeView === "applications" && ev.applicationEnd && ev.applicationEnd >= TODAY && (!ev.applicationStart || ev.applicationStart <= TODAY));
       return categoryMatch && cityMatch && viewMatch && (!query || haystack.includes(query));
     });
   }
@@ -2840,7 +2846,7 @@
       head.textContent = parseInt(selectedDate.slice(8, 10), 10) + " " + MONTHS[parseInt(selectedDate.slice(5, 7), 10) - 1] + " " + selectedDate.slice(0, 4);
     } else if (activeView !== "all") {
       items = filtered.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).slice(0,20);
-      head.textContent = activeView === "today" ? "Bugünün gündemi" : activeView === "followed" ? "Takip listem" : "Yeni / değişen kayıtlar";
+      head.textContent = activeView === "today" ? "Bugünün gündemi" : activeView === "followed" ? "Takip listem" : activeView === "upcoming" ? "Yaklaşan etkinlikler" : activeView === "applications" ? "Başvurusu açık kayıtlar" : "Yeni / değişen kayıtlar";
     } else if (selectedMapCity || document.getElementById("citySelect").value !== "all") {
       var cityName = selectedMapCity || document.getElementById("citySelect").value;
       items = filtered.slice().sort(function (a, b) {
@@ -2891,6 +2897,18 @@
     document.getElementById("resultSummary").textContent = filtered.length + " doğrulanmış kayıt takvimde gösteriliyor";
     document.getElementById("emptyState").style.display = filtered.length ? "none" : "block";
   }
+
+  document.getElementById("gundem").addEventListener("click", function (e) {
+    var btn = e.target.closest(".stat-card-btn");
+    if (!btn) return;
+    var view = btn.dataset.statView;
+    activeView = (activeView === view) ? "all" : view;
+    selectedDate = null;
+    document.querySelectorAll(".stat-card-btn").forEach(function (b) { b.classList.toggle("is-active", b.dataset.statView === activeView); });
+    render();
+    var head = document.getElementById("dayPanelHead");
+    if (head) head.scrollIntoView({ behavior: "smooth", block: "center" });
+  });
 
   document.getElementById("filters").addEventListener("click", function (e) {
     var btn = e.target.closest(".chip");
