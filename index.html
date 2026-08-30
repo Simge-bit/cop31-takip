@@ -787,6 +787,8 @@
   .alert-list { list-style:none; padding:0; margin:0; }
   .alert-item { padding:9px 0; border-top:1px solid var(--line); font:10px/1.35 Arial,sans-serif; }
   .alert-item:first-child { border-top:0; }
+  .alert-item-btn { cursor:pointer; transition:background .15s; border-radius:6px; padding-left:6px; padding-right:6px; margin:0 -6px; }
+  .alert-item-btn:hover, .alert-item-btn:focus-visible { background:var(--accent-soft); outline:none; }
   .alert-item strong { display:block; font-size:11px; }
   .alert-date { color:#8b6d00; }
   .privacy-note { margin:10px 0 0; color:var(--muted); font:9px/1.4 Arial,sans-serif; }
@@ -3051,8 +3053,11 @@ var PROVINCE_VIEWBOX = "0 0 820 346";
     list.innerHTML = "";
     if (!items.length) { list.innerHTML = '<li class="alert-item">Bu aralıkta yaklaşan tarih yok.</li>'; return; }
     items.forEach(function(item){
-      var li=document.createElement("li"); li.className="alert-item";
+      var li=document.createElement("li"); li.className="alert-item alert-item-btn"; li.setAttribute("role","button"); li.setAttribute("tabindex","0");
       li.innerHTML='<strong>'+item.ev.title+'</strong><span class="alert-date">'+item.type+' · '+(item.left===0?'bugün':item.left+' gün kaldı')+'</span>';
+      var open=function(){ selectedDate=item.date; render(); var head=document.getElementById("dayPanelHead"); if(head) head.scrollIntoView({behavior:"smooth",block:"center"}); };
+      li.addEventListener("click", open);
+      li.addEventListener("keydown", function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); open(); } });
       list.appendChild(li);
     });
   }
