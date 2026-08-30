@@ -2651,6 +2651,7 @@
 
   function deriveStatus(ev) {
     if (isUnverified(ev)) return "unverified";
+    if (ev.applicationEnd && ev.applicationEnd < TODAY) return "past";
     var end = ev.applicationEnd && ev.applicationEnd >= TODAY ? ev.applicationEnd : (ev.eventEnd || ev.endDate);
     if (end && ev.date <= TODAY && end >= TODAY) return "ongoing";
     if (end && end < TODAY && (!ev.eventStart || ev.eventStart < TODAY)) return "past";
