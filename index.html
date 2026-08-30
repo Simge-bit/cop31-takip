@@ -2654,7 +2654,7 @@
     var end = ev.applicationEnd && ev.applicationEnd >= TODAY ? ev.applicationEnd : (ev.eventEnd || ev.endDate);
     if (end && ev.date <= TODAY && end >= TODAY) return "ongoing";
     if (end && end < TODAY && (!ev.eventStart || ev.eventStart < TODAY)) return "past";
-    if (ev.status === "ongoing" && !ev.endDate && (!ev.date || ev.date <= TODAY)) return "ongoing";
+    if (ev.status === "ongoing" && !ev.endDate && (!ev.applicationEnd || ev.applicationEnd >= TODAY) && (!ev.date || ev.date <= TODAY)) return "ongoing";
     if (ev.date < TODAY) return "past";
     return "upcoming";
   }
