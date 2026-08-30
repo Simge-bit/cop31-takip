@@ -360,6 +360,12 @@
     font-size: 0.78rem; color: var(--ink-faint);
   }
   footer .mono { font-family: 'IBM Plex Mono', monospace; color: var(--ink-soft); }
+  .credit-line {
+    margin-top: 1rem; padding: 0.9rem 1rem; text-align: center;
+    font-size: 0.95rem; color: var(--ink); background: var(--accent-soft);
+    border-radius: 10px;
+  }
+  .credit-line strong { color: var(--accent-ink); font-weight: 700; }
   footer .live-badge { display: inline-flex; align-items: center; gap: 0.4em; }
   footer .live-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 
@@ -1064,8 +1070,8 @@
 
   <footer>
     <span class="live-badge"><span class="dot"></span>Son veri güncellemesi: <span class="mono" id="lastUpdated">30 Ağustos 2026</span> · web ve kurumsal sosyal hesaplar denetleniyor</span>
-    <span>Hazırlayan: Simge Solmaz</span>
   </footer>
+  <div class="credit-line">Hazırlayan: <strong>Simge Solmaz</strong></div>
 
 </div>
 
