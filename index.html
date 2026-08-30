@@ -2769,8 +2769,8 @@
   function eventsByDateMap(list) {
     var map = {};
     list.forEach(function (ev) {
-      if (!ev.date) return;
-      (map[ev.date] = map[ev.date] || []).push(ev);
+      if (ev.date) (map[ev.date] = map[ev.date] || []).push(ev);
+      if (ev.eventStart && ev.eventStart !== ev.date) (map[ev.eventStart] = map[ev.eventStart] || []).push(ev);
     });
     return map;
   }
@@ -2836,7 +2836,7 @@
     list.innerHTML = "";
     var items;
     if (selectedDate) {
-      items = filtered.filter(function (ev) { return ev.date === selectedDate; });
+      items = filtered.filter(function (ev) { return ev.date === selectedDate || ev.eventStart === selectedDate; });
       head.textContent = parseInt(selectedDate.slice(8, 10), 10) + " " + MONTHS[parseInt(selectedDate.slice(5, 7), 10) - 1] + " " + selectedDate.slice(0, 4);
     } else if (activeView !== "all") {
       items = filtered.slice().sort(function(a,b){return a.date.localeCompare(b.date);}).slice(0,20);
