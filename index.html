@@ -110,6 +110,14 @@
     pointer-events: none;
   }
   .hero-inner { position: relative; max-width: 960px; margin: 0 auto; }
+  .org-kicker {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    letter-spacing: -.01em;
+    color: var(--accent-ink);
+    margin-bottom: 0.6rem;
+  }
   .eyebrow {
     display: inline-flex;
     align-items: center;
@@ -906,7 +914,7 @@
   <div class="site-header-inner">
     <a class="brand" href="#top" aria-label="COP31 Türkiye Takip ana sayfa">
       <span class="brand-mark" aria-hidden="true">COP31</span>
-      <span><strong>Türkiye Etkinlik Takibi</strong><small>İYİ Parti Gençlik Kolları</small></span>
+      <span><strong>Türkiye Etkinlik Takibi</strong><small></small></span>
     </a>
     <nav class="site-nav" aria-label="Ana menü">
       <a href="#gundem">Gündem</a>
@@ -931,6 +939,7 @@
     <circle cx="110" cy="64" r="2.5" fill="currentColor"/>
   </svg>
   <div class="hero-inner">
+    <div class="org-kicker">İYİ Parti Gençlik Kolları</div>
     <span class="eyebrow"><span class="pulse"></span>Son güncelleme: 30 Ağustos 2026</span>
     <div class="hero-grid">
       <div>
