@@ -1,8 +1,8 @@
 # COP31 veri denetimi
 
-- Kontrol: 2026-09-15T06:22:09.055Z
-- Etkinlik: 189
-- Benzersiz kaynak: 178
+- Kontrol: 2026-10-11T06:20:30.071Z
+- Etkinlik: 184
+- Benzersiz kaynak: 173
 - Hata: 0
 - Uyarı: 1
 
@@ -12,4 +12,4 @@
 
 ## Uyarılar
 
-- #155 Muğla COP-2026 İklim Değişikliği 2. Yerel Taraflar Konferansı: #79 ile olası mükerrer kayıt.
+- #148 Muğla COP-2026 İklim Değişikliği 2. Yerel Taraflar Konferansı: #77 ile olası mükerrer kayıt.
